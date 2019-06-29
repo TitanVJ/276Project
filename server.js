@@ -90,3 +90,9 @@ app.post('/login', function(req, res, next) {
         }
     });
 });
+
+app.get('/logout', function(req, res) {
+    req.session.destroy(function(err) {
+        res.redirect('/');
+    });
+});
