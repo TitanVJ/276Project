@@ -7,10 +7,10 @@ const salt = bcrypt.genSaltSync(10);
 const flash = require('express-flash');
 const session = require('express-session');
 const uuidv1 = require('uuid/v1');
+var format = require('pg-format');
 const { Pool } = require('pg');
 
 const connectionString = ''; // Connection string needs to go here!
-
 const pool = new Pool({
     connectionString: connectionString,
 });
@@ -54,7 +54,7 @@ app.post('/sign-up', function(req, res) {
     const values = [req.body.username, bcrypt.hashSync(req.body.password, salt)];
 
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) =>{
-        console.log("ROWS: ", response.rows.length);
+
         if(response.rows.length > 0) {
             req.flash('error', 'That e-mail is already in use!');
             res.render('pages/register', {expressFlash: req.flash('error')})
@@ -63,7 +63,14 @@ app.post('/sign-up', function(req, res) {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.render('pages/login')
+                    let sql = format('CREATE TABLE %I (prof_fname VARCHAR(32), prof_lname VARCHAR(32), photo_id NUMERIC, catch_time TIMESTAMP DEFAULT now() )', `${req.body.username}ProfList`);
+                    pool.query(sql, (err, response) => {
+                       if(err) {
+                           console.log(err);
+                       } else {
+                           res.render('pages/login')
+                       }
+                    });
                 }
             });
         }
