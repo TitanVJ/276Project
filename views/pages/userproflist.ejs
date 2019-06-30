@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<link rel="stylesheet" type="text/css" href="admin.css">
+<body>
+<div>
+<h2>User Prof List</h2>
+
+
+<table>
+  <tr>
+    <td>Photo</td>
+    <td>First Name</td>
+    <td>Last Name</td>
+    <td>Catch Time</td>
+  </tr>
+  <% results.forEach(function(r) { %>
+      <tr>
+        <td><%= r.photo_id %> </td>
+        <td><%= r.prof_fname %></td>
+        <td><%= r.prof_lname %></td>
+        <td><%= r.catch_time %> </td>
+      </tr>
+  <% }); %>
+</table>
+
+<button onClick="parent.location='https://agile-ravine-47413.herokuapp.com/admin.html'">
+BACK
+</button>
+
+</div>
+
+</body>
+</html>
