@@ -15,6 +15,7 @@ io.on('connection', (socket)=>{
         console.log('user disconnected');
     })
 
+    // used to determine if a character will 
     socket.on('move', (data)=>{
         // determine
         var c = Math.floor((Math.random() * 100) + 1);
@@ -23,7 +24,15 @@ io.on('connection', (socket)=>{
             //encouter
             // send back and obj, contain img id, prof
             // for testing do console.log
-            socket.emit('encounter');
+            
+            // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+            // for now send a temp obj
+            var tempProf = {
+                name: 'mr.crocker', 
+                rarity: 'normal',
+                level: '25'
+            }
+            socket.emit('encounter', tempProf);
         }
         else{
             socket.emit('no');

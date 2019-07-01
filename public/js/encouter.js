@@ -12,8 +12,17 @@ socket.on('no', ()=>{
     console.log('no encounter');
 });
 
-socket.on('encounter',()=>{
+socket.on('encounter',(profObj)=>{
     count.innerHTML++;
+    // this will make a coffee cup?(something icon) appear on teh map that user will click to engage capture mode
+    var img = $('#tempEncounter')[0];
+    img.src = '../images/crocker.png';
+
+    var details = $('#profDetails')[0];
+    details.innerHTML = JSON.stringify(profObj);
+
+    // this will later be adapted to delete the spawned icon if the user doesn't click on it in time
+    setTimeout(()=>{img.src = '';details.innerHTML = ''; console.log('removed img');}, 30000);
 });
 
 $(document).keydown((e)=>{
