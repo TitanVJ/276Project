@@ -27,7 +27,7 @@
             </select>
             <label>Value</label><br>
             <input id="fieldInput" type="text" disabled="true" required>
-            <button id="submit" type="submit" onclick="search()" disabled="true">Seach</button>
+            <button id="submit" type="submit" onclick="search()" disabled="true">Search</button>
             <button type="button" onclick="getAll()">Get all User</button>
         </form><br>
       </div>
@@ -49,26 +49,31 @@
             <label>Field</label>
             <select id="proffields" onchange="enInputprof()" required>
                 <option></option>
-                <option value="user_name">prof_fname</option>
-                <option value="status">prof_lname</option>
+                <option value="prof_fname">prof_fname</option>
+                <option value="prof_lname">prof_lname</option>
             </select>
             <label>Value</label><br>
             <input id="fieldInputProf" type="text" disabled="true" required>
-            <button id="submit" type="submit" onclick="searchProfDex()" disabled="true">Seach</button>
+            <button id="submitProf" type="submit" onclick="searchProfDex()" disabled="true">Search</button>
             <button type="button" onclick="getAllProfDex()">Get all Profs</button>
         </form><br>
       </div>
 
         <table id='profs'>
             <tr>
+                <th>prof_id</th>
                 <th>prof_fname</th>
                 <th>prof_lname</th>
                 <th>photo_id</th>
                 <th>last_updated</th>
                 <th>record_created</th>
-                <th class="hiddenBorder"></th>
+                  <th class="hiddenBorder"></th>
             </tr>
         </table>
     </section>
+    <form class="" action="/logout" method="get">
+      <button>Log Out</button>
+    </form>
+
 </body>
 </html>

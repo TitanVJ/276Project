@@ -1,6 +1,3 @@
-var textFields = ['name', 'weight', 'height', 'hair_color', 'fav_drink', 'fav_food', 'fav_video_game', 'fav_movie']
-
-
 $('#searchForm').submit((e)=>{
     e.preventDefault();
 });
@@ -25,12 +22,13 @@ function enInputprof(){
     var input = $('#fieldInputProf');
     input.val('');
     input.attr('disabled', false);
-    $('#submit').attr('disabled', false);
+    $('#submitProf').attr('disabled', false);
 
     input.attr('type', 'text');
 }
 
 function search(){
+    //loop through from and grab shit
     if($('#fieldInput').disabled){
         return
     }
@@ -91,23 +89,27 @@ function toUserTable(f){
 function del(e){
     var row = e.parentElement.parentElement;
     var id = e.parentElement.parentElement.childNodes[0].innerHTML;
-    var name = e.parentElement.parentElement.childNodes[1].innerHTML;
+    var name = e.parentElement.parentElement.childNodes[0].innerHTML;
 
     confirm('Are you sure you want to delete '+ name.toUpperCase() +' from the database?');
+
+    console.log('test');
+
     $.ajax({
         method:'delete',
         url:'/removeUser/'+id
     });
 }
 function searchProfDex(){
+    //loop through from and grab shit
     if($('#proffields').disabled){
         return
     }
     $.ajax({
         method: 'get',
-        url: '/searchProfDex?column='+$('#fields').val() + '&value=' + $('#fieldInput').val(),
+        url: '/searchProfDex?column='+$('#proffields').val() + '&value=' + $('#fieldInputProf').val(),
         success: updateTableProfDex,
-        error: ()=>{alert('No such user(s) exist.');}
+        error: ()=>{alert('No such Prof(s) exist.');}
     });
 }
 
@@ -138,10 +140,26 @@ function updateTableProfDex(results){
             newRow.appendChild(cell);
         }
         var a = document.createElement('td');
-        a.innerHTML = '<button style="width:100%;height:100%" class="edit" type="button" onclick="del(this)">Del</button>';
+        a.innerHTML = '<button style="width:100%;height:100%" class="edit" type="button" onclick="delProf(this)">Del</button>';
         newRow.appendChild(a);
         table.append(newRow);
         i++;
     });
 
+}
+function delProf(a){
+    var row = a.parentElement.parentElement;
+    var id = a.parentElement.parentElement.childNodes[0].innerHTML;
+    var name = a.parentElement.parentElement.childNodes[1].innerHTML;
+
+    confirm('Are you sure you want to delete '+ name.toUpperCase() +' from the database?');
+
+    console.log('test');
+
+    $.ajax({
+        method:'delete',
+        url:'/removeProf/'+id,
+        success: getAllProfDex,
+        error: ()=>{alert('Failed to Delete.')}
+    });
 }

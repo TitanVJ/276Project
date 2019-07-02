@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
+app.get('/', (req, res) => res.render('pages/index'))
 /*******************/
 app.get('/search', (req, res)=>{
     const query = {
@@ -74,7 +75,7 @@ app.get('/searchProfDex', (req, res)=>{
 
 });
 /***************************************/
-app.get('/userproflist', async(req, res) => {
+app.get('/toTable', async(req, res) => {
     const toTable = await pool.connect()
     // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
     // console.log(sql);
@@ -116,7 +117,7 @@ app.get('/data', (req, res)=>{
     });
 });
 app.get('/dataProfDex', (req, res)=>{
-    pool.query("SELECT prof_fname,prof_lname,photo_id,last_updated,record_created FROM profDex", (error, result)=>{
+    pool.query("SELECT prof_id,prof_fname,prof_lname,photo_id,last_updated,record_created FROM profDex", (error, result)=>{
         if(error){
             console.log(error.message);
             res.status('500');
@@ -132,6 +133,7 @@ app.get('/dataProfDex', (req, res)=>{
     res.send(results);
     });
 })
+/**********************************/
 app.delete('/removeUser/:id', (req, res)=>{
 
     console.log('del start');
@@ -144,6 +146,19 @@ app.delete('/removeUser/:id', (req, res)=>{
       }
     })
 
+})
+app.delete('/removeProf/:id', (req, res)=>{
+
+    console.log('del start');
+    pool.query('DELETE FROM profDex WHERE prof_id=$1', [req.params.id], function (err, resp) {
+      if (err){
+        console.log('del failed');
+      }
+      else {
+        console.log('del suc');
+      }
+    })
+      console.log('del');
 })
 
   app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
