@@ -4,7 +4,7 @@ var textFields = ['name', 'weight', 'height', 'hair_color', 'fav_drink', 'fav_fo
 $('#searchForm').submit((e)=>{
     e.preventDefault();
 });
-$('#searchFormProfDex').submit((a)=>{
+$('#searchFormProf').submit((a)=>{
     a.preventDefault();
 });
 function enInput(){
@@ -12,6 +12,17 @@ function enInput(){
 
     var field = $('#fields').val();
     var input = $('#fieldInput');
+    input.val('');
+    input.attr('disabled', false);
+    $('#submit').attr('disabled', false);
+
+    input.attr('type', 'text');
+}
+function enInputprof(){
+    console.log('change');
+
+    var field = $('#proffields').val();
+    var input = $('#fieldInputProf');
     input.val('');
     input.attr('disabled', false);
     $('#submit').attr('disabled', false);
@@ -75,7 +86,7 @@ function toUserTable(f){
 
     $.ajax({
         method:'get',
-        url:'/toTable?user='+id+'ProfList'
+        url:'/toTable?user='+id
     });
 }
 function del(e){
@@ -94,13 +105,13 @@ function del(e){
 }
 function searchProfDex(){
     //loop through from and grab shit
-    if($('#fieldInput').disabled){
+    if($('#proffields').disabled){
         return
     }
     $.ajax({
         method: 'get',
         url: '/searchProfDex?column='+$('#fields').val() + '&value=' + $('#fieldInput').val(),
-        success: updateTable,
+        success: updateTableProfDex,
         error: ()=>{alert('No such user(s) exist.');}
     });
 }
@@ -138,18 +149,4 @@ function updateTableProfDex(results){
         i++;
     });
 
-}
-function del(e){
-    var row = e.parentElement.parentElement;
-    var id = e.parentElement.parentElement.childNodes[0].innerHTML;
-    var name = e.parentElement.parentElement.childNodes[0].innerHTML;
-
-    confirm('Are you sure you want to delete '+ name.toUpperCase() +' from the database?');
-
-    console.log('test');
-
-    $.ajax({
-        method:'delete',
-        url:'/removeUser/'+id
-    });
 }

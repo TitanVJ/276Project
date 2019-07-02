@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
 /*******************/
 app.get('/search', (req, res)=>{
     const query = {
@@ -74,8 +75,7 @@ app.get('/searchProfDex', (req, res)=>{
 });
 /***************************************/
 app.get('/toTable', (req, res)=>{
-    var tableName = req.query.user
-    sql = format('SELECT * FROM %I', req.query.user);
+    let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
     pool.query(sql ,(err, result)=>{
         if(err){
             console.log(err.message);
@@ -131,7 +131,6 @@ app.get('/dataProfDex', (req, res)=>{
     res.send(results);
     });
 })
-/**********************************/
 app.delete('/removeUser/:id', (req, res)=>{
 
     console.log('del start');

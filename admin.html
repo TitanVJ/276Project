@@ -12,10 +12,7 @@
 <body onload="getAll(); getAllProfDex()">
     <nav>
         <ul>
-            <li><a href="./">Home</a></li>
-            <li><a href="./boxes.ejs">Boxes View</a></li>
-            <li><a href="./addStudent.html">Add</a></li>
-            <li class="current"><a href="#contact">Modify</a></li>
+            <li><a>Admin View</a></li>
         </ul>
     </nav>
 
@@ -48,15 +45,15 @@
     </section>
     <section id="tableContainer">
         <div id="formWrapper">
-        <form id="searchFormProfdex">
+        <form id="searchFormProf">
             <label>Field</label>
-            <select id="fields" onchange="enInput()" required>
+            <select id="proffields" onchange="enInputprof()" required>
                 <option></option>
                 <option value="user_name">prof_fname</option>
                 <option value="status">prof_lname</option>
             </select>
             <label>Value</label><br>
-            <input id="fieldInput" type="text" disabled="true" required>
+            <input id="fieldInputProf" type="text" disabled="true" required>
             <button id="submit" type="submit" onclick="searchProfDex()" disabled="true">Seach</button>
             <button type="button" onclick="getAllProfDex()">Get all Profs</button>
         </form><br>
