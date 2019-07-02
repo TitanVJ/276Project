@@ -1,19 +1,37 @@
 {
-  "name": "276project",
-  "version": "1.0.0",
-  "description": "Our app, Collect my Prof, is a game where users, while walking around campus, will randomly encounter profs from SFU. The main purpose of the app is to provide our users with entertainment as they explore the campus. Users will get the chance to ‘collect’ profs by correctly answering a series of questions, similar to a dating sim game. The questions can be skipped using items, such as coffee or tenure packages, in the event users encounter a rare prof and are uncertain about their ability to answer those questions. The questions will follow inside jokes amongst faculty staff and students, but nothing rude or offensive. The encounters will be determined randomly and seeded depending on the user's location. We will be using google map’s API to get real-time location information about the user. The app will also have features that let you add friends and message other players on the map. The administrator will have the ability to create and remove profs, define their statistics and rarity. Our target audience is SFU students, and potentially Faculty members if they have a sense of humour. Our app will be competing against other mobile games that feature item collection mechanics, such as popular titles from Niantic like “Pokemon Go” and “Ingress”.",
-  "main": "server.js",
+  "name": "node-js-getting-started",
+  "version": "0.3.0",
+  "description": "A sample Node.js app using Express 4",
+  "engines": {
+    "node": "10.x"
+  },
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "cool-ascii-faces": "^1.3.4",
+    "ejs": "^2.6.1",
+    "express": "^4.17.1",
+    "jquery": "^3.4.1",
+    "json": "^9.0.6",
+    "pg": "^7.11.0",
+    "pg-format": "^1.0.4",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "request": "^2.81.0",
+    "tape": "^4.7.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TitanVJ/276Project.git"
+    "url": "https://github.com/heroku/node-js-getting-started"
   },
-  "author": "\"25teslas\"",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/TitanVJ/276Project/issues"
-  },
-  "homepage": "https://github.com/TitanVJ/276Project#readme"
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
 }
