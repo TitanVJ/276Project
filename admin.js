@@ -31,7 +31,6 @@ function enInputprof(){
 }
 
 function search(){
-    //loop through from and grab shit
     if($('#fieldInput').disabled){
         return
     }
@@ -86,25 +85,21 @@ function toUserTable(f){
 
     $.ajax({
         method:'get',
-        url:'/toTable?user='+id
+        url:'/userproflist?user='+id
     });
 }
 function del(e){
     var row = e.parentElement.parentElement;
     var id = e.parentElement.parentElement.childNodes[0].innerHTML;
-    var name = e.parentElement.parentElement.childNodes[0].innerHTML;
+    var name = e.parentElement.parentElement.childNodes[1].innerHTML;
 
     confirm('Are you sure you want to delete '+ name.toUpperCase() +' from the database?');
-
-    console.log('test');
-
     $.ajax({
         method:'delete',
         url:'/removeUser/'+id
     });
 }
 function searchProfDex(){
-    //loop through from and grab shit
     if($('#proffields').disabled){
         return
     }

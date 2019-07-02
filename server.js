@@ -74,27 +74,28 @@ app.get('/searchProfDex', (req, res)=>{
 
 });
 /***************************************/
-app.get('/toTable', (req, res)=>{
-    let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
-    pool.query(sql ,(err, result)=>{
+app.get('/userproflist', async(req, res) => {
+    const toTable = await pool.connect()
+    // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
+    // console.log(sql);
+    const query = 'SELECT * FROM ' + req.query.user + 'ProfList';
+    console.log(query);
+    await toTable.query(query ,(err, result)=>{
         if(err){
             console.log(err.message);
-            res.status('500');
             return res.send('');
         }
-        else if(result.rowCount == 0){
-            // console.log(result)
-            console.log('Empty table');
-            res.status('500');
-            return res.send('');
-        }
-
+        console.log("Suc1");
         const results = { 'results': (result) ? result.rows : null };
-        res.status(200);
+        toTable.release();
+        console.log("Suc2");
         res.render('pages/userproflist', results );
-        res.redirect('pages/userproflist');
+        console.log("Suc3");
     });
+});
+app.get('/backToAdmin', (req, res)=>{
 
+    res.redirect('/admin.html');
 });
 /**************************************/
 app.get('/data', (req, res)=>{
