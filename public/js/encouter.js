@@ -27,8 +27,11 @@ socket.on('encounter',(profObj)=>{
     setTimeout(()=>{encounter=false;img.src = '';details.innerHTML = ''; console.log('removed img');}, 30000);
 });
 
-function move(key){
-    keyStatus.innerHTML = key.toUpperCase();
-    moves.innerHTML++;
-    socket.emit('move', encounter);
-}
+$(document).keydown((e)=>{
+    // check for wasd only keys 
+    if(['w', 'a', 's', 'd'].includes(e.key)){
+        keyStatus.innerHTML = e.key.toUpperCase();
+        moves.innerHTML++;
+        socket.emit('move', encounter);
+    }
+});
