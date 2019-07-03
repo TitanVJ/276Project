@@ -1,15 +1,15 @@
 CREATE TABLE users (
   user_name VARCHAR(32) PRIMARY KEY,
-  password VARCHAR(32),
+  password VARCHAR,
   status   VARCHAR(32),
   last_updated TIMESTAMP DEFAULT now(),
   record_created TIMESTAMP DEFAULT now()
 );
 
   CREATE TABLE camronProfList (
+    photo_id NUMERIC,
     prof_fname VARCHAR(32),
     prof_lname VARCHAR(32),
-    photo_id NUMERIC,
     catch_time TIMESTAMP DEFAULT now()
   );
 
@@ -30,3 +30,5 @@ CREATE TABLE profDex (
 );
 
 INSERT INTO profDex(prof_fname,prof_lname,photo_id) VALUES ('Andrei', 'Bulatov', 13), ('Greg', 'Baker', 33), ('Bobby', 'Chan', 25);
+
+INSERT INTO camronProfList(prof_fname,prof_lname,photo_id) VALUES ('Andrei', 'Bulatov', 13), ('Andrei', 'Bulatov', 13),('Andrei', 'Bulatov', 13),('Greg', 'Baker', 33), ('Bobby', 'Chan', 25);
