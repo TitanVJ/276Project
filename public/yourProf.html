@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Prof List</title>
+    <link rel="stylesheet" href="stylesheets/prof.css"/>
+    <script type="text/javascript" src="./jquery.min.js" defer></script>
+    <script type="text/javascript" src="./js/index.js" defer></script>
+</head>
+
+<body>
+    <h1>
+        Your Prof List
+
+        <button class="back" onclick="back()">Back</button>
+        <button class="home" onclick="home()">Home</button>
+    </h1>
+
+    <form>
+        <input type="radio" name="status" checked="checked">Collected
+        <input type="radio" name="status" onClick="JavaScript:radio_input('prof.html')">All
+    </form>
+
+    <figure>
+        <a href="page.html">
+            <img src="./images/profile.png"/>
+            <figcaption>prof name
+                <!--<br>prof type-->
+            </figcaption>
+        </a>
+    </figure>   
+    
+
+</body>
+
+</html>
