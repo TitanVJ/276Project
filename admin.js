@@ -69,22 +69,57 @@ function updateTable(results){
         var e = document.createElement('td');
         var f = document.createElement('td');
         e.innerHTML = '<button style="width:100%;height:100%" class="edit" type="button" onclick="del(this)">Del</button>';
-        f.innerHTML = '<button style="width:100%;height:100%" class="edit" type="button" onclick="toUserTable(this)">Prof Collection</button>';
+        f.innerHTML = '<button style="width:100%;height:100%" id="usersListProf" class="edit" type="button" onclick="getUserProfs(this)">Prof Collection</button>';
         newRow.appendChild(e);
         newRow.appendChild(f);
-        table.append(newRow);
+        table.append(newRow)
+
+        if(f.parentElement.parentElement.childNodes[1].innerHTML="Admin"){
+          document.getElementById("usersListProf").style.display="none";
+        }
         i++;
     });
-
 }
 var x;
-function toUserTable(f){
-    var id = f.parentElement.parentElement.childNodes[0].innerHTML;
+function hideProfList(){
+  document.getElementById("tableContainerUserProf").style.display="none"
 
-    $.ajax({
-        method:'get',
-        url:'/userproflist?user='+id
-    });
+}
+function getUserProfs(f){
+
+  var status = f.parentElement.parentElement.childNodes[1].innerHTML;
+  console.log(status);
+
+  var id = f.parentElement.parentElement.childNodes[0].innerHTML;
+  document.getElementById('userList').innerHTML = "<h2>" + id + "ProfList</h2>";
+  document.getElementById("tableContainerUserProf").style.display="flex"
+
+
+  $.ajax({
+      method:'get',
+      url:'/toTable?user='+id,
+      success: displayUserProfs,
+      error: ()=>{alert('No such Prof(s) exist.');}
+  });
+
+}
+function displayUserProfs(results){
+  var table = $('#userprofs');
+  table.find("tr:gt(0)").remove();
+
+  var rows = results.results;
+  var i = 0;
+  rows.forEach(row => {
+      var newRow = document.createElement("tr");
+
+      for(var key in row){
+          var cell = document.createElement("td");
+          cell.innerHTML = row[key];
+          newRow.appendChild(cell);
+      }
+      table.append(newRow);
+      i++;
+  });
 }
 function del(e){
     var row = e.parentElement.parentElement;
@@ -97,8 +132,11 @@ function del(e){
 
     $.ajax({
         method:'delete',
-        url:'/removeUser/'+id
+        url:'/removeUser/'+id,
+        success: getAll,
+        error: ()=>{alert('Failed to Delete.')}
     });
+    getAll();
 }
 function searchProfDex(){
     //loop through from and grab shit
@@ -115,7 +153,7 @@ function searchProfDex(){
 
 function getAllProfDex(){
     // GET /data
-
+    console.log("hello");
     $.ajax({
         method: 'get',
         url: '/dataProfDex',

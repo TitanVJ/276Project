@@ -43,6 +43,19 @@
             </tr>
         </table>
     </section>
+    <section id="tableContainerUserProf" style="margin-bottom: 50px;display: none;align-items: center;border: 5px; flex-direction: column">
+        <h5 id="userList"></h5>
+        <table id='userprofs'>
+            <tr>
+                <th>prof_id</th>
+                <th>prof_fname</th>
+                <th>prof_lname</th>
+                <th>photo_id</th>
+                <th>catch_time</th>
+            </tr>
+        </table>
+        <button type="button" style="width: 70px" onclick="hideProfList()">Hide</button>
+    </section>
     <section id="tableContainer">
         <div id="formWrapper">
         <form id="searchFormProf">
@@ -71,7 +84,7 @@
             </tr>
         </table>
     </section>
-    <form class="" action="/logout" method="get">
+    <form style="justify-content: center"class="" action="/logout" method="get">
       <button>Log Out</button>
     </form>
 

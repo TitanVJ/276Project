@@ -75,28 +75,25 @@ app.get('/searchProfDex', (req, res)=>{
 
 });
 /***************************************/
-app.get('/toTable', async(req, res) => {
-    const toTable = await pool.connect()
+app.get('/toTable', (req, res) => {
     // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
-    // console.log(sql);
-    const query = 'SELECT * FROM ' + req.query.user + 'ProfList';
+    // console.log(sql).
+    const query = 'SELECT prof_id,prof_fname,prof_lname,photo_id,catch_time FROM ' + req.query.user + 'ProfList';
     console.log(query);
-    await toTable.query(query ,(err, result)=>{
-        if(err){
-            console.log(err.message);
-            return res.send('');
+    pool.query(query ,(error, result)=>{
+        if(error){
+            console.log(error.message);
+            res.send('');
         }
-        console.log("Suc1");
+        if(result.rowCount == 0){
+            console.log('Empty table');
+            res.send('');
+        }
         const results = { 'results': (result) ? result.rows : null };
-        toTable.release();
-        console.log("Suc2");
-        res.render('pages/userproflist', results );
-        console.log("Suc3");
+        res.status(200);
+        res.send(results);
     });
-});
-app.get('/backToAdmin', (req, res)=>{
 
-    res.redirect('/admin.html');
 });
 /**************************************/
 app.get('/data', (req, res)=>{
@@ -140,9 +137,12 @@ app.delete('/removeUser/:id', (req, res)=>{
     pool.query('DELETE FROM users WHERE user_name=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
+        res.status('500');
+        res.send('');
       }
       else {
-        console.log('del suc');
+        res.status('200');
+        res.send('');
       }
     })
 
@@ -153,12 +153,12 @@ app.delete('/removeProf/:id', (req, res)=>{
     pool.query('DELETE FROM profDex WHERE prof_id=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
+          res.status('500');
+          res.send('');
       }
       else {
-        console.log('del suc');
+        res.status('200');
+        res.send('');
       }
     })
-      console.log('del');
 })
-
-  app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
