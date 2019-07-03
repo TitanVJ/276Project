@@ -76,19 +76,23 @@ function update() {
     if (cursors.left.isDown)
     {
         player.body.velocity.x = -300;
+        move('left');
     }
     else if (cursors.right.isDown)
     {
-		player.body.velocity.x = 300;    
+        player.body.velocity.x = 300;    
+        move('right');
 	}
 
     if (cursors.up.isDown)
     {
         player.body.velocity.y = -300;
+        move('up');
     }
     else if (cursors.down.isDown)
     {
-    	player.body.velocity.y = 300;
+        player.body.velocity.y = 300;
+        move('down')
     }
 
     
