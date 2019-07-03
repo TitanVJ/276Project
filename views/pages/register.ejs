@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+
+    <% include ../partials/headers.ejs %>
+
+</head>
+<body>
+    <div class="page">
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-login mx-auto">
+                        <form class="card" action="/sign-up" method="post" id="registration_form">
+                            <div class="card-body p-6">
+                                <div class="card-title">Create new account</div>
+                                <div class="form-group">
+                                    <label class="form-label">Username</label>
+                                    <input id="register_username" type="text" name="username" class="form-control" placeholder="Enter username" maxlength="32" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Password</label>
+                                    <input id="register_password" type="password" name="password" class="form-control" placeholder="Password" maxlength="32" required>
+                                </div>
+                                <% if ( locals.expressFlash ) { %>
+                                    <p style="color: red"><strong>ERROR!</strong> <%= expressFlash %></p>
+                                <% } %>
+                                <div class="form-footer">
+                                    <button type="submit" class="btn btn-primary btn-block">Create new account</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="text-center text-muted">
+                            Already have an account? <a href="./">Sign in</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
