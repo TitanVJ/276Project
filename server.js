@@ -10,7 +10,7 @@ const uuidv1 = require('uuid/v1');
 var format = require('pg-format');
 const { Pool } = require('pg');
 
-const connectionString = ''; // Connection string needs to go here!
+const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString: connectionString,
 });
@@ -24,6 +24,15 @@ app.use(session({
     saveUninitialized: true,
 }));
 
+// Use this function to test if user is an admin -- Pass in req.session.user
+function hasPermissions(user) {
+    if(user.status == 'admin') {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 // Add this middleware function to pages you want users to be logged in to view
 function loggedIn(req, res, next) {
     if(req.session.user) {
@@ -33,6 +42,7 @@ function loggedIn(req, res, next) {
         res.render('pages/login', {expressFlash: req.flash('error')})
     }
 }
+
 
 app.use('/', function(req, res, next) {
     next();
@@ -88,8 +98,13 @@ app.post('/login', function(req, res, next) {
             } else {
                 if(bcrypt.compareSync(req.body.password, response.rows[0].password)) {
                     req.session.user = response.rows[0];
-                    console.log("Logged in!");
-                    res.redirect('/dashboard');
+
+                    if(hasPermissions(req.session.user)) {
+                        res.redirect('/admin_page')
+                    } else {
+                        res.redirect('/dashboard');
+                    }
+
 
                 } else {
                     req.flash('error', "Incorrect username and/or password!");
