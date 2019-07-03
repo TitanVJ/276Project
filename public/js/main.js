@@ -2,8 +2,8 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser', { preload: preload
 
 function preload() {
 
-    game.load.image('background','ig/background.png');
-    game.load.image('player','ig/demop.png');
+    game.load.image('background','images/background.png');
+    game.load.image('player','images/demop.png');
     //game.load.image('wall', 'wall.png');
 
 }
