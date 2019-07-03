@@ -2,7 +2,7 @@ var keyStatus = $('#key')[0];
 var count = $('#counter')[0];
 var moves = $('#moves')[0];
 
-var socket = io('localhost:8080');
+var socket = io();
 var encounter = false;
 
 socket.on('hi', (msg)=>{
