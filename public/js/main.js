@@ -65,7 +65,7 @@ function create() {
     player.setCollideWorldBounds(true);
 
 }
-
+var move_ = false;
 
 function update() {
 
@@ -76,26 +76,30 @@ function update() {
     if (cursors.left.isDown)
     {
         player.body.velocity.x = -300;
-        move();
+        move_ = true;
     }
     else if (cursors.right.isDown)
     {
         player.body.velocity.x = 300;
-        move();
+        move_ = true;
             
 	}
 
     if (cursors.up.isDown)
     {
         player.body.velocity.y = -300;
-        move();
+        move_ = true;
 
     }
     else if (cursors.down.isDown)
     {
         player.body.velocity.y = 300;
-        move();
+        move_ = true;
         
+    }
+
+    if(move_){
+        move();
     }
 
     
