@@ -9,6 +9,8 @@ const session = require('express-session');
 const uuidv1 = require('uuid/v1');
 var format = require('pg-format');
 const { Pool } = require('pg');
+const server =  app.listen(PORT, ()=>{console.log("Magic is happening on port " + PORT);});
+const io = require("socket.io")(server);
 
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
@@ -54,7 +56,6 @@ app.use(express.urlencoded({extended: false}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/login'));
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 app.get('/register', function(req, res) {
     res.render('pages/register');
@@ -265,3 +266,40 @@ app.delete('/removeProf/:id', (req, res)=>{
       }
     })
 })
+
+// Socket code
+io.on('connection', (socket)=>{
+    console.log("User connection established");
+
+    socket.on('disconnect', ()=>{
+        console.log('user disconnected');
+    })
+
+    // used to determine if a character will 
+    socket.on('move', (data)=>{
+        // determine
+
+        if(!data){
+            var c = Math.floor((Math.random() * 100) + 1);
+            console.log(c);
+            if(c%4 == 0 && c%3 == 0){
+                //encouter
+                // send back and obj, contain img id, prof
+                // for testing do console.log
+                
+                // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+                // for now send a temp obj
+                var tempProf = {
+                    name: 'mr.crocker', 
+                    rarity: 'normal',
+                    level: '25'
+                }
+                socket.emit('encounter', tempProf);
+            }
+        }
+        else{
+            socket.emit('no');
+        }
+    })
+})
+// Socket Code ends here
