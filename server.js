@@ -9,8 +9,10 @@ const session = require('express-session');
 const uuidv1 = require('uuid/v1');
 var format = require('pg-format');
 const { Pool } = require('pg');
+var cors = require('cors')
 
-const connectionString = process.env.DATABASE_URL;
+//const connectionString = process.env.DATABASE_URL;
+const connectionString = 'postgresql://postgres:postgres@localhost/cmpt276';
 const pool = new Pool({
     connectionString: connectionString,
 });
@@ -50,11 +52,13 @@ app.use('/', function(req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+app.use('/', cors());
 app.use(express.urlencoded({extended: false}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/login'));
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+app.use(flash());
 
 app.get('/register', function(req, res) {
     res.render('pages/register');
@@ -102,10 +106,8 @@ app.post('/login', function(req, res, next) {
                     if(hasPermissions(req.session.user)) {
                         res.redirect('/admin_page')
                     } else {
-                        res.redirect('/dashboard');
+                        res.render('pages/dashboard');
                     }
-
-
                 } else {
                     req.flash('error', "Incorrect username and/or password!");
                     res.render('pages/login', {expressFlash: req.flash('error')});
@@ -115,8 +117,20 @@ app.post('/login', function(req, res, next) {
     });
 });
 
+app.get('/get-num-users', function(req, res) {
+   pool.query("SELECT * FROM users", (err, response) => {
+      if(err) {
+          console.log(err);
+      } else {
+          res.send({rowTotals:response.rows.length});
+      }
+   });
+});
+
 app.get('/logout', function(req, res) {
     req.session.destroy(function(err) {
         res.redirect('/');
     });
 });
+
+module.exports = app;

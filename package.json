@@ -19,6 +19,9 @@
   "homepage": "https://github.com/TitanVJ/276Project#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
@@ -26,5 +29,9 @@
     "pg": "^7.11.0",
     "pg-format": "^1.0.4",
     "uuid": "^3.3.2"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {}
 }
