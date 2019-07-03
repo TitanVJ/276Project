@@ -29,7 +29,7 @@ socket.on('encounter',(profObj)=>{
 
 $(document).keydown((e)=>{
     // check for wasd only keys 
-    if(['w', 'a', 's', 'd'].includes(e.key)){
+    if(['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'].includes(e.key)){
         keyStatus.innerHTML = e.key.toUpperCase();
         moves.innerHTML++;
         socket.emit('move', encounter);
