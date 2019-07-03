@@ -138,7 +138,7 @@ socket.on('encounter',(profObj)=>{
     setTimeout(()=>{encounter=false;img.src = '';details.innerHTML = ''; console.log('removed img');}, 30000);
 });
 
-function move(key){
+function move(keyValue){
         keyStatus.innerHTML = key.toUpperCase();
         moves.innerHTML++;
         socket.emit('move', encounter);
