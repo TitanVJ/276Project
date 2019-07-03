@@ -7,7 +7,6 @@
   },
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
@@ -29,7 +28,7 @@
     "type": "git",
     "url": "https://github.com/heroku/node-js-getting-started"
   },
-<<<<<<< HEAD
+
   "keywords": [
     "node",
     "heroku",

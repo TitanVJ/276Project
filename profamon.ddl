@@ -1,6 +1,6 @@
 CREATE TABLE users (
   user_name VARCHAR(32) PRIMARY KEY,
-  password VARCHAR(32),
+  password VARCHAR,
   status   VARCHAR(32),
   last_updated TIMESTAMP DEFAULT now(),
   record_created TIMESTAMP DEFAULT now()

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modify</title>
+
+    <link rel="stylesheet" type="text/css" href="admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="jquery.min.js" defer></script>
+    <script type="text/javascript" src="admin.js" defer></script>
+</head>
+<body onload="getAll(); getAllProfDex()">
+    <nav>
+        <ul>
+            <li><a>Admin View</a></li>
+        </ul>
+    </nav>
+
+    <section id="tableContainer">
+        <div id="formWrapper">
+        <form id="searchForm">
+            <label>Field</label>
+            <select id="fields" onchange="enInput()" required>
+                <option></option>
+                <option value="user_name">user_name</option>
+                <option value="status">status</option>
+            </select>
+            <label>Value</label><br>
+            <input id="fieldInput" type="text" disabled="true" required>
+            <button id="submit" type="submit" onclick="search()" disabled="true">Search</button>
+            <button type="button" onclick="getAll()">Get all User</button>
+        </form><br>
+      </div>
+
+        <table id='users'>
+            <tr>
+                <th>user_name</th>
+                <th>status</th>
+                <th>last_updated</th>
+                <th>record_created</th>
+                <th class="hiddenBorder"></th>
+                <th class="hiddenBorder"></th>
+            </tr>
+        </table>
+    </section>
+    <section id="tableContainerUserProf" style="margin-bottom: 50px;display: none;align-items: center;border: 5px; flex-direction: column">
+        <h5 id="userList"></h5>
+        <table id='userprofs'>
+            <tr>
+                <th>prof_id</th>
+                <th>prof_fname</th>
+                <th>prof_lname</th>
+                <th>photo_id</th>
+                <th>catch_time</th>
+            </tr>
+        </table>
+        <button type="button" style="width: 70px" onclick="hideProfList()">Hide</button>
+    </section>
+    <section id="tableContainer">
+        <div id="formWrapper">
+        <form id="searchFormProf">
+            <label>Field</label>
+            <select id="proffields" onchange="enInputprof()" required>
+                <option></option>
+                <option value="prof_fname">prof_fname</option>
+                <option value="prof_lname">prof_lname</option>
+            </select>
+            <label>Value</label><br>
+            <input id="fieldInputProf" type="text" disabled="true" required>
+            <button id="submitProf" type="submit" onclick="searchProfDex()" disabled="true">Search</button>
+            <button type="button" onclick="getAllProfDex()">Get all Profs</button>
+        </form><br>
+      </div>
+
+        <table id='profs'>
+            <tr>
+                <th>prof_id</th>
+                <th>prof_fname</th>
+                <th>prof_lname</th>
+                <th>photo_id</th>
+                <th>last_updated</th>
+                <th>record_created</th>
+                  <th class="hiddenBorder"></th>
+            </tr>
+        </table>
+    </section>
+    <form style="justify-content: center"class="" action="/logout" method="get">
+      <button>Log Out</button>
+    </form>
+
+</body>
+</html>

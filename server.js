@@ -100,9 +100,9 @@ app.post('/login', function(req, res, next) {
                     req.session.user = response.rows[0];
 
                     if(hasPermissions(req.session.user)) {
-                        res.redirect('/admin_page')
+                        res.redirect('./admin')
                     } else {
-                        res.redirect('/dashboard');
+                        res.redirect('/game.html');
                     }
 
 
@@ -120,7 +120,15 @@ app.get('/logout', function(req, res) {
         res.redirect('/');
     });
 });
+app.get('/admin', function(req, res) {
 
+  if(hasPermissions(req.session.user) == true){
+    res.render('pages/admin');
+  }
+  else{
+    res.redirect('pages/logout');
+  }
+});
 app.get('/search', (req, res)=>{
     const query = {
         text: 'SELECT user_name,status,last_updated,record_created FROM users WHERE ' + req.query.column + '=$1',
