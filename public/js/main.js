@@ -65,7 +65,7 @@ function create() {
     player.setCollideWorldBounds(true);
 
 }
-var move_ = false;
+
 
 function update() {
 
@@ -76,30 +76,26 @@ function update() {
     if (cursors.left.isDown)
     {
         player.body.velocity.x = -300;
-        move_ = true;
+        move('left');
     }
     else if (cursors.right.isDown)
     {
         player.body.velocity.x = 300;
-        move_ = true;
+        move('right');
             
 	}
 
     if (cursors.up.isDown)
     {
         player.body.velocity.y = -300;
-        move_ = true;
+        move('up');
 
     }
     else if (cursors.down.isDown)
     {
         player.body.velocity.y = 300;
-        move_ = true;
+        move('down');
         
-    }
-
-    if(move_){
-        move();
     }
 
     
@@ -142,8 +138,8 @@ socket.on('encounter',(profObj)=>{
     setTimeout(()=>{encounter=false;img.src = '';details.innerHTML = ''; console.log('removed img');}, 30000);
 });
 
-function move(){
-        keyStatus.innerHTML = e.key.toUpperCase();
+function move(key){
+        keyStatus.innerHTML = key.toUpperCase();
         moves.innerHTML++;
         socket.emit('move', encounter);
 }
