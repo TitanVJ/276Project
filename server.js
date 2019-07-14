@@ -11,9 +11,9 @@ var format = require('pg-format');
 const { Pool } = require('pg');
 const server =  app.listen(PORT, ()=>{console.log("Magic is happening on port " + PORT);});
 const io = require("socket.io")(server);
-var cors = require('cors')
+var cors = require('cors');
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
 const pool = new Pool({
     connectionString: connectionString,
 });
