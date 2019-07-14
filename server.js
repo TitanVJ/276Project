@@ -64,6 +64,7 @@ app.get('/register', function(req, res) {
     res.render('pages/register');
 });
 
+/* Create new user and insert them into the DB */
 app.post('/sign-up', function(req, res) {
     const values = [req.body.username, bcrypt.hashSync(req.body.password, salt)];
 
@@ -91,6 +92,7 @@ app.post('/sign-up', function(req, res) {
     });
 });
 
+/* Validate user's credentials and log them into the site */
 app.post('/login', function(req, res, next) {
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) => {
         if (err) {
@@ -117,6 +119,7 @@ app.post('/login', function(req, res, next) {
     });
 });
 
+/* TESTING: To check if a row has been added to the users table */
 app.get('/get-num-users', function(req, res) {
    pool.query("SELECT * FROM users", (err, response) => {
       if(err) {
@@ -127,13 +130,15 @@ app.get('/get-num-users', function(req, res) {
    });
 });
 
+/* Destroy a users session when they logout*/
 app.get('/logout', function(req, res) {
     req.session.destroy(function(err) {
         res.redirect('/');
     });
 });
-app.get('/admin', function(req, res) {
 
+/* Serve the admin page */
+app.get('/admin', loggedIn, function(req, res) {
   if(hasPermissions(req.session.user) == true){
     res.render('pages/admin');
   }
@@ -141,6 +146,7 @@ app.get('/admin', function(req, res) {
     res.redirect('pages/logout');
   }
 });
+
 app.get('/search', (req, res)=>{
     const query = {
         text: 'SELECT user_name,status,last_updated,record_created FROM users WHERE ' + req.query.column + '=$1',
@@ -232,17 +238,15 @@ app.get('/dataProfDex', (req, res)=>{
     pool.query("SELECT prof_id,prof_fname,prof_lname,photo_id,last_updated,record_created FROM profDex", (error, result)=>{
         if(error){
             console.log(error.message);
-            res.status('500');
-            res.send('');
+            res.status('500').end();
         }
-        if(result.rowCount == 0){
+
+        if(result.rows.length == 0){
             console.log('Empty table');
-            res.status('500');
-            res.send('');
+            res.status('500').end();
         }
     const results = { 'results': (result) ? result.rows : null };
-    res.status(200);
-    res.send(results);
+    res.status(200).send(results);
     });
 })
 /**********************************/
