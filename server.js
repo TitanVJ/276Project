@@ -71,7 +71,7 @@ app.post('/sign-up', function(req, res) {
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) =>{
 
         if(response.rows.length > 0) {
-            req.flash('error', 'That e-mail is already in use!');
+            req.flash('error', 'That username is already in use!');
             res.render('pages/register', {expressFlash: req.flash('error')})
         } else {
             pool.query('INSERT INTO users VALUES ($1, $2)', values, (err, response) => {
@@ -147,50 +147,47 @@ app.get('/admin', loggedIn, function(req, res) {
   }
 });
 
+/*  */
 app.get('/search', (req, res)=>{
     const query = {
         text: 'SELECT user_name,status,last_updated,record_created FROM users WHERE ' + req.query.column + '=$1',
         values: [req.query.value]
-    }
+    };
     pool.query(query, (err, result)=>{
         if(err){
             console.log(err.message);
-            res.status('500');
-            return res.send('');
+            res.end();
         }
         else if(result.rowCount == 0){
             // console.log(result)
             console.log('Empty table');
-            res.status('500');
-            return res.send('');
+            res.end();
         }
 
         const results = { 'results': (result) ? result.rows : null };
-        res.status(200);
         res.send(results);
     });
 
 });
+
 app.get('/searchProfDex', (req, res)=>{
     const query = {
         text: 'SELECT prof_fname,prof_lname,photo_id, last_updated, record_created FROM profDex WHERE ' + req.query.column + '=$1',
         values: [req.query.value]
-    }
+    };
+
     pool.query(query, (err, result)=>{
         if(err){
             console.log(err.message);
-            res.status('500');
-            return res.send('');
+            res.end();
         }
         else if(result.rowCount == 0){
             // console.log(result)
             console.log('Empty table');
-            res.status('500');
-            return res.send('');
+            res.end();
         }
 
         const results = { 'results': (result) ? result.rows : null };
-        res.status(200);
         res.send(results);
     });
 
@@ -204,14 +201,13 @@ app.get('/toTable', (req, res) => {
     pool.query(query ,(error, result)=>{
         if(error){
             console.log(error.message);
-            res.send('');
+            res.end();
         }
         if(result.rowCount == 0){
             console.log('Empty table');
-            res.send('');
+            res.end();
         }
         const results = { 'results': (result) ? result.rows : null };
-        res.status(200);
         res.send(results);
     });
 
@@ -221,16 +217,13 @@ app.get('/data', (req, res)=>{
     pool.query("select user_name,status,last_updated,record_created FROM users", (error, result)=>{
         if(error){
             console.log(error.message);
-            res.status('500');
-            res.send('');
+            res.end();
         }
         if(result.rowCount == 0){
             console.log('Empty table');
-            res.status('500');
-            res.send('');
+            res.end();
         }
     const results = { 'results': (result) ? result.rows : null };
-    res.status(200);
     res.send(results);
     });
 });
@@ -238,17 +231,19 @@ app.get('/dataProfDex', (req, res)=>{
     pool.query("SELECT prof_id,prof_fname,prof_lname,photo_id,last_updated,record_created FROM profDex", (error, result)=>{
         if(error){
             console.log(error.message);
-            res.status('500').end();
+            res.end();
         }
 
         if(result.rows.length == 0){
             console.log('Empty table');
-            res.status('500').end();
+            res.end();
+            return;
         }
+
     const results = { 'results': (result) ? result.rows : null };
-    res.status(200).send(results);
+    res.send(results);
     });
-})
+});
 /**********************************/
 app.delete('/removeUser/:id', (req, res)=>{
 
@@ -256,31 +251,27 @@ app.delete('/removeUser/:id', (req, res)=>{
     pool.query('DELETE FROM users WHERE user_name=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
-        res.status('500');
-        res.send('');
+        res.end();
       }
       else {
-        res.status('200');
-        res.send('');
+        res.end();
       }
     })
 
-})
+});
 app.delete('/removeProf/:id', (req, res)=>{
 
     console.log('del start');
     pool.query('DELETE FROM profDex WHERE prof_id=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
-          res.status('500');
-          res.send('');
+          res.end();
       }
       else {
-        res.status('200');
-        res.send('');
+        res.end();
       }
     })
-})
+});
 
 // Socket code
 io.on('connection', (socket)=>{
@@ -288,7 +279,7 @@ io.on('connection', (socket)=>{
 
     socket.on('disconnect', ()=>{
         console.log('user disconnected');
-    })
+    });
 
     // used to determine if a character will 
     socket.on('move', (data)=>{
@@ -308,7 +299,7 @@ io.on('connection', (socket)=>{
                     name: 'mr.crocker', 
                     rarity: 'normal',
                     level: '25'
-                }
+                };
                 socket.emit('encounter', tempProf);
             }
         }
@@ -316,7 +307,7 @@ io.on('connection', (socket)=>{
             socket.emit('no');
         }
     })
-})
+});
 // Socket Code ends here
 
 module.exports = app;
