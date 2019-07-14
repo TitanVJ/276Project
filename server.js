@@ -140,7 +140,7 @@ app.get('/logout', function(req, res) {
 /* Serve the admin page */
 app.get('/admin', loggedIn, function(req, res) {
   if(hasPermissions(req.session.user) == true){
-    res.render('pages/admin');
+    res.render('pages/admin', {user: req.session.user});
   }
   else{
     res.redirect('pages/logout');
