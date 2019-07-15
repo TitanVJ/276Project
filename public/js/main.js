@@ -7,7 +7,8 @@ function preload() {
     //game.load.image('wall', 'wall.png');
 
 }
-
+game.add.state('catchState', '../states/catchState.js');
+game.state.start('catchState');
 var player;
 var sprite;
 var cursors;
