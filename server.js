@@ -1,4 +1,5 @@
 const express = require('express');
+const request = require('request');
 const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 8080;
@@ -146,6 +147,17 @@ app.get('/admin', loggedIn, function(req, res) {
     res.redirect('pages/logout');
   }
 });
+
+/* Serve the professor list portion of the admin page */
+app.get('/admin_professor', loggedIn, function(req, res) {
+    if(hasPermissions(req.session.user) == true){
+        res.render('pages/admin_professor');
+    }
+    else{
+        res.redirect('pages/logout');
+    }
+});
+
 
 /*  */
 app.get('/search', (req, res)=>{
@@ -309,5 +321,40 @@ io.on('connection', (socket)=>{
     })
 });
 // Socket Code ends here
+
+
+// app.get('/get-course-years', function(req, res) {
+//     request('http://www.sfu.ca/bin/wcm/course-outlines', { json: true }, (err, resp, body) => {
+//         if (err) { return console.log(err); }
+//         res.send(body);
+//     });
+// });
+//
+// app.get('/get-course-term:year', function(req, res) {
+//     console.log(req.params.year)
+//     request('http://www.sfu.ca/bin/wcm/course-outlines?' + req.params.year, { json: true }, (err, resp, body) => {
+//         if (err) { return console.log(err); }
+//         res.send(body);
+//     });
+// });
+//
+// app.get('/get-course-dept/:year', function(req, res) {
+//     console.log(req.params.term)
+//     request('http://www.sfu.ca/bin/wcm/course-outlines?' + req.params.year, { json: true }, (err, resp, body) => {
+//         if (err) { return console.log(err); }
+//         res.send(body);
+//     });
+// });
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = app;

@@ -102,6 +102,7 @@ function getUserProfs(f){
   });
 
 }
+
 function displayUserProfs(results){
     if(results.length == 0) {
         alert("No profs exists.");
@@ -139,7 +140,7 @@ function del(e){
         $.ajax({
             method:'delete',
             url:'/removeUser/'+id,
-            success: refreshCatalogue,
+            success: refreshUserCatalogue,
             error: ()=>{alert('Failed to Delete.')}
         });
     }
@@ -199,24 +200,22 @@ function updateTableProfDex(results){
     }
 }
 function delProf(a){
-    var row = a.parentElement.parentElement;
-    var id = a.parentElement.parentElement.childNodes[0].innerHTML;
-    var name = a.parentElement.parentElement.childNodes[1].innerHTML;
+    var id = a.parentNode.parentNode.id;
 
     confirm('Are you sure you want to delete '+ name.toUpperCase() +' from the database?');
 
-    console.log('test');
 
     $.ajax({
         method:'delete',
         url:'/removeProf/'+id,
-        success: refreshCatalogue,
+        success: refreshProfCatalogue,
         error: ()=>{alert('Failed to Delete.')}
     });
 }
 
 $(document).ready(function(){
-    refreshCatalogue();
+    refreshUserCatalogue();
+    refreshProfCatalogue();
 
     $("#myInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
@@ -225,22 +224,35 @@ $(document).ready(function(){
         });
     });
 
-
+    $("#profInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#profTableBody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 
 });
 
-function refreshCatalogue() {
+function refreshUserCatalogue() {
     console.log('refreshing');
     $.ajax({
         method: 'get',
         url: '/data',
-        success: printItems
+        success: printUsers
     });
 }
 
-function printItems(data) {
+function refreshProfCatalogue() {
+    console.log('refreshing');
+    $.ajax({
+        method: 'get',
+        url: '/dataProfDex',
+        success: printProfs
+    });
+}
+
+function printUsers(data) {
     $('#myTable').empty();
-    console.log(data.results);
     $.each(data.results, function() {
         $('<tr>').attr('id', this.user_name).appendTo('#myTable');
         $('<td>').attr('class', 'text-center').html(this.user_name).appendTo('#'+this.user_name);
@@ -250,3 +262,201 @@ function printItems(data) {
         $('<td>').attr('class', 'text-center').html(`<a onclick="del(this)"><i class="fas fa-trash" style="font-size: 20px"></i></a>`).appendTo('#'+this.user_name);
     });
 }
+
+function printProfs(data) {
+    $('#profTableBody').empty();
+    $.each(data.results, function() {
+        $('<tr>').attr('id', this.prof_id).appendTo('#profTableBody');
+        $('<td>').attr('class', 'text-center').html('photo').appendTo('#'+this.prof_id);
+
+        $('<td>').attr('class', 'text-center').html(this.prof_fname).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center').html(this.prof_lname).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center').html(this.last_updated).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center').html(this.record_created).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center').html(`<a onclick="delProf(this)"><i class="fas fa-trash" style="font-size: 20px"></i></a>`).appendTo('#'+this.prof_id);
+    });
+}
+
+function getYears() {
+    $.ajax({
+        method: 'get',
+        url: 'http://www.sfu.ca/bin/wcm/course-outlines',
+        success: function(data) {
+
+            data.forEach(function(obj) {
+                $('<option>').html(obj.text).appendTo('#year');
+            });
+
+
+            $('#year').selectpicker('render');
+        }
+    });
+}
+///get-course-term'+$('#year').val()
+$('#year').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+
+    if($('#term').val()) {
+        modalCloseHelper("term");
+        modalCloseHelper("dept");
+        modalCloseHelper("course_num");
+        modalCloseHelper("course_sec");
+
+        $('#term').selectpicker();
+        $('#dept').selectpicker();
+        $('#course_num').selectpicker();
+        $('#course_sec').selectpicker();
+    }
+
+
+
+
+    $('#term').prop('disabled', false);
+    console.log("Year change");
+    $.ajax({
+        method: 'get',
+        url: `http://www.sfu.ca/bin/wcm/course-outlines?${$('#year').val()}`,
+        success: function(data) {
+
+            data.forEach(function(obj) {
+                $('<option>').html(obj.text).appendTo('#term');
+            });
+
+
+
+            $('#term').selectpicker('refresh');
+        }
+    });
+});
+
+$('#term').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+
+    if($('#dept').val()) {
+        modalCloseHelper("dept");
+        modalCloseHelper("course_num");
+        modalCloseHelper("course_sec");
+
+        $('#dept').selectpicker();
+        $('#course_num').selectpicker();
+        $('#course_sec').selectpicker();
+    }
+
+
+    $('#dept').prop('disabled', false);
+    console.log('term change');
+    $.ajax({
+        method: 'get',
+        url: `http://www.sfu.ca/bin/wcm/course-outlines?${$('#year').val()}/${$('#term').val()}`,
+        success: function(data) {
+
+            data.forEach(function(obj) {
+                $('<option>').html(obj.text).appendTo('#dept');
+            });
+
+            $('#dept').selectpicker('refresh');
+
+
+        }
+    });
+});
+
+$('#dept').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+
+    if($('#course_num').val()) {
+        modalCloseHelper("course_num");
+        modalCloseHelper("course_sec");
+
+        $('#course_num').selectpicker();
+        $('#course_sec').selectpicker();
+    }
+
+    $('#course_num').prop('disabled', false);
+    console.log('dept change');
+    $.ajax({
+        method: 'get',
+        url: `http://www.sfu.ca/bin/wcm/course-outlines?${$('#year').val()}/${$('#term').val()}/${$('#dept').val()}`,
+        success: function(data) {
+
+            data.forEach(function(obj) {
+                $('<option>').html(obj.text).appendTo('#course_num');
+            });
+
+            $('#course_num').selectpicker('refresh');
+
+        }
+    });
+});
+
+$('#course_num').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+
+    if($('#course_sec').val()) {
+        modalCloseHelper("course_sec");
+
+        $('#course_sec').selectpicker();
+    }
+
+    $('#course_sec').prop('disabled', false);
+    console.log('course_sec change');
+    $.ajax({
+        method: 'get',
+        url: `http://www.sfu.ca/bin/wcm/course-outlines?${$('#year').val()}/${$('#term').val()}/${$('#dept').val()}/${$('#course_num').val()}`,
+        success: function(data) {
+
+            data.forEach(function(obj) {
+                $('<option>').html(obj.text).appendTo('#course_sec');
+            });
+
+            $('#course_sec').selectpicker('refresh');
+        }
+    });
+});
+
+$('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    $.ajax({
+        method: 'get',
+        url: `http://www.sfu.ca/bin/wcm/course-outlines?${$('#year').val()}/${$('#term').val()}/${$('#dept').val()}/${$('#course_num').val()}/${$('#course_sec').val()}`,
+        success: function(data) {
+            console.log(data);
+            alert("The professor is: " + data.instructor[0].name)
+
+        }
+    });
+});
+
+
+$('#new_prof').on('hidden.bs.modal', function (e) {
+
+    modalCloseHelper("term", true);
+    modalCloseHelper("dept", true);
+    modalCloseHelper("course_num", true);
+    modalCloseHelper("course_sec", true);
+
+});
+
+function modalCloseHelper (id, a) {
+    document.getElementById(`${id}`).options.length = 0;
+    $(`#${id}`).prop('disabled', true);
+    $(`#${id}`).attr('readonly', true);
+    $(`#${id}`).selectpicker('refresh');
+
+    // if(a) {
+    //     $(`#${id}`).selectpicker('destroy')
+    // }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
