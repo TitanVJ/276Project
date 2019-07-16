@@ -415,17 +415,27 @@ app.post('/add-new-prof', function(req, res) {
             else {
                 console.log("File Uploaded",fileName);
 
+                let photoID = `${req.body.fname.toUpperCase()}_${req.body.lname.toUpperCase()}`;
 
-
-
-
-
-                res.end();
-
-
-
-
-
+                pool.query('SELECT * FROM profdex WHERE photo_id = $1', [photoID], (err, response) =>{
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        console.log("RESPONSE: ", response);
+                        if(response.rows.length > 0) {
+                            res.send("exists")
+                        } else {
+                            let values = [uuidv1(), req.query.fname, req.query.lname, photoID];
+                            pool.query('INSERT INTO profdex VALUES ($1, $2, $3, $4)', values, (err, response) => {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    res.redirect('/admin_professor');
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
     }
