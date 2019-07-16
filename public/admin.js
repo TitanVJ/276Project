@@ -267,8 +267,8 @@ function printProfs(data) {
     $('#profTableBody').empty();
     $.each(data.results, function() {
         $('<tr>').attr('id', this.prof_id).appendTo('#profTableBody');
-        $('<td>').attr('class', 'text-center').html('photo').appendTo('#'+this.prof_id);
-
+         $('<td>').attr('class', 'text-center').html(`<img src="../images/prof_images/${this.photo_id}.jpg" style="vertical-align: middle;width: auto;height: auto;border-radius: 50%; max-width: 50px; max-height: 50px">`).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center').html(this.prof_id).appendTo('#'+this.prof_id);
         $('<td>').attr('class', 'text-center').html(this.prof_fname).appendTo('#'+this.prof_id);
         $('<td>').attr('class', 'text-center').html(this.prof_lname).appendTo('#'+this.prof_id);
         $('<td>').attr('class', 'text-center').html(this.last_updated).appendTo('#'+this.prof_id);
@@ -420,6 +420,7 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
             // console.log("Name: ", `${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}`);
 
             $('#profPicture').empty();
+            $('#modalFoot').empty();
             console.log(data.instructor ==undefined);
             if(data.instructor == undefined) {
                 $(`<h5> The SFU Course Outlines API could not get info on this course :( </h5>`).appendTo('#profPicture');
@@ -430,17 +431,19 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
                     success: function(resp) {
 
                         if(resp) {
-                            $(`<h5> ${data.instructor[0].name}</h5>`).appendTo('#profPicture');
-                            $(`<img src="../images/prof_images/${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}.jpg" class="img-thumbnail rounded" style="width: 50%;">`).appendTo('#profPicture');
+                            $(`<h5 id="profName"> ${data.instructor[0].name}</h5>`).appendTo('#profPicture');
+                            $(`<img id="profPic" data-fname="${data.instructor[0].commonName}" data-lname="${data.instructor[0].lastName}" src="../images/prof_images/${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}.jpg" class="img-thumbnail rounded" style="width: 40%;">`).appendTo('#profPicture');
+                            $(`<button class="btn btn-primary" onclick="addExistingProf()">Create</button>`).appendTo('#modalFoot');
+
                         } else {
                             $(`<h5> No photo could be found for ${data.instructor[0].name}!</h5>`).appendTo('#profPicture');
-                            $(`<form action="/action_page.php">               
+                            $(`<form action="/">               
                                     <div class="custom-file mb-3">
                                         <input type="file" class="custom-file-input" id="customFile" name="filename">
                                         <label class="custom-file-label" for="customFile">Choose file</label>
                                     </div>
                                     <div class="mt-3">
-                                        <button type="submit" class="btn btn-primary">Create & Upload</button>
+                                        <button class="btn btn-primary" onclick="uploadNewProf()">Create & Upload</button>
                                     </div>
                                </form>`).appendTo('#profPicture');
 
@@ -453,11 +456,6 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
                     }
                 });
             }
-
-
-
-
-
         }
     });
 });
@@ -474,11 +472,25 @@ $('#new_prof').on('hidden.bs.modal', function (e) {
 
 function modalCloseHelper (id) {
     $('#profPicture').empty();
+    $('#modalFoot').empty();
     document.getElementById(`${id}`).options.length = 0;
     $(`#${id}`).prop('disabled', true);
     $(`#${id}`).attr('readonly', true);
     $(`#${id}`).selectpicker('refresh');
+}
 
+function addExistingProf() {
+    console.log($('#profPic').attr("data-fname"));
+    console.log($('#profPic').attr("data-lname"));
+
+
+    $.ajax({
+        method: 'POST',
+        url: `/addProfDex/${$('#profName').html()}?fname=${$('#profPic').attr("data-fname")}&lname=${$('#profPic').attr("data-lname")}`,
+        success: function(data) {
+            console.log(data);
+        }
+    });
 }
 
 // TODO: https://www.freecodecamp.org/news/the-ultimate-guide-to-web-scraping-with-node-js-daa2027dcd3/

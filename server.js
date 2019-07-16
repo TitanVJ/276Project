@@ -362,6 +362,38 @@ app.get('/check-file/:fileName', function(req, res) {
 
 });
 
+app.post('/addProfDex/:profName', function(req, res) {
+
+    console.log("Name: ", req.params.profName)
+    console.log("fname: ", req.query.fname)
+    console.log("lname: ", req.query.lname)
+
+    let photoID = `${req.query.fname.toUpperCase()}_${req.query.lname.toUpperCase()}`;
+
+    pool.query('SELECT * FROM profdex WHERE photo_id = $1', [photoID], (err, response) =>{
+       if(err) {
+           console.log(err);
+       } else {
+           console.log("RESPONSE: ", response);
+           if(response.rows.length > 0) {
+               res.send("exists")
+           } else {
+               let values = [uuidv1(), req.query.fname, req.query.lname, photoID];
+               pool.query('INSERT INTO profdex VALUES ($1, $2, $3, $4)', values, (err, response) => {
+                   if (err) {
+                       console.log(err);
+                   } else {
+                       res.send('success');
+                   }
+               });
+           }
+       }
+    });
+});
+
+// Change prof_id to uuid
+// Change photo_id to varchar
+
 
 
 
