@@ -85,7 +85,7 @@ function create() {
     wallCollisionGroup = this.physics.p2.createCollisionGroup();
 
     //player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
-    player = game.add.sprite(6000, 2000, 'player');
+    player = game.add.sprite(2000, 2000, 'player');
 
     game.physics.p2.enable(player);
 
@@ -537,6 +537,105 @@ function create() {
     w41.body.collides(playerCollisionGroup);
 
     w41.body.static = true;
+
+    w42 = game.add.sprite(4555,1919, '42');
+
+    w42.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w42);
+
+    w42.body.setCollisionGroup(wallCollisionGroup);
+    w42.body.collides(playerCollisionGroup);
+
+    w42.body.static = true;
+
+    w43 = game.add.sprite(4472,1812, '43');
+
+    w43.scale.setTo(3, 1);
+
+    game.physics.p2.enable(w43);
+
+    w43.body.setCollisionGroup(wallCollisionGroup);
+    w43.body.collides(playerCollisionGroup);
+
+    w43.body.static = true;
+
+    w44 = game.add.sprite(3940,1640, '44');
+
+    w44.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w44);
+
+    w44.body.setCollisionGroup(wallCollisionGroup);
+    w44.body.collides(playerCollisionGroup);
+
+    w44.body.static = true;
+
+    w45 = game.add.sprite(2940,1810, '45');
+
+    w45.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w45);
+
+    w45.body.setCollisionGroup(wallCollisionGroup);
+    w45.body.collides(playerCollisionGroup);
+
+    w45.body.static = true;
+
+    w46 = game.add.sprite(2330,1949, '46');
+
+    w46.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w46);
+
+    w46.body.setCollisionGroup(wallCollisionGroup);
+    w46.body.collides(playerCollisionGroup);
+
+    w46.body.static = true;
+
+    w47 = game.add.sprite(2434,1870, '47');
+
+    w47.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w47);
+
+    w47.body.setCollisionGroup(wallCollisionGroup);
+    w47.body.collides(playerCollisionGroup);
+
+    w47.body.static = true;
+
+    w48 = game.add.sprite(2425,1775, '48');
+
+    w48.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w48);
+
+    w48.body.setCollisionGroup(wallCollisionGroup);
+    w48.body.collides(playerCollisionGroup);
+
+    w48.body.static = true;
+
+    w49 = game.add.sprite(2392,1690, '49');
+
+    w49.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w49);
+
+    w49.body.setCollisionGroup(wallCollisionGroup);
+    w49.body.collides(playerCollisionGroup);
+
+    w49.body.static = true;
+
+    w50 = game.add.sprite(2271,1643, '50');
+
+    w50.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w50);
+
+    w50.body.setCollisionGroup(wallCollisionGroup);
+    w50.body.collides(playerCollisionGroup);
+
+    w50.body.static = true;
 
 
 
