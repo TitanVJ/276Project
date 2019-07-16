@@ -202,15 +202,16 @@ function updateTableProfDex(results){
 function delProf(a){
     var id = a.parentNode.parentNode.id;
 
-    confirm('Are you sure you want to delete '+ name.toUpperCase() +' from the database?');
+    let s = confirm('Are you sure you want to delete this professor from the database?');
 
-
-    $.ajax({
-        method:'delete',
-        url:'/removeProf/'+id,
-        success: refreshProfCatalogue,
-        error: ()=>{alert('Failed to Delete.')}
-    });
+    if (s) {
+        $.ajax({
+            method:'delete',
+            url:'/removeProf/'+id,
+            success: refreshProfCatalogue,
+            error: ()=>{alert('Failed to Delete.')}
+        });
+    }
 }
 
 $(document).ready(function(){
@@ -267,13 +268,13 @@ function printProfs(data) {
     $('#profTableBody').empty();
     $.each(data.results, function() {
         $('<tr>').attr('id', this.prof_id).appendTo('#profTableBody');
-         $('<td>').attr('class', 'text-center').html(`<img src="../images/prof_images/${this.photo_id}.jpg" style="vertical-align: middle;width: auto;height: auto;border-radius: 50%; max-width: 50px; max-height: 50px">`).appendTo('#'+this.prof_id);
-        $('<td>').attr('class', 'text-center').html(this.prof_id).appendTo('#'+this.prof_id);
-        $('<td>').attr('class', 'text-center').html(this.prof_fname).appendTo('#'+this.prof_id);
-        $('<td>').attr('class', 'text-center').html(this.prof_lname).appendTo('#'+this.prof_id);
-        $('<td>').attr('class', 'text-center').html(this.last_updated).appendTo('#'+this.prof_id);
-        $('<td>').attr('class', 'text-center').html(this.record_created).appendTo('#'+this.prof_id);
-        $('<td>').attr('class', 'text-center').html(`<a onclick="delProf(this)"><i class="fas fa-trash" style="font-size: 20px"></i></a>`).appendTo('#'+this.prof_id);
+         $('<td>').attr('class', 'text-center align-middle').html(`<img src="../images/prof_images/${this.photo_id}.jpg" style="vertical-align: middle;width: auto;height: auto;border-radius: 50%; max-width: 50px; max-height: 50px">`).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center align-middle').html(this.prof_id).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center align-middle').html(this.prof_fname).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center align-middle').html(this.prof_lname).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center align-middle').html(this.last_updated).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center align-middle').html(this.record_created).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center align-middle').html(`<a onclick="delProf(this)"><i class="fas fa-trash" style="font-size: 20px"></i></a>`).appendTo('#'+this.prof_id);
     });
 }
 
@@ -437,13 +438,16 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
 
                         } else {
                             $(`<h5> No photo could be found for ${data.instructor[0].name}!</h5>`).appendTo('#profPicture');
-                            $(`<form action="/">               
+                            $(`<form id="newProfForm" name="newProfForm" action="/add-new-prof" method="post" enctype = multipart/form-data>               
                                     <div class="custom-file mb-3">
-                                        <input type="file" class="custom-file-input" id="customFile" name="filename">
+                                        <input type="text" class="custom-file-input" id="fname" name="fname" value="${data.instructor[0].firstName}" hidden>
+                                        <input type="text" class="custom-file-input" id="common" name="common" value="${data.instructor[0].commonName}" hidden>
+                                        <input type="text" class="custom-file-input" id="lname" name="lname" value="${data.instructor[0].lastName}" hidden>
+                                        <input type="file" class="custom-file-input" id="customFile" name="filename" accept="image/*" >
                                         <label class="custom-file-label" for="customFile">Choose file</label>
                                     </div>
                                     <div class="mt-3">
-                                        <button class="btn btn-primary" onclick="uploadNewProf()">Create & Upload</button>
+                                        <button class="btn btn-primary" onclick="addNewProf()">Create & Upload</button>
                                     </div>
                                </form>`).appendTo('#profPicture');
 
@@ -488,9 +492,18 @@ function addExistingProf() {
         method: 'POST',
         url: `/addProfDex/${$('#profName').html()}?fname=${$('#profPic').attr("data-fname")}&lname=${$('#profPic').attr("data-lname")}`,
         success: function(data) {
-            console.log(data);
+            if(data == 'success') {
+                $('#new_prof').modal('hide')
+                refreshProfCatalogue()
+            } else {
+                alert("Adding professor to profdex failed!")
+            }
         }
     });
+}
+
+function addNewProf() {
+
 }
 
 // TODO: https://www.freecodecamp.org/news/the-ultimate-guide-to-web-scraping-with-node-js-daa2027dcd3/

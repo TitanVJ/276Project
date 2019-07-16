@@ -14,11 +14,20 @@ const server =  app.listen(PORT, ()=>{console.log("Magic is happening on port " 
 const io = require("socket.io")(server);
 var cors = require('cors');
 const fs = require('fs');
+var formidable = require('formidable');
+const fileUpload = require('express-fileupload');
+//var multer  = require('multer')
+//var upload = multer({ dest: './public/images' })
+
+app.use(fileUpload())
+
 
 const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
 const pool = new Pool({
     connectionString: connectionString,
 });
+//var upload = multer({ storage: storage })
+
 
 app.use(session({
     name:'session',
@@ -364,9 +373,9 @@ app.get('/check-file/:fileName', function(req, res) {
 
 app.post('/addProfDex/:profName', function(req, res) {
 
-    console.log("Name: ", req.params.profName)
-    console.log("fname: ", req.query.fname)
-    console.log("lname: ", req.query.lname)
+    console.log("Name: ", req.params.profName);
+    console.log("fname: ", req.query.fname);
+    console.log("lname: ", req.query.lname);
 
     let photoID = `${req.query.fname.toUpperCase()}_${req.query.lname.toUpperCase()}`;
 
@@ -391,8 +400,41 @@ app.post('/addProfDex/:profName', function(req, res) {
     });
 });
 
+app.post('/add-new-prof', function(req, res) {
+    console.log(req.files);
+ let fileName = `${req.body.common.toUpperCase()}_${req.body.lname.toUpperCase()}.jpg`;
+    if(req.files.filename){
+        var file = req.files.filename,
+            type = file.mimetype;
+        var uploadpath = __dirname + '/public/images/prof_images/' + fileName;
+        file.mv(uploadpath,function(err){
+            if(err){
+                console.log("File Upload Failed",fileName,err);
+                res.end();
+            }
+            else {
+                console.log("File Uploaded",fileName);
+
+
+
+
+
+
+                res.end();
+
+
+
+
+
+            }
+        });
+    }
+});
+
 // Change prof_id to uuid
 // Change photo_id to varchar
+// Add default selection on selectors
+
 
 
 
