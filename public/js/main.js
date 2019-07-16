@@ -63,7 +63,6 @@ function preload() {
     game.load.image('57', 'ig/57.png');
     game.load.image('58', 'ig/58.png');
     game.load.image('59', 'ig/59.png');
-
 }
 
 var player;
