@@ -13,6 +13,7 @@ const { Pool } = require('pg');
 const server =  app.listen(PORT, ()=>{console.log("Magic is happening on port " + PORT);});
 const io = require("socket.io")(server);
 var cors = require('cors');
+const fs = require('fs');
 
 const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
 const pool = new Pool({
@@ -349,7 +350,17 @@ io.on('connection', (socket)=>{
 
 
 
+app.get('/check-file/:fileName', function(req, res) {
+    console.log(req.params.fileName);
+    if (fs.existsSync('./public/images/prof_images/' + req.params.fileName)) {
+        res.send(true);
+    } else {
+        res.send(false);
+    }
 
+
+
+});
 
 
 

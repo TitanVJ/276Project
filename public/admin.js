@@ -417,22 +417,43 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
         success: function(data) {
             console.log(data);
 
-            console.log("Name: ", `${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}`);
+            // console.log("Name: ", `${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}`);
 
             $('#profPicture').empty();
+            console.log(data.instructor ==undefined);
+            if(data.instructor == undefined) {
+                $(`<h5> The SFU Course Outlines API could not get info on this course :( </h5>`).appendTo('#profPicture');
+            } else {
+                $.ajax({
+                    url:`/check-file/${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}.jpg`,
+                    type:'GET',
+                    success: function(resp) {
 
-            $.ajax({
-                url:`../images/prof_images/${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}.jpg`,
-                type:'HEAD',
-                error: function()
-                {
-                    console.log('no exists')
-                },
-                success: function()
-                {
-                    $(`<img src="../images/prof_images/${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}.jpg" class="img-thumbnail rounded" style="width: 50%;">`).appendTo('#profPicture');
-                }
-            });
+                        if(resp) {
+                            $(`<h5> ${data.instructor[0].name}</h5>`).appendTo('#profPicture');
+                            $(`<img src="../images/prof_images/${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}.jpg" class="img-thumbnail rounded" style="width: 50%;">`).appendTo('#profPicture');
+                        } else {
+                            $(`<h5> No photo could be found for ${data.instructor[0].name}!</h5>`).appendTo('#profPicture');
+                            $(`<form action="/action_page.php">               
+                                    <div class="custom-file mb-3">
+                                        <input type="file" class="custom-file-input" id="customFile" name="filename">
+                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button type="submit" class="btn btn-primary">Create & Upload</button>
+                                    </div>
+                               </form>`).appendTo('#profPicture');
+
+                            $(".custom-file-input").on("change", function() {
+                                var fileName = $(this).val().split("\\").pop();
+                                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                            });
+                        }
+
+                    }
+                });
+            }
+
 
 
 
