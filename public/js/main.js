@@ -63,6 +63,8 @@ function preload() {
     game.load.image('57', 'ig/57.png');
     game.load.image('58', 'ig/58.png');
     game.load.image('59', 'ig/59.png');
+    game.load.image('60', 'ig/60.png');
+    game.load.image('61', 'ig/61.png');
 }
 
 var player;
@@ -85,7 +87,7 @@ function create() {
     wallCollisionGroup = this.physics.p2.createCollisionGroup();
 
     //player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
-    player = game.add.sprite(2000, 2000, 'player');
+    player = game.add.sprite(7620,3563, 'player');
 
     game.physics.p2.enable(player);
 
@@ -702,6 +704,63 @@ function create() {
     w56.body.collides(playerCollisionGroup);
 
     w56.body.static = true;
+
+    w57 = game.add.sprite(1090,1692, '57');
+
+    w57.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w57);
+
+    w57.body.setCollisionGroup(wallCollisionGroup);
+    w57.body.collides(playerCollisionGroup);
+
+    w57.body.static = true;
+
+    w58 = game.add.sprite(1060,1778, '58');
+
+    w58.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w58);
+
+    w58.body.setCollisionGroup(wallCollisionGroup);
+    w58.body.collides(playerCollisionGroup);
+
+    w58.body.static = true;
+
+    w59 = game.add.sprite(1044,1870, '59');
+
+    w59.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w59);
+
+    w59.body.setCollisionGroup(wallCollisionGroup);
+    w59.body.collides(playerCollisionGroup);
+
+    w59.body.static = true;
+
+    w60 = game.add.sprite(5720,2163, '60');
+
+    w60.scale.setTo(0.68, 1);
+
+    game.physics.p2.enable(w60);
+
+    w60.body.setCollisionGroup(wallCollisionGroup);
+    w60.body.collides(playerCollisionGroup);
+
+    w60.body.static = true;
+
+    w61 = game.add.sprite(7572,3839, '61');
+
+    w61.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w61);
+
+    w61.body.setCollisionGroup(wallCollisionGroup);
+    w61.body.collides(playerCollisionGroup);
+
+    w61.body.static = true;
+
+
 
 
 
