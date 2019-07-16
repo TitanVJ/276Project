@@ -416,7 +416,26 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
         url: `http://www.sfu.ca/bin/wcm/course-outlines?${$('#year').val()}/${$('#term').val()}/${$('#dept').val()}/${$('#course_num').val()}/${$('#course_sec').val()}`,
         success: function(data) {
             console.log(data);
-            alert("The professor is: " + data.instructor[0].name)
+
+            console.log("Name: ", `${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}`);
+
+            $('#profPicture').empty();
+
+            $.ajax({
+                url:`../images/prof_images/${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}.jpg`,
+                type:'HEAD',
+                error: function()
+                {
+                    console.log('no exists')
+                },
+                success: function()
+                {
+                    $(`<img src="../images/prof_images/${data.instructor[0].commonName.toUpperCase()}_${data.instructor[0].lastName.toUpperCase()}.jpg" class="img-thumbnail rounded" style="width: 50%;">`).appendTo('#profPicture');
+                }
+            });
+
+
+
 
         }
     });
@@ -425,25 +444,23 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
 
 $('#new_prof').on('hidden.bs.modal', function (e) {
 
-    modalCloseHelper("term", true);
-    modalCloseHelper("dept", true);
-    modalCloseHelper("course_num", true);
-    modalCloseHelper("course_sec", true);
+    modalCloseHelper("term");
+    modalCloseHelper("dept");
+    modalCloseHelper("course_num");
+    modalCloseHelper("course_sec");
 
 });
 
-function modalCloseHelper (id, a) {
+function modalCloseHelper (id) {
+    $('#profPicture').empty();
     document.getElementById(`${id}`).options.length = 0;
     $(`#${id}`).prop('disabled', true);
     $(`#${id}`).attr('readonly', true);
     $(`#${id}`).selectpicker('refresh');
 
-    // if(a) {
-    //     $(`#${id}`).selectpicker('destroy')
-    // }
-
 }
 
+// TODO: https://www.freecodecamp.org/news/the-ultimate-guide-to-web-scraping-with-node-js-daa2027dcd3/
 
 
 
