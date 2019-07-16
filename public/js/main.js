@@ -85,7 +85,7 @@ function create() {
     wallCollisionGroup = this.physics.p2.createCollisionGroup();
 
     //player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
-    player = game.add.sprite(1000, 2500, 'player');
+    player = game.add.sprite(7600, 3200, 'player');
 
     game.physics.p2.enable(player);
 
@@ -113,7 +113,7 @@ function create() {
 
     w3 = game.add.sprite(382,2580, '3');
 
-    w3.scale.setTo(1.3, 1.3);
+    w3.scale.setTo(1.7, 1.3);
 
     game.physics.p2.enable(w3);
 
@@ -135,14 +135,255 @@ function create() {
 
     w5 = game.add.sprite(1740,2780, '5');
 
-   // w5.scale.setTo(1.5, 1.7);
-
     game.physics.p2.enable(w5);
 
     w5.body.setCollisionGroup(wallCollisionGroup);
     w5.body.collides(playerCollisionGroup);
 
     w5.body.static = true;
+
+    w6 = game.add.sprite(3525,2540, '6');
+
+    w6.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w6);
+
+    w6.body.setCollisionGroup(wallCollisionGroup);
+    w6.body.collides(playerCollisionGroup);
+
+    w6.body.static = true;
+
+    w7 = game.add.sprite(4775,2655, '7');
+
+    w7.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w7);
+
+    w7.body.setCollisionGroup(wallCollisionGroup);
+    w7.body.collides(playerCollisionGroup);
+
+    w7.body.static = true;
+
+    w8 = game.add.sprite(4915,2980, '8');
+
+    w8.scale.setTo(1.5, 1);
+
+    game.physics.p2.enable(w8);
+
+    w8.body.setCollisionGroup(wallCollisionGroup);
+    w8.body.collides(playerCollisionGroup);
+
+    w8.body.static = true;
+
+    w9 = game.add.sprite(5148,3135, '9');
+
+    w9.scale.setTo(1, 2);
+
+    game.physics.p2.enable(w9);
+
+    w9.body.setCollisionGroup(wallCollisionGroup);
+    w9.body.collides(playerCollisionGroup);
+
+    w9.body.static = true;
+
+    w10 = game.add.sprite(5440,2980, '10');
+
+    w10.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w10);
+
+    w10.body.setCollisionGroup(wallCollisionGroup);
+    w10.body.collides(playerCollisionGroup);
+
+    w10.body.static = true;
+
+    w11 = game.add.sprite(5730,3051, '11');
+
+    w11.scale.setTo(1, 1.5);
+
+    game.physics.p2.enable(w11);
+
+    w11.body.setCollisionGroup(wallCollisionGroup);
+    w11.body.collides(playerCollisionGroup);
+
+    w11.body.static = true;
+
+    w12 = game.add.sprite(6040,2935, '12');
+
+    w12.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w12);
+
+    w12.body.setCollisionGroup(wallCollisionGroup);
+    w12.body.collides(playerCollisionGroup);
+
+    w12.body.static = true;
+
+    w13 = game.add.sprite(6819,3060, '13');
+
+    w13.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w13);
+
+    w13.body.setCollisionGroup(wallCollisionGroup);
+    w13.body.collides(playerCollisionGroup);
+
+    w13.body.static = true;
+
+    w14 = game.add.sprite(7403,3430, '14');
+
+    w14.scale.setTo(2.2, 1);
+
+    game.physics.p2.enable(w14);
+
+    w14.body.setCollisionGroup(wallCollisionGroup);
+    w14.body.collides(playerCollisionGroup);
+
+    w14.body.static = true;
+
+    w15 = game.add.sprite(7391,3975, '15');
+
+    w15.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w15);
+
+    w15.body.setCollisionGroup(wallCollisionGroup);
+    w15.body.collides(playerCollisionGroup);
+
+    w15.body.static = true;
+
+    w16 = game.add.sprite(7200,4100, '16');
+
+    w16.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w16);
+
+    w16.body.setCollisionGroup(wallCollisionGroup);
+    w16.body.collides(playerCollisionGroup);
+
+    w16.body.static = true;
+
+    w17 = game.add.sprite(7433,4230, '17');
+
+    w17.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w17);
+
+    w17.body.setCollisionGroup(wallCollisionGroup);
+    w17.body.collides(playerCollisionGroup);
+
+    w17.body.static = true;
+
+    w18 = game.add.sprite(7850,4210, '18');
+
+    w18.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w18);
+
+    w18.body.setCollisionGroup(wallCollisionGroup);
+    w18.body.collides(playerCollisionGroup);
+
+    w18.body.static = true;
+
+    w19 = game.add.sprite(8078,4180, '19');
+
+    w19.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w19);
+
+    w19.body.setCollisionGroup(wallCollisionGroup);
+    w19.body.collides(playerCollisionGroup);
+
+    w19.body.static = true;
+
+    w20 = game.add.sprite(8367,4173, '20');
+
+    w20.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w20);
+
+    w20.body.setCollisionGroup(wallCollisionGroup);
+    w20.body.collides(playerCollisionGroup);
+
+    w20.body.static = true;
+
+    w21 = game.add.sprite(8628,4136, '21');
+
+    w21.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w21);
+
+    w21.body.setCollisionGroup(wallCollisionGroup);
+    w21.body.collides(playerCollisionGroup);
+
+    w21.body.static = true;
+
+    w22 = game.add.sprite(8615,4080, '22');
+
+    w22.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w22);
+
+    w22.body.setCollisionGroup(wallCollisionGroup);
+    w22.body.collides(playerCollisionGroup);
+
+    w22.body.static = true;
+
+    w23 = game.add.sprite(8595,4000, '23');
+
+    w23.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w23);
+
+    w23.body.setCollisionGroup(wallCollisionGroup);
+    w23.body.collides(playerCollisionGroup);
+
+    w23.body.static = true;
+
+    w24 = game.add.sprite(8348,3945, '24');
+
+    w24.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w24);
+
+    w24.body.setCollisionGroup(wallCollisionGroup);
+    w24.body.collides(playerCollisionGroup);
+
+    w24.body.static = true;
+
+    w25 = game.add.sprite(7955,3845, '25');
+
+    w25.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w25);
+
+    w25.body.setCollisionGroup(wallCollisionGroup);
+    w25.body.collides(playerCollisionGroup);
+
+    w25.body.static = true;
+
+    w26 = game.add.sprite(8079,3583, '26');
+
+    w26.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w26);
+
+    w26.body.setCollisionGroup(wallCollisionGroup);
+    w26.body.collides(playerCollisionGroup);
+
+    w26.body.static = true;
+
+    w27 = game.add.sprite(8060,3403, '27');
+
+    w27.scale.setTo(1, 1);
+
+    game.physics.p2.enable(w27);
+
+    w27.body.setCollisionGroup(wallCollisionGroup);
+    w27.body.collides(playerCollisionGroup);
+
+    w27.body.static = true;
+
 
 
 
