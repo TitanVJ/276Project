@@ -18,12 +18,9 @@ class main extends Phaser.State {
     }
 
     preload() {
-
-        this.game.load.image('background','images/background.png');
-        this.game.load.image('player','images/demop.png');
         this.game.load.image('profeball', 'images/encIndicator.png');
 
-        this.game.load.image('background','ig/map.png');
+        this.game.load.image('background','../ig/map.png');
         this.game.load.image('player','ig/demop.png');
         this.game.load.image('1', 'ig/1.png');
         this.game.load.image('2', 'ig/2.png');
@@ -92,12 +89,9 @@ class main extends Phaser.State {
     create() {
 
         this.game.physics.startSystem(Phaser.Physics.P2JS);
-        this.game.physics.p2.setImpactEvents(true);
-
 
         this.game.add.tileSprite(0,0,1000,1000,'background');
-
-        this.game.world.setBounds(0, 0, 1000, 1000);
+        this.game.world.setBounds(0, 0, 10000, 5000);
 
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
