@@ -8,59 +8,33 @@
                 </button>
             </div>
             <div class="modal-body">
-<!--                <form>-->
-<!--                    <div class="row">-->
-<!--                        <div class="form-group col">-->
-<!--                            <label for="student_id" class="required-field"> Student ID</label>-->
-<!--                            <input name="student_id" id="student_id" type="number" class="form-control" required>-->
-<!--                        </div>-->
-
-<!--                        <div class="form-group col">-->
-<!--                            <label for="student_name" class="required-field"> Name </label>-->
-<!--                            <input name="student_name" id="student_name" type="text" class="form-control" required>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-<!--                    <div class="row">-->
-<!--                        <div class="form-group col">-->
-<!--                            <label for="age" class="required-field"> Age</label>-->
-<!--                            <input name="age" id="age" type="number" class="form-control" required>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-<!--                    <div class="row">-->
-<!--                        <div class="form-group col">-->
-<!--                            <label for="weight" class="required-field"> Weight (lbs) </label>-->
-<!--                            <input name="weight" id="weight" type="number" class="form-control" step="0.01" required>-->
-<!--                        </div>-->
-<!--                </form>-->
                 <form action="/add_prof" method="post" id="new_prof_form" autocomplete="off">
 
                     <div clas="row">
                         <div class="form-group col">
                             <label for="year" class="col-form-label"> Course Year </label>
-                            <select name="year" id="year" data-live-search="true" class="form-control selector" data-none-selected-text="⠀">
+                            <select name="year" id="year" data-live-search="true" class="form-control selector" data-none-selected-text="⠀" title="⠀">
 
                             </select>
                         </div>
 
                         <div class="form-group col">
                             <label for="term" class="col-form-label"> Course Term </label>
-                            <select name="term" id="term" data-live-search="true" class="form-control selector" readonly="true" data-none-selected-text="⠀">
+                            <select name="term" id="term" data-live-search="true" class="form-control selector" readonly="true" data-none-selected-text="⠀" title="⠀">
 
                             </select>
                         </div>
 
                         <div class="form-group col">
                             <label for="dept" class="col-form-label"> Course Deparment </label>
-                            <select name="dept" id="dept" data-live-search="true" class="form-control selector" readonly="true" data-none-selected-text="⠀">
+                            <select name="dept" id="dept" data-live-search="true" class="form-control selector" readonly="true" data-none-selected-text="⠀" title="⠀">
 
                             </select>
                         </div>
 
                         <div class="form-group col">
                             <label for="course_num" class="col-form-label"> Course Number </label>
-                            <select name="course_num" id="course_num" data-live-search="true" class="form-control selector" readonly="true" data-none-selected-text="⠀">
+                            <select name="course_num" id="course_num" data-live-search="true" class="form-control selector" readonly="true" data-none-selected-text="⠀" title="⠀">
 
                             </select>
                         </div>
@@ -72,8 +46,6 @@
                             </select>
                         </div>
                     </div>
-
-
                 </form>
 
                 <br>

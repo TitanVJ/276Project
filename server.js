@@ -10,24 +10,19 @@ const session = require('express-session');
 const uuidv1 = require('uuid/v1');
 var format = require('pg-format');
 const { Pool } = require('pg');
-const server =  app.listen(PORT, ()=>{console.log("Magic is happening on port " + PORT);});
-const io = require("socket.io")(server);
 var cors = require('cors');
 const fs = require('fs');
-var formidable = require('formidable');
 const fileUpload = require('express-fileupload');
-//var multer  = require('multer')
-//var upload = multer({ dest: './public/images' })
+const server =  app.listen(PORT, ()=>{console.log("Magic is happening on port " + PORT);});
+const io = require("socket.io")(server);
 
-app.use(fileUpload())
+app.use(fileUpload());
 
 
 const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
 const pool = new Pool({
     connectionString: connectionString,
 });
-//var upload = multer({ storage: storage })
-
 
 app.use(session({
     name:'session',
@@ -45,7 +40,7 @@ function hasPermissions(user) {
     } else {
         return false;
     }
-};
+}
 
 // Add this middleware function to pages you want users to be logged in to view
 function loggedIn(req, res, next) {
@@ -168,74 +163,8 @@ app.get('/admin_professor', loggedIn, function(req, res) {
     }
 });
 
-
-/*  */
-app.get('/search', (req, res)=>{
-    const query = {
-        text: 'SELECT user_name,status,last_updated,record_created FROM users WHERE ' + req.query.column + '=$1',
-        values: [req.query.value]
-    };
-    pool.query(query, (err, result)=>{
-        if(err){
-            console.log(err.message);
-            res.end();
-        }
-        else if(result.rowCount == 0){
-            // console.log(result)
-            console.log('Empty table');
-            res.end();
-        }
-
-        const results = { 'results': (result) ? result.rows : null };
-        res.send(results);
-    });
-
-});
-
-app.get('/searchProfDex', (req, res)=>{
-    const query = {
-        text: 'SELECT prof_fname,prof_lname,photo_id, last_updated, record_created FROM profDex WHERE ' + req.query.column + '=$1',
-        values: [req.query.value]
-    };
-
-    pool.query(query, (err, result)=>{
-        if(err){
-            console.log(err.message);
-            res.end();
-        }
-        else if(result.rowCount == 0){
-            // console.log(result)
-            console.log('Empty table');
-            res.end();
-        }
-
-        const results = { 'results': (result) ? result.rows : null };
-        res.send(results);
-    });
-
-});
-/***************************************/
-app.get('/toTable', (req, res) => {
-    // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
-    // console.log(sql).
-    const query = 'SELECT prof_id,prof_fname,prof_lname,photo_id,catch_time FROM ' + req.query.user + 'ProfList';
-    console.log(query);
-    pool.query(query ,(error, result)=>{
-        if(error){
-            console.log(error.message);
-            res.end();
-        }
-        if(result.rowCount == 0){
-            console.log('Empty table');
-            res.end();
-        }
-        const results = { 'results': (result) ? result.rows : null };
-        res.send(results);
-    });
-
-});
-/**************************************/
-app.get('/data', (req, res)=>{
+/* Get all the user data from the DB */
+app.get('/data', loggedIn, (req, res)=>{
     pool.query("select user_name,status,last_updated,record_created FROM users", (error, result)=>{
         if(error){
             console.log(error.message);
@@ -249,8 +178,10 @@ app.get('/data', (req, res)=>{
     res.send(results);
     });
 });
-app.get('/dataProfDex', (req, res)=>{
-    pool.query("SELECT prof_id,prof_fname,prof_lname,photo_id,last_updated,record_created FROM profDex", (error, result)=>{
+
+/* Get all the professor data from the DB */
+app.get('/dataProfDex', loggedIn, (req, res)=>{
+    pool.query("SELECT * FROM profDex", (error, result)=>{
         if(error){
             console.log(error.message);
             res.end();
@@ -266,10 +197,9 @@ app.get('/dataProfDex', (req, res)=>{
     res.send(results);
     });
 });
-/**********************************/
-app.delete('/removeUser/:id', (req, res)=>{
+/* Delete a user from the DB */
+app.delete('/removeUser/:id', loggedIn, (req, res)=>{
 
-    console.log('del start');
     pool.query('DELETE FROM users WHERE user_name=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
@@ -281,9 +211,10 @@ app.delete('/removeUser/:id', (req, res)=>{
     })
 
 });
-app.delete('/removeProf/:id', (req, res)=>{
 
-    console.log('del start');
+/* Delete a professor from the DB */
+app.delete('/removeProf/:id', loggedIn, (req, res)=>{
+
     pool.query('DELETE FROM profDex WHERE prof_id=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
@@ -332,33 +263,7 @@ io.on('connection', (socket)=>{
 });
 // Socket Code ends here
 
-
-// app.get('/get-course-years', function(req, res) {
-//     request('http://www.sfu.ca/bin/wcm/course-outlines', { json: true }, (err, resp, body) => {
-//         if (err) { return console.log(err); }
-//         res.send(body);
-//     });
-// });
-//
-// app.get('/get-course-term:year', function(req, res) {
-//     console.log(req.params.year)
-//     request('http://www.sfu.ca/bin/wcm/course-outlines?' + req.params.year, { json: true }, (err, resp, body) => {
-//         if (err) { return console.log(err); }
-//         res.send(body);
-//     });
-// });
-//
-// app.get('/get-course-dept/:year', function(req, res) {
-//     console.log(req.params.term)
-//     request('http://www.sfu.ca/bin/wcm/course-outlines?' + req.params.year, { json: true }, (err, resp, body) => {
-//         if (err) { return console.log(err); }
-//         res.send(body);
-//     });
-// });
-
-
-
-
+/* Used to check if a profs photo exists */
 app.get('/check-file/:fileName', function(req, res) {
     console.log(req.params.fileName);
     if (fs.existsSync('./public/images/prof_images/' + req.params.fileName)) {
@@ -366,24 +271,16 @@ app.get('/check-file/:fileName', function(req, res) {
     } else {
         res.send(false);
     }
-
-
-
 });
 
-app.post('/addProfDex/:profName', function(req, res) {
-
-    console.log("Name: ", req.params.profName);
-    console.log("fname: ", req.query.fname);
-    console.log("lname: ", req.query.lname);
-
+/* Add a professor who's photo is already on the server to the DB (ie. only add their information to the DB) */
+app.post('/addProfDex/:profName', loggedIn, function(req, res) {
     let photoID = `${req.query.fname.toUpperCase()}_${req.query.lname.toUpperCase()}`;
 
     pool.query('SELECT * FROM profdex WHERE photo_id = $1', [photoID], (err, response) =>{
        if(err) {
            console.log(err);
        } else {
-           console.log("RESPONSE: ", response);
            if(response.rows.length > 0) {
                res.send("exists")
            } else {
@@ -400,8 +297,8 @@ app.post('/addProfDex/:profName', function(req, res) {
     });
 });
 
-app.post('/add-new-prof', function(req, res) {
-    console.log(req.files);
+/* Upload new professor photo and add professor information to the DB */
+app.post('/add-new-prof', loggedIn, function(req, res) {
  let fileName = `${req.body.common.toUpperCase()}_${req.body.lname.toUpperCase()}.jpg`;
     if(req.files.filename){
         var file = req.files.filename,
@@ -421,7 +318,7 @@ app.post('/add-new-prof', function(req, res) {
                     if(err) {
                         console.log(err);
                     } else {
-                        console.log("RESPONSE: ", response);
+
                         if(response.rows.length > 0) {
                             res.send("exists")
                         } else {
@@ -443,7 +340,7 @@ app.post('/add-new-prof', function(req, res) {
 
 // Change prof_id to uuid
 // Change photo_id to varchar
-// Add default selection on selectors
+// Add logout button
 
 
 
