@@ -309,6 +309,7 @@ app.get('/addCandy', function(req,res){
            console.log(err);
        } else {
             console.log("items increased");
+            res.status(200);
        }
 
     });
@@ -338,6 +339,7 @@ app.get('/popAPill',async(req,res)=>{
                  console.log("Popping pills");
                  req.session.encounterChance = 4;
                  req.session.itemUsed = 'true';
+                 res.status(200);
             }
 
          });
@@ -366,6 +368,7 @@ app.post('/caught',(req,res)=>{
              console.log(err);
          } else {
               console.log("prof caught added");
+              status(200);
          }
       });
 
