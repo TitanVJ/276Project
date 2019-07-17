@@ -18,7 +18,7 @@ const io = require("socket.io")(server);
 app.use(fileUpload());
 
 
-const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
+const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString: connectionString,
 });
