@@ -361,7 +361,7 @@ app.post('/caught',(req,res)=>{
         // for now send a temp objS
       const sql = {
           text: 'INSERT INTO '+[req.session.user_name]+'ProfList(prof_fname, prof_lname, photo_id) VALUES ($1,$2,$3)',
-          values:  [req.body.data.prof_fname], [req.body.data.prof_lname], req.body.data.photo_id
+          values:  [[req.body.data.prof_fname], [req.body.data.prof_lname], req.body.data.photo_id]
       }
       pool.query(sql, (err, response) => {
          if(err) {
@@ -373,7 +373,6 @@ app.post('/caught',(req,res)=>{
       });
 
 
-    }
 })
 
 // Socket code
