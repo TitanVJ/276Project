@@ -114,7 +114,7 @@ class main extends Phaser.State {
 
         this.w1 = this.game.add.sprite(722,2155, '1');
         
-        this.game.physics.p2.enable(w1);
+        this.game.physics.p2.enable(this.w1);
 
         this.w1.body.setCollisionGroup(this.wallCollisionGroup);
         this.w1.body.collides(this.playerCollisionGroup);
@@ -134,7 +134,7 @@ class main extends Phaser.State {
 
         this.w3.scale.setTo(1.7, 1.3);
 
-        game.physics.p2.enable(this.w3);
+        this.game.physics.p2.enable(this.w3);
 
         this.w3.body.setCollisionGroup(this.wallCollisionGroup);
         this.w3.body.collides(this.playerCollisionGroup);
@@ -242,7 +242,7 @@ class main extends Phaser.State {
 
         this.w13.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w13);
+        this.game.physics.p2.enable(this.w13);
 
         this.w13.body.setCollisionGroup(this.wallCollisionGroup);
         this.w13.body.collides(this.playerCollisionGroup);
@@ -286,7 +286,7 @@ class main extends Phaser.State {
 
         this.w17.scale.setTo(1, 1);
 
-        this.game.physics.p2.enable(w17);
+        this.game.physics.p2.enable(this.w17);
 
         this.w17.body.setCollisionGroup(this.wallCollisionGroup);
         this.w17.body.collides(this.playerCollisionGroup);
@@ -310,14 +310,14 @@ class main extends Phaser.State {
 
         this.game.physics.p2.enable(this.w19);
 
-        w19.body.setCollisionGroup(this.wallCollisionGroup);
-        w19.body.collides(this.playerCollisionGroup);
+        this.w19.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w19.body.collides(this.playerCollisionGroup);
 
-        w19.body.static = true;
+        this.w19.body.static = true;
 
-        w20 = this.game.add.sprite(8367,4173, '20');
+        this.w20 = this.game.add.sprite(8367,4173, '20');
 
-        w20.scale.setTo(1, 1);
+        this.w20.scale.setTo(1, 1);
 
         this.game.physics.p2.enable(this.w20);
 
@@ -385,7 +385,7 @@ class main extends Phaser.State {
 
         this.w26.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w26);
+        this.game.physics.p2.enable(this.w26);
 
         this.w26.body.setCollisionGroup(this.wallCollisionGroup);
         this.w26.body.collides(this.playerCollisionGroup);
@@ -418,7 +418,7 @@ class main extends Phaser.State {
 
         this.w29.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w29);
+        this.game.physics.p2.enable(this.w29);
 
         this.w29.body.setCollisionGroup(this.wallCollisionGroup);
         this.w29.body.collides(this.playerCollisionGroup);
@@ -429,7 +429,7 @@ class main extends Phaser.State {
 
         this.w30.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w30);
+        this.game.physics.p2.enable(this.w30);
 
         this.w30.body.setCollisionGroup(this.wallCollisionGroup);
         this.w30.body.collides(this.playerCollisionGroup);
@@ -440,7 +440,7 @@ class main extends Phaser.State {
 
         this.w31.scale.setTo(1.01, 1.1);
 
-        game.physics.p2.enable(this.w31);
+        this.game.physics.p2.enable(this.w31);
 
         this.w31.body.setCollisionGroup(this.wallCollisionGroup);
         this.w31.body.collides(this.playerCollisionGroup);
@@ -451,7 +451,7 @@ class main extends Phaser.State {
 
         this.w32.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w32);
+        this.game.physics.p2.enable(this.w32);
 
         this.w32.body.setCollisionGroup(this.wallCollisionGroup);
         this.w32.body.collides(this.playerCollisionGroup);
@@ -462,7 +462,7 @@ class main extends Phaser.State {
 
         this.w33.scale.setTo(0.95, 4);
 
-        game.physics.p2.enable(this.w33);
+        this.game.physics.p2.enable(this.w33);
 
         this.w33.body.setCollisionGroup(this.wallCollisionGroup);
         this.w33.body.collides(this.playerCollisionGroup);
@@ -473,7 +473,7 @@ class main extends Phaser.State {
 
         this.w34.scale.setTo(3, 1);
 
-        game.physics.p2.enable(this.w34);
+        this.game.physics.p2.enable(this.w34);
 
         this.w34.body.setCollisionGroup(this.wallCollisionGroup);
         this.w34.body.collides(this.playerCollisionGroup);
@@ -484,7 +484,7 @@ class main extends Phaser.State {
 
         this.w35.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w35);
+        this.game.physics.p2.enable(this.w35);
 
         this.w35.body.setCollisionGroup(this.wallCollisionGroup);
         this.w35.body.collides(this.playerCollisionGroup);
@@ -495,7 +495,7 @@ class main extends Phaser.State {
 
         this.w36.scale.setTo(1, 1.5);
 
-        game.physics.p2.enable(this.w36);
+        this.game.physics.p2.enable(this.w36);
 
         this.w36.body.setCollisionGroup(this.wallCollisionGroup);
         this.w36.body.collides(this.playerCollisionGroup);
@@ -517,7 +517,7 @@ class main extends Phaser.State {
 
         this.w38.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w38);
+        this.game.physics.p2.enable(this.w38);
 
         this.w38.body.setCollisionGroup(this.wallCollisionGroup);
         this.w38.body.collides(this.playerCollisionGroup);
@@ -528,7 +528,7 @@ class main extends Phaser.State {
 
         this.w39.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w39);
+        this.game.physics.p2.enable(this.w39);
 
         this.w39.body.setCollisionGroup(this.wallCollisionGroup);
         this.w39.body.collides(this.playerCollisionGroup);
@@ -539,7 +539,7 @@ class main extends Phaser.State {
 
         this.w40.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w40);
+        this.game.physics.p2.enable(this.w40);
 
         this.w40.body.setCollisionGroup(this.wallCollisionGroup);
         this.w40.body.collides(this.playerCollisionGroup);
@@ -550,7 +550,7 @@ class main extends Phaser.State {
 
         this.w41.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w41);
+        this.game.physics.p2.enable(this.w41);
 
         this.w41.body.setCollisionGroup(this.wallCollisionGroup);
         this.w41.body.collides(this.playerCollisionGroup);
@@ -561,7 +561,7 @@ class main extends Phaser.State {
 
         this.w42.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w42);
+        this.game.physics.p2.enable(this.w42);
 
         this.w42.body.setCollisionGroup(this.wallCollisionGroup);
         this.w42.body.collides(this.playerCollisionGroup);
@@ -572,7 +572,7 @@ class main extends Phaser.State {
 
         this.w43.scale.setTo(3, 1);
 
-        game.physics.p2.enable(this.w43);
+        this.game.physics.p2.enable(this.w43);
 
         this.w43.body.setCollisionGroup(this.wallCollisionGroup);
         this.w43.body.collides(this.playerCollisionGroup);
@@ -583,7 +583,7 @@ class main extends Phaser.State {
 
         this.w44.scale.setTo(1, 1);
 
-        game.physics.p2.enable(this.w44);
+        this.game.physics.p2.enable(this.w44);
 
         this.w44.body.setCollisionGroup(this.wallCollisionGroup);
         this.w44.body.collides(this.playerCollisionGroup);
@@ -770,7 +770,7 @@ class main extends Phaser.State {
 
         this.w61.scale.setTo(1, 1);
 
-        this.game.physics.p2.enable(w61);
+        this.game.physics.p2.enable(this.w61);
 
         this.w61.body.setCollisionGroup(this.wallCollisionGroup);
         this.w61.body.collides(this.playerCollisionGroup);
@@ -850,7 +850,7 @@ class main extends Phaser.State {
     }
 
     render() {
-        this.game.debug.spriteCoords(player, 32, 500);
+        this.game.debug.spriteCoords(this.player, 32, 500);
     }
     
 } // class ends here
