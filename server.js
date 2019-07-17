@@ -350,6 +350,29 @@ app.get('/popAPill',async(req,res)=>{
   }
   res.end();
 })
+app.post('/caught',(req,res)=>{
+        //encouter
+        // send back and obj, contain img id, prof
+        // for testing do console.log
+
+        // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+        // for now send a temp objS
+      const sql = {
+          text: 'INSERT INTO '+[req.session.user_name]+'ProfList(prof_fname, prof_lname, photo_id) VALUES ($1,$2,$3)',
+          values:  [req.body.data.prof_fname], [req.body.data.prof_lname], req.body.data.photo_id
+      }
+      pool.query(sql, (err, response) => {
+         if(err) {
+             console.log(err);
+         } else {
+              console.log("prof caught added");
+         }
+      });
+
+
+    }
+})
+
 // Socket code
   io.on('connection', (socket)=>{
       console.log("User connection established");
@@ -358,35 +381,6 @@ app.get('/popAPill',async(req,res)=>{
           console.log('user disconnected');
       })
 
-      socket.on('caught',(data)=>{
-        console.log(socket.handshake.session.user);
-        if(!data){
-            var c = Math.floor((Math.random() * 100) + 1);
-            console.log(socket.handshake.session.user);
-            if((data.chance/100)*80 >= c){
-                //encouter
-                // send back and obj, contain img id, prof
-                // for testing do console.log
-
-                // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
-                // for now send a temp obj
-              let sql = format('INSERT INTO %I(prof_fname, prof_lname, photo_id) VALUES $1,$2,$3', `${socket.handshake.session.user}ProfList`, [data.fname], [data.lname], data.photoid);
-
-              pool.query(sql, (err, response) => {
-                 if(err) {
-                     console.log(err);
-                 } else {
-                      console.log("prof caught added");
-                 }
-              });
-
-
-            }
-        }
-        else{
-            socket.emit('no');
-        }
-      })
       // used to determine if a character will
       socket.on('move', (data)=>{
           // determine
