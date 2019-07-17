@@ -5,16 +5,20 @@ function back(){
 }
 
 function home(){
-    window.location.href="../home.html"
+    window.location.href="././game.html"
 }
 
 function radio_input(url){
     window.location.href = "../"+url;
 }
 
+
+
+
 /*
 function getAllProfDex(){
     // GET /data
+    console.log('getAllProfDex');
     $.ajax({
         method: 'get',
         url: '/dataProfDex',
@@ -23,9 +27,18 @@ function getAllProfDex(){
     });
 }
 
-function something(){}
-*/
-/*
+function something(){
+    { <figure>
+        <a href="page.html">
+            <img src="./images/bulatov.jpg"/>
+            <figcaption>Andrei Bulatov 
+                <!--<br>prof type-->
+            </figcaption>
+        </a>
+    </figure> }
+}
+
+
 function searchProfDex(){
         $.ajax({
         method: 'get',
