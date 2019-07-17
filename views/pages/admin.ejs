@@ -40,6 +40,7 @@
                 <th>record_created</th>
                 <th class="hiddenBorder"></th>
                 <th class="hiddenBorder"></th>
+                <th class="hiddenBorder"></th>
             </tr>
         </table>
     </section>
@@ -52,6 +53,18 @@
                 <th>prof_lname</th>
                 <th>photo_id</th>
                 <th>catch_time</th>
+            </tr>
+        </table>
+        <button type="button" style="width: 70px" onclick="hideProfList()">Hide</button>
+    </section>
+    <section id="tableContainerInventory" style="margin-bottom: 50px;display: none;align-items: center;border: 5px; flex-direction: column">
+        <h5 id="userInventory"></h5>
+        <table id='userInv'>
+            <tr>
+                <th>item_name</th>
+                <th>iphoto_id</th>
+                <th>quantatiy</th>
+                <th>item_added</th>
             </tr>
         </table>
         <button type="button" style="width: 70px" onclick="hideProfList()">Hide</button>

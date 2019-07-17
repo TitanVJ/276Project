@@ -16,11 +16,14 @@
 <body>
     <div id="mapArea">
         <input type="button" onclick="window.location.href = './prof.html';" value="Prof Collection"/>
+        <input type="button" id="use" value="Use a Prof Office Hours"/>
+        <input type="button" id="add" value="Add a Prof Office Hours"/>
+        <input type="button" id="logout" onclick="parent.location='https://catchmyprof.herokuapp.com/'" value="logout"/>
         <h3>Key: <span id="key">NaN</span></h3>
         <p> Total Moves: <span id="moves">0</span></p>
         <p> Total Encounters: <span id="counter">0</span></p>
         <img id='tempEncounter' style="width: 15%;">
-        <p id="profDetails"></p> 
+        <p id="profDetails"></p>
     </div>
 
 </body>

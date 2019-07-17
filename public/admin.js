@@ -68,14 +68,18 @@ function updateTable(results){
         }
         var e = document.createElement('td');
         var f = document.createElement('td');
+        var g = document.createElement('td');
         e.innerHTML = '<button style="width:100%;height:100%" class="edit" type="button" onclick="del(this)">Del</button>';
         f.innerHTML = '<button style="width:100%;height:100%" id="usersListProf" class="edit" type="button" onclick="getUserProfs(this)">Prof Collection</button>';
+        g.innerHTML = '<button style="width:100%;height:100%" id="usersInventoryList" class="edit" type="button" onclick="getUserInventory(this)">Inventory</button>';
         newRow.appendChild(e);
         newRow.appendChild(f);
+        newRow.appendChild(g);
         table.append(newRow)
 
         if(f.parentElement.parentElement.childNodes[1].innerHTML="Admin"){
           document.getElementById("usersListProf").style.display="none";
+          document.getElementById("usersInventoryList").style.display="none";
         }
         i++;
     });
@@ -83,7 +87,7 @@ function updateTable(results){
 var x;
 function hideProfList(){
   document.getElementById("tableContainerUserProf").style.display="none"
-
+  document.getElementById("tableContainerInventory").style.display="none"
 }
 function getUserProfs(f){
 
@@ -102,6 +106,43 @@ function getUserProfs(f){
       error: ()=>{alert('No such Prof(s) exist.');}
   });
 
+}
+
+function getUserInventory(f){
+
+  var status = f.parentElement.parentElement.childNodes[1].innerHTML;
+  console.log(status);
+
+  var id = f.parentElement.parentElement.childNodes[0].innerHTML;
+  document.getElementById('userInventory').innerHTML = "<h2>" + id + "Inventory</h2>";
+  document.getElementById("tableContainerInventory").style.display="flex"
+
+
+  $.ajax({
+      method:'get',
+      url:'/toInventory?user='+id,
+      success: displayUserInventory,
+      error: ()=>{alert('No Inventory exist.');}
+  });
+
+}
+function displayUserInventory(results){
+  var table = $('#userInv');
+  table.find("tr:gt(0)").remove();
+
+  var rows = results.results;
+  var i = 0;
+  rows.forEach(row => {
+      var newRow = document.createElement("tr");
+
+      for(var key in row){
+          var cell = document.createElement("td");
+          cell.innerHTML = row[key];
+          newRow.appendChild(cell);
+      }
+      table.append(newRow);
+      i++;
+  });
 }
 function displayUserProfs(results){
   var table = $('#userprofs');

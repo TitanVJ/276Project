@@ -21,14 +21,36 @@ socket.on('encounter',(profObj)=>{
     img.src = '../images/crocker.png';
 
     var details = $('#profDetails')[0];
-    details.innerHTML = JSON.stringify(profObj);
+    details.innerHTML = profObj.name;
 
     // this will later be adapted to delete the spawned icon if the user doesn't click on it in time
     setTimeout(()=>{encounter=false;img.src = '';details.innerHTML = ''; console.log('removed img');}, 30000);
 });
+document.getElementById("add").addEventListener("click", function(a){
+  $.ajax({
+      method:'get',
+      url:'/addCandy',
+      error: ()=>{alert('Failed to add.')}
+  });
+})
+document.getElementById("use").addEventListener("click", function(a){
+  $.ajax({
+      method:'get',
+      url:'/popAPill',
+      error: ()=>{alert('Failed to use.')}
+  });
+})
+document.getElementById("logout").addEventListener("click", function(a){
+  $.ajax({
+      method:'get',
+      url:'/logout',
+      success: '/',
+      error: ()=>{alert('Failed to Logout.')}
+  });
+})
 
 $(document).keydown((e)=>{
-    // check for wasd only keys 
+    // check for wasd only keys
     if(['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'].includes(e.key)){
         keyStatus.innerHTML = e.key.toUpperCase();
         moves.innerHTML++;

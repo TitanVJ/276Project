@@ -5,7 +5,6 @@ const PORT = process.env.PORT || 8080;
 const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(10);
 const flash = require('express-flash');
-const session = require('express-session');
 const uuidv1 = require('uuid/v1');
 var format = require('pg-format');
 const { Pool } = require('pg');
@@ -18,14 +17,15 @@ const pool = new Pool({
     connectionString: connectionString,
 });
 
-app.use(session({
+const session = require('express-session')({
     name:'session',
     genid: function(req) { return uuidv1();},
     secret: 'mysecret',
     maxAge: 1000 * 60 * 60,
-    resave: false,
+    resave: true,
     saveUninitialized: true,
-}));
+})
+app.use(session);
 
 // Use this function to test if user is an admin -- Pass in req.session.user
 function hasPermissions(user) {
@@ -77,14 +77,41 @@ app.post('/sign-up', function(req, res) {
                 if (err) {
                     console.log(err);
                 } else {
-                    let sql = format('CREATE TABLE %I (prof_fname VARCHAR(32), prof_lname VARCHAR(32), photo_id NUMERIC, catch_time TIMESTAMP DEFAULT now() )', `${req.body.username}ProfList`);
+                    const sql = {
+                        text: 'CREATE TABLE '+ [req.body.username]+'ProfList(prof_fname VARCHAR(32), prof_lname VARCHAR(32), photo_id NUMERIC, catch_time TIMESTAMP DEFAULT now() )'
+                    }
+                    console.log(sql);
                     pool.query(sql, (err, response) => {
                        if(err) {
                            console.log(err);
                        } else {
-                           res.render('pages/login')
+                            console.log("proflist made");
                        }
                     });
+                    const sql1 = {
+                        text: 'CREATE TABLE '+ [req.body.username]+'Inventory(item_name VARCHAR(32), iphoto_id NUMERIC, quantity NUMERIC, item_added TIMESTAMP DEFAULT now())'
+                    }
+                    console.log(sql1);
+                    pool.query(sql1, (err, response) => {
+                       if(err) {
+                           console.log(err);
+                       } else {
+                       console.log("Inventory Made");
+                       var office="Prof Office Hours";
+                       const query = {
+                           text: 'INSERT INTO '+ req.body.username+'Inventory (item_name, iphoto_id, quantity) VALUES ($1,1,0)',
+                           values: [office]
+                       }
+                       console.log(query);
+                       pool.query(query,(err, response) => {
+                             if(err) {
+                                 console.log(err);
+                             }
+                        });
+                       }
+                    });
+
+                    res.render('pages/login')
                 }
             });
         }
@@ -92,6 +119,7 @@ app.post('/sign-up', function(req, res) {
 });
 
 app.post('/login', function(req, res, next) {
+    console.log(req.session.user_name);
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) => {
         if (err) {
             console.log(err);
@@ -102,10 +130,12 @@ app.post('/login', function(req, res, next) {
             } else {
                 if(bcrypt.compareSync(req.body.password, response.rows[0].password)) {
                     req.session.user = response.rows[0];
-
                     if(hasPermissions(req.session.user)) {
                         res.redirect('./admin')
                     } else {
+                      req.session.encounterChance = 12;
+                      req.session.itemUsed = 'false'
+                      req.session.user_name = req.body.username;
                         res.redirect('/game.html');
                     }
                 } else {
@@ -210,6 +240,27 @@ app.get('/toTable', (req, res) => {
     });
 
 });
+
+app.get('/toInventory', (req, res) => {
+    // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
+    // console.log(sql).
+    const query = 'SELECT item_name, iphoto_id, quantity, item_added FROM ' + req.query.user + 'Inventory';
+    console.log(query);
+    pool.query(query ,(error, result)=>{
+        if(error){
+            console.log(error.message);
+            res.send('');
+        }
+        if(result.rowCount == 0){
+            console.log('Empty table');
+            res.send('');
+        }
+        const results = { 'results': (result) ? result.rows : null };
+        res.status(200);
+        res.send(results);
+    });
+
+});
 /**************************************/
 app.get('/data', (req, res)=>{
     pool.query("select user_name,status,last_updated,record_created FROM users", (error, result)=>{
@@ -252,14 +303,32 @@ app.delete('/removeUser/:id', (req, res)=>{
     pool.query('DELETE FROM users WHERE user_name=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
-        res.status('500');
-        res.send('');
       }
       else {
-        res.status('200');
-        res.send('');
       }
     })
+    const sql = {
+        text: 'DROP TABLE '+[req.params.id]+'Inventory'
+    }
+    pool.query(sql, function (err, resp) {
+      if (err){
+        console.log('del failed');
+      }
+      else {
+      }
+    })
+    const sql1 = {
+        text: 'DROP TABLE '+[req.params.id]+'ProfList'
+    }
+    pool.query(sql1, function (err, resp) {
+      if (err){
+        console.log('del failed');
+      }
+      else {
+      }
+    })
+
+    res.send('');
 
 })
 app.delete('/removeProf/:id', (req, res)=>{
@@ -277,42 +346,126 @@ app.delete('/removeProf/:id', (req, res)=>{
       }
     })
 })
+/**********************************************************/
+app.get('/addCandy', function(req,res){
+  var test = req.session.user_name;
+  console.log(test);
+  var itemChance = Math.floor((Math.random() * 100) + 1);
+  if(itemChance<=100)
+  {
+    const sql1 = {
+      text: 'UPDATE '+ [req.session.user_name]+'Inventory SET quantity=quantity+1 WHERE quantity>=0'
+    }
+    pool.query(sql1, (err, response) => {
+       if(err) {
+           console.log(err);
+       } else {
+            console.log("items increased");
+       }
 
-// Socket code
-io.on('connection', (socket)=>{
-    console.log("User connection established");
-
-    socket.on('disconnect', ()=>{
-        console.log('user disconnected');
-    })
-
-    // used to determine if a character will 
-    socket.on('move', (data)=>{
-        // determine
-
-        if(!data){
-            var c = Math.floor((Math.random() * 100) + 1);
-            console.log(c);
-            if(c%4 == 0 && c%3 == 0){
-                //encouter
-                // send back and obj, contain img id, prof
-                // for testing do console.log
-                
-                // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
-                // for now send a temp obj
-                var tempProf = {
-                    name: 'mr.crocker', 
-                    rarity: 'normal',
-                    level: '25'
-                }
-                socket.emit('encounter', tempProf);
-            }
-        }
-        else{
-            socket.emit('no');
-        }
-    })
+    });
+  }
+  res.end();
 })
+app.get('/popAPill',async(req,res)=>{
+  console.log(req.session.user_name);
+  if(1 == 1){
+    const sql = {
+        text: 'SELECT quantity FROM '+[req.session.user_name]+'Inventory'
+    }
+    pool.query(sql, (err, response) => {
+       if(err) {
+           console.log(err);
+       }
+       console.log(response.rows[0].quantity);
+       if(req.session.itemUsed != 'true'){
+
+         const sql1 = {
+             text: 'UPDATE '+ [req.session.user_name]+'Inventory SET quantity=quantity-1 WHERE quantity>0'
+         }
+         pool.query(sql1, (err, response) => {
+            if(err) {
+                console.log(err);
+            } else {
+                 console.log("Popping pills");
+                 req.session.encounterChance = 4;
+                 req.session.itemUsed = 'true';
+            }
+
+         });
+       }
+       else{
+         alert("You do not have any Prof Hours left to Visit");
+       }
+
+    });
+  }
+  res.end();
+})
+// Socket code
+  io.on('connection', (socket)=>{
+      console.log("User connection established");
+
+      socket.on('disconnect', ()=>{
+          console.log('user disconnected');
+      })
+      // socket.on('caught',(data)=>{
+      //   console.log(socket.handshake.session.user);
+      //   if(!data){
+      //       var c = Math.floor((Math.random() * 100) + 1);
+      //       console.log(socket.handshake.session.user);
+      //       if((data.chance/100)*80 >= c){
+      //           //encouter
+      //           // send back and obj, contain img id, prof
+      //           // for testing do console.log
+      //
+      //           // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+      //           // for now send a temp obj
+      //         let sql = format('INSERT INTO %I(prof_fname, prof_lname, photo_id) VALUES $1,$2,$3', `${socket.handshake.session.user}ProfList`, [data.fname], [data.lname], data.photoid);
+      //
+      //         pool.query(sql, (err, response) => {
+      //            if(err) {
+      //                console.log(err);
+      //            } else {
+      //                 console.log("prof caught added");
+      //            }
+      //         });
+      //
+      //
+      //       }
+      //   }
+      //   else{
+      //       socket.emit('no');
+      //   }
+      // })
+      // used to determine if a character will
+      socket.on('move', (data)=>{
+          // determine
+
+          if(!data){
+              var c = Math.floor((Math.random() * 100) + 1);
+              console.log(c);
+              if(c%4 == 0 && c%3 == 0){
+                  //encouter
+                  // send back and obj, contain img id, prof
+                  // for testing do console.log
+
+                  // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+                  // for now send a temp obj
+                  var tempProf = {
+                      name: 'mr.crocker',
+                      rarity: 'normal',
+                      level: '25'
+                  }
+                  socket.emit('encounter', tempProf);
+              }
+          }
+          else{
+              socket.emit('no');
+          }
+      })
+  })
+
 // Socket Code ends here
 
 module.exports = app;
