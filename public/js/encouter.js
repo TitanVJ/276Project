@@ -30,6 +30,9 @@ document.getElementById("add").addEventListener("click", function(a){
   $.ajax({
       method:'get',
       url:'/addCandy',
+      success: function() {
+          alert("Office hours has been added!");
+      },
       error: ()=>{alert('Failed to add.')}
   });
 })
@@ -37,6 +40,9 @@ document.getElementById("use").addEventListener("click", function(a){
   $.ajax({
       method:'get',
       url:'/popAPill',
+      success: function() {
+          alert('Office hours has been used!');
+      },
       error: ()=>{alert('Failed to use.')}
   });
 })

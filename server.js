@@ -357,35 +357,36 @@ app.get('/popAPill',async(req,res)=>{
       socket.on('disconnect', ()=>{
           console.log('user disconnected');
       })
-      // socket.on('caught',(data)=>{
-      //   console.log(socket.handshake.session.user);
-      //   if(!data){
-      //       var c = Math.floor((Math.random() * 100) + 1);
-      //       console.log(socket.handshake.session.user);
-      //       if((data.chance/100)*80 >= c){
-      //           //encouter
-      //           // send back and obj, contain img id, prof
-      //           // for testing do console.log
-      //
-      //           // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
-      //           // for now send a temp obj
-      //         let sql = format('INSERT INTO %I(prof_fname, prof_lname, photo_id) VALUES $1,$2,$3', `${socket.handshake.session.user}ProfList`, [data.fname], [data.lname], data.photoid);
-      //
-      //         pool.query(sql, (err, response) => {
-      //            if(err) {
-      //                console.log(err);
-      //            } else {
-      //                 console.log("prof caught added");
-      //            }
-      //         });
-      //
-      //
-      //       }
-      //   }
-      //   else{
-      //       socket.emit('no');
-      //   }
-      // })
+
+      socket.on('caught',(data)=>{
+        console.log(socket.handshake.session.user);
+        if(!data){
+            var c = Math.floor((Math.random() * 100) + 1);
+            console.log(socket.handshake.session.user);
+            if((data.chance/100)*80 >= c){
+                //encouter
+                // send back and obj, contain img id, prof
+                // for testing do console.log
+
+                // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+                // for now send a temp obj
+              let sql = format('INSERT INTO %I(prof_fname, prof_lname, photo_id) VALUES $1,$2,$3', `${socket.handshake.session.user}ProfList`, [data.fname], [data.lname], data.photoid);
+
+              pool.query(sql, (err, response) => {
+                 if(err) {
+                     console.log(err);
+                 } else {
+                      console.log("prof caught added");
+                 }
+              });
+
+
+            }
+        }
+        else{
+            socket.emit('no');
+        }
+      })
       // used to determine if a character will
       socket.on('move', (data)=>{
           // determine
@@ -439,7 +440,7 @@ app.post('/addProfDex/:profName', function(req, res) {
                res.send("exists")
            } else {
                let values = [req.query.fname, req.query.lname, photoID];
-               pool.query('INSERT INTO profdex (prof_fname, prof_lname, photo_id) VALUES ($1, $2, $3)', values, (err, response) => {
+               pool.query('INSERT INTO profDex (prof_fname, prof_lname, photo_id) VALUES ($1, $2, $3)', values, (err, response) => {
                    if (err) {
                        console.log(err);
                    } else {
