@@ -329,6 +329,7 @@ app.get('/popAPill',async(req,res)=>{
        console.log(response.rows[0].quantity);
        if(req.session.itemUsed != 'true'){
 
+<<<<<<< HEAD
          const sql1 = {
              text: 'UPDATE '+ [req.session.user_name]+'Inventory SET quantity=quantity-1 WHERE quantity>0'
          }
@@ -340,6 +341,30 @@ app.get('/popAPill',async(req,res)=>{
                  req.session.encounterChance = 4;
                  req.session.itemUsed = 'true';
                  res.status(200);
+=======
+    // used to determine if a character will 
+    socket.on('move', (data)=>{
+        // determine
+
+        if(!data){
+            var c = Math.floor((Math.random() * 100) + 1);
+            console.log(c);
+            if(c%4 == 0 && c%3 == 0){
+                //encouter
+                // send back and obj, contain img id, prof
+                // for testing do console.log
+                
+                // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+                // for now send a temp obj
+                var tempProf = {
+                    prof_fname: 'bobby', 
+                    prof_lname: 'chan', 
+                    photo_id: '1',
+                    questions: ['How old am I?', 'What food do I use most in my examples?'],
+                    answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
+                }
+                socket.emit('encounter', tempProf);
+>>>>>>> vj_itr2
             }
 
          });
