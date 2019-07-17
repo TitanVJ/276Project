@@ -183,7 +183,7 @@ class main extends Phaser.State {
 
         this.w7.body.static = true;
 
-        this.w8 = game.add.sprite(4915,2980, '8');
+        this.w8 = this.game.add.sprite(4915,2980, '8');
 
         this.w8.scale.setTo(1.5, 1);
 
@@ -194,7 +194,7 @@ class main extends Phaser.State {
 
         this.w8.body.static = true;
 
-        this.w9 = game.add.sprite(5148,3135, '9');
+        this.w9 = this.game.add.sprite(5148,3135, '9');
 
         this.w9.scale.setTo(1, 2);
 
@@ -249,7 +249,7 @@ class main extends Phaser.State {
 
         this.w13.body.static = true;
 
-        this.w14 = game.add.sprite(7403,3430, '14');
+        this.w14 = this.game.add.sprite(7403,3430, '14');
 
         this.w14.scale.setTo(2.2, 1);
 
@@ -271,7 +271,7 @@ class main extends Phaser.State {
 
         this.w15.body.static = true;
 
-        this.w16 = game.add.sprite(7200,4100, '16');
+        this.w16 = this.game.add.sprite(7200,4100, '16');
 
         this.w16.scale.setTo(1, 1);
 
@@ -282,527 +282,507 @@ class main extends Phaser.State {
 
         this.w16.body.static = true;
 
-<<<<<<< HEAD
-        //problem mi se desava ovdje, nece da pusti da na
+        this.w17 = this.game.add.sprite(7433,4230, '17');
+
+        this.w17.scale.setTo(1, 1);
+
+        this.game.physics.p2.enable(w17);
+
+        this.w17.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w17.body.collides(this.playerCollisionGroup);
+
+        this.w17.body.static = true;
+
+        this.w18 = this.game.add.sprite(7850,4210, '18');
+
+        this.w18.scale.setTo(1, 1);
+
+        this.game.physics.p2.enable(this.w18);
+
+        this.w18.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w18.body.collides(this.playerCollisionGroup);
+
+        this.w18.body.static = true;
+
+        this.w19 = this.game.add.sprite(8078,4180, '19');
+
+        this.w19.scale.setTo(1, 1);
+
+        this.game.physics.p2.enable(this.w19);
+
+        w19.body.setCollisionGroup(this.wallCollisionGroup);
+        w19.body.collides(this.playerCollisionGroup);
+
+        w19.body.static = true;
+
+        w20 = this.game.add.sprite(8367,4173, '20');
+
+        w20.scale.setTo(1, 1);
+
+        this.game.physics.p2.enable(this.w20);
+
+        this.w20.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w20.body.collides(this.playerCollisionGroup);
         
-        this.game.physics.p2.enable(this.sprite);
+        this.w20.body.static = true;
 
-        this.sprite.body.setCollisionGroup(this.wallCollisionGroup);
-        this.sprite.body.collides(this.playerCollisionGroup);
+        this.w21 = this.game.add.sprite(8628,4136, '21');
 
-        this.sprite.body.static = true;
+        this.w21.scale.setTo(1, 1);
 
-        this.sprite2 = this.game.add.sprite(550,510, 'wall');
+        this.game.physics.p2.enable(this.w21);
 
-        this.game.physics.p2.enable(this.sprite2);
+        this.w21.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w21.body.collides(this.playerCollisionGroup);
 
-        this.sprite2.body.setCollisionGroup(this.wallCollisionGroup);
-        this.sprite2.body.collides(this.playerCollisionGroup);
+        this.w21.body.static = true;
 
-        this.sprite2.body.static = true;
-=======
-    w17 = game.add.sprite(7433,4230, '17');
+        this.w22 = this.game.add.sprite(8615,4080, '22');
 
-    w17.scale.setTo(1, 1);
+        this.w22.scale.setTo(1, 1);
 
-    game.physics.p2.enable(w17);
+        this.game.physics.p2.enable(this.w22);
 
-    w17.body.setCollisionGroup(wallCollisionGroup);
-    w17.body.collides(playerCollisionGroup);
+        this.w22.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w22.body.collides(this.playerCollisionGroup);
 
-    w17.body.static = true;
+        this.w22.body.static = true;
 
-    w18 = game.add.sprite(7850,4210, '18');
+        this.w23 = this.game.add.sprite(8595,4000, '23');
 
-    w18.scale.setTo(1, 1);
+        this.w23.scale.setTo(1, 1);
 
-    game.physics.p2.enable(w18);
+        this.game.physics.p2.enable(this.w23);
 
-    w18.body.setCollisionGroup(wallCollisionGroup);
-    w18.body.collides(playerCollisionGroup);
+        this.w23.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w23.body.collides(this.playerCollisionGroup);
 
-    w18.body.static = true;
+        this.w23.body.static = true;
 
-    w19 = game.add.sprite(8078,4180, '19');
+        this.w24 = this.game.add.sprite(8348,3945, '24');
 
-    w19.scale.setTo(1, 1);
+        this.w24.scale.setTo(1, 1);
 
-    game.physics.p2.enable(w19);
+        this.game.physics.p2.enable(this.w24);
 
-    w19.body.setCollisionGroup(wallCollisionGroup);
-    w19.body.collides(playerCollisionGroup);
+        this.w24.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w24.body.collides(this.playerCollisionGroup);
 
-    w19.body.static = true;
+        this.w24.body.static = true;
 
-    w20 = game.add.sprite(8367,4173, '20');
+        this.w25 = this.game.add.sprite(7955,3845, '25');
 
-    w20.scale.setTo(1, 1);
+        this.w25.scale.setTo(1, 1);
 
-    game.physics.p2.enable(w20);
+        this.game.physics.p2.enable(this.w25);
 
-    w20.body.setCollisionGroup(wallCollisionGroup);
-    w20.body.collides(playerCollisionGroup);
+        this.w25.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w25.body.collides(this.playerCollisionGroup);
 
-    w20.body.static = true;
+        this.w25.body.static = true;
 
-    w21 = game.add.sprite(8628,4136, '21');
+        this.w26 = this.game.add.sprite(8079,3583, '26');
 
-    w21.scale.setTo(1, 1);
+        this.w26.scale.setTo(1, 1);
 
-    game.physics.p2.enable(w21);
+        game.physics.p2.enable(this.w26);
 
-    w21.body.setCollisionGroup(wallCollisionGroup);
-    w21.body.collides(playerCollisionGroup);
+        this.w26.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w26.body.collides(this.playerCollisionGroup);
 
-    w21.body.static = true;
+        this.w26.body.static = true;
 
-    w22 = game.add.sprite(8615,4080, '22');
+        this.w27 = this.game.add.sprite(8060,3403, '27');
 
-    w22.scale.setTo(1, 1);
+        this.w27.scale.setTo(1, 1);
 
-    game.physics.p2.enable(w22);
+        this.game.physics.p2.enable(this.w27);
 
-    w22.body.setCollisionGroup(wallCollisionGroup);
-    w22.body.collides(playerCollisionGroup);
+        this.w27.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w27.body.collides(this.playerCollisionGroup);
 
-    w22.body.static = true;
+        this.w27.body.static = true;
 
-    w23 = game.add.sprite(8595,4000, '23');
+        this.w28 = this.game.add.sprite(8075,3240, '28');
 
-    w23.scale.setTo(1, 1);
+        this.w28.scale.setTo(1, 1);
 
-    game.physics.p2.enable(w23);
+        this.game.physics.p2.enable(this.w28);
+        
+        this.w28.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w28.body.collides(this.playerCollisionGroup);
 
-    w23.body.setCollisionGroup(wallCollisionGroup);
-    w23.body.collides(playerCollisionGroup);
+        this.w28.body.static = true;
 
-    w23.body.static = true;
+        this.w29 = this.game.add.sprite(8053,3010, '29');
 
-    w24 = game.add.sprite(8348,3945, '24');
+        this.w29.scale.setTo(1, 1);
 
-    w24.scale.setTo(1, 1);
+        game.physics.p2.enable(this.w29);
 
-    game.physics.p2.enable(w24);
+        this.w29.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w29.body.collides(this.playerCollisionGroup);
 
-    w24.body.setCollisionGroup(wallCollisionGroup);
-    w24.body.collides(playerCollisionGroup);
+        this.w29.body.static = true;
 
-    w24.body.static = true;
+        this.w30 = this.game.add.sprite(7940,2893, '30');
 
-    w25 = game.add.sprite(7955,3845, '25');
+        this.w30.scale.setTo(1, 1);
 
-    w25.scale.setTo(1, 1);
+        game.physics.p2.enable(this.w30);
 
-    game.physics.p2.enable(w25);
+        this.w30.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w30.body.collides(this.playerCollisionGroup);
 
-    w25.body.setCollisionGroup(wallCollisionGroup);
-    w25.body.collides(playerCollisionGroup);
+        this.w30.body.static = true;
 
-    w25.body.static = true;
+        this.w31 = this.game.add.sprite(7758,2930, '31');
 
-    w26 = game.add.sprite(8079,3583, '26');
+        this.w31.scale.setTo(1.01, 1.1);
 
-    w26.scale.setTo(1, 1);
+        game.physics.p2.enable(this.w31);
 
-    game.physics.p2.enable(w26);
+        this.w31.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w31.body.collides(this.playerCollisionGroup);
 
-    w26.body.setCollisionGroup(wallCollisionGroup);
-    w26.body.collides(playerCollisionGroup);
+        this.w31.body.static = true;
+        
+        this.w32 = this.game.add.sprite(7070,2200, '32');
 
-    w26.body.static = true;
+        this.w32.scale.setTo(1, 1);
 
-    w27 = game.add.sprite(8060,3403, '27');
+        game.physics.p2.enable(this.w32);
 
-    w27.scale.setTo(1, 1);
+        this.w32.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w32.body.collides(this.playerCollisionGroup);
 
-    game.physics.p2.enable(w27);
+        this.w32.body.static = true;
 
-    w27.body.setCollisionGroup(wallCollisionGroup);
-    w27.body.collides(playerCollisionGroup);
+        this.w33 = this.game.add.sprite(7465,1534, '33');
 
-    w27.body.static = true;
+        this.w33.scale.setTo(0.95, 4);
 
-    w28 = game.add.sprite(8075,3240, '28');
+        game.physics.p2.enable(this.w33);
 
-    w28.scale.setTo(1, 1);
+        this.w33.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w33.body.collides(this.playerCollisionGroup);
 
-    game.physics.p2.enable(w28);
+        this.w33.body.static = true;
 
-    w28.body.setCollisionGroup(wallCollisionGroup);
-    w28.body.collides(playerCollisionGroup);
+        this.w34 = this.game.add.sprite(8379,1480, '34');
 
-    w28.body.static = true;
+        this.w34.scale.setTo(3, 1);
 
-    w29 = game.add.sprite(8053,3010, '29');
+        game.physics.p2.enable(this.w34);
 
-    w29.scale.setTo(1, 1);
+        this.w34.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w34.body.collides(this.playerCollisionGroup);
 
-    game.physics.p2.enable(w29);
+        this.w34.body.static = true;
 
-    w29.body.setCollisionGroup(wallCollisionGroup);
-    w29.body.collides(playerCollisionGroup);
+        this.w35 = this.game.add.sprite(7582,1350, '35');
 
-    w29.body.static = true;
+        this.w35.scale.setTo(1, 1);
 
-    w30 = game.add.sprite(7940,2893, '30');
+        game.physics.p2.enable(this.w35);
 
-    w30.scale.setTo(1, 1);
+        this.w35.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w35.body.collides(this.playerCollisionGroup);
 
-    game.physics.p2.enable(w30);
+        this.w35.body.static = true;
 
-    w30.body.setCollisionGroup(wallCollisionGroup);
-    w30.body.collides(playerCollisionGroup);
+        this.w36 = this.game.add.sprite(6582,1253, '36');
 
-    w30.body.static = true;
+        this.w36.scale.setTo(1, 1.5);
 
-    w31 = game.add.sprite(7758,2930, '31');
+        game.physics.p2.enable(this.w36);
 
-    w31.scale.setTo(1.01, 1.1);
+        this.w36.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w36.body.collides(this.playerCollisionGroup);
 
-    game.physics.p2.enable(w31);
+        this.w36.body.static = true;
 
-    w31.body.setCollisionGroup(wallCollisionGroup);
-    w31.body.collides(playerCollisionGroup);
+        this.w37 = this.game.add.sprite(6320,1355, '37');
 
-    w31.body.static = true;
-    
-    w32 = game.add.sprite(7070,2200, '32');
+        this.w37.scale.setTo(1, 1);
 
-    w32.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w37);
 
-    game.physics.p2.enable(w32);
+        this.w37.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w37.body.collides(this.playerCollisionGroup);
 
-    w32.body.setCollisionGroup(wallCollisionGroup);
-    w32.body.collides(playerCollisionGroup);
+        this.w37.body.static = true;
 
-    w32.body.static = true;
+        this.w38 = this.game.add.sprite(6000,1400, '38');
 
-    w33 = game.add.sprite(7465,1534, '33');
+        this.w38.scale.setTo(1, 1);
 
-    w33.scale.setTo(0.95, 4);
+        game.physics.p2.enable(this.w38);
 
-    game.physics.p2.enable(w33);
+        this.w38.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w38.body.collides(this.playerCollisionGroup);
 
-    w33.body.setCollisionGroup(wallCollisionGroup);
-    w33.body.collides(playerCollisionGroup);
+        this.w38.body.static = true;
 
-    w33.body.static = true;
+        this.w39 = this.game.add.sprite(5600,1330, '39');
 
-    w34 = game.add.sprite(8379,1480, '34');
+        this.w39.scale.setTo(1, 1);
 
-    w34.scale.setTo(3, 1);
+        game.physics.p2.enable(this.w39);
 
-    game.physics.p2.enable(w34);
+        this.w39.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w39.body.collides(this.playerCollisionGroup);
 
-    w34.body.setCollisionGroup(wallCollisionGroup);
-    w34.body.collides(playerCollisionGroup);
+        this.w39.body.static = true;
 
-    w34.body.static = true;
+        this.w40 = this.game.add.sprite(5186,1210, '40');
 
-    w35 = game.add.sprite(7582,1350, '35');
+        this.w40.scale.setTo(1, 1);
 
-    w35.scale.setTo(1, 1);
+        game.physics.p2.enable(this.w40);
 
-    game.physics.p2.enable(w35);
+        this.w40.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w40.body.collides(this.playerCollisionGroup);
 
-    w35.body.setCollisionGroup(wallCollisionGroup);
-    w35.body.collides(playerCollisionGroup);
+        this.w40.body.static = true;
 
-    w35.body.static = true;
+        this.w41 = this.game.add.sprite(4778,1548, '41');
 
-    w36 = game.add.sprite(6582,1253, '36');
+        this.w41.scale.setTo(1, 1);
 
-    w36.scale.setTo(1, 1.5);
+        game.physics.p2.enable(this.w41);
 
-    game.physics.p2.enable(w36);
+        this.w41.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w41.body.collides(this.playerCollisionGroup);
 
-    w36.body.setCollisionGroup(wallCollisionGroup);
-    w36.body.collides(playerCollisionGroup);
+        this.w41.body.static = true;
 
-    w36.body.static = true;
+        this.w42 = this.game.add.sprite(4555,1919, '42');
 
-    w37 = game.add.sprite(6320,1355, '37');
+        this.w42.scale.setTo(1, 1);
 
-    w37.scale.setTo(1, 1);
+        game.physics.p2.enable(this.w42);
 
-    game.physics.p2.enable(w37);
+        this.w42.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w42.body.collides(this.playerCollisionGroup);
 
-    w37.body.setCollisionGroup(wallCollisionGroup);
-    w37.body.collides(playerCollisionGroup);
+        this.w42.body.static = true;
 
-    w37.body.static = true;
+        this.w43 = this.game.add.sprite(4472,1812, '43');
 
-    w38 = game.add.sprite(6000,1400, '38');
+        this.w43.scale.setTo(3, 1);
 
-    w38.scale.setTo(1, 1);
+        game.physics.p2.enable(this.w43);
 
-    game.physics.p2.enable(w38);
+        this.w43.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w43.body.collides(this.playerCollisionGroup);
 
-    w38.body.setCollisionGroup(wallCollisionGroup);
-    w38.body.collides(playerCollisionGroup);
+        this.w43.body.static = true;
 
-    w38.body.static = true;
+        this.w44 = this.game.add.sprite(3940,1640, '44');
 
-    w39 = game.add.sprite(5600,1330, '39');
+        this.w44.scale.setTo(1, 1);
 
-    w39.scale.setTo(1, 1);
+        game.physics.p2.enable(this.w44);
 
-    game.physics.p2.enable(w39);
+        this.w44.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w44.body.collides(this.playerCollisionGroup);
 
-    w39.body.setCollisionGroup(wallCollisionGroup);
-    w39.body.collides(playerCollisionGroup);
+        this.w44.body.static = true;
 
-    w39.body.static = true;
+        this.w45 = this.game.add.sprite(2940,1810, '45');
 
-    w40 = game.add.sprite(5186,1210, '40');
+        this.w45.scale.setTo(1, 1);
 
-    w40.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w45);
 
-    game.physics.p2.enable(w40);
+        this.w45.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w45.body.collides(this.playerCollisionGroup);
 
-    w40.body.setCollisionGroup(wallCollisionGroup);
-    w40.body.collides(playerCollisionGroup);
+        this.w45.body.static = true;
 
-    w40.body.static = true;
+        this.w46 = this.game.add.sprite(2330,1949, '46');
 
-    w41 = game.add.sprite(4778,1548, '41');
+        this.w46.scale.setTo(1, 1);
 
-    w41.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w46);
 
-    game.physics.p2.enable(w41);
+        this.w46.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w46.body.collides(this.playerCollisionGroup);
 
-    w41.body.setCollisionGroup(wallCollisionGroup);
-    w41.body.collides(playerCollisionGroup);
+        this.w46.body.static = true;
 
-    w41.body.static = true;
+        this.w47 = this.game.add.sprite(2434,1870, '47');
 
-    w42 = game.add.sprite(4555,1919, '42');
+        this.w47.scale.setTo(1, 1);
 
-    w42.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w47);
 
-    game.physics.p2.enable(w42);
+        this.w47.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w47.body.collides(this.playerCollisionGroup);
 
-    w42.body.setCollisionGroup(wallCollisionGroup);
-    w42.body.collides(playerCollisionGroup);
+        this.w47.body.static = true;
 
-    w42.body.static = true;
+        this.w48 = this.game.add.sprite(2425,1775, '48');
 
-    w43 = game.add.sprite(4472,1812, '43');
+        this.w48.scale.setTo(1, 1);
 
-    w43.scale.setTo(3, 1);
+        this.game.physics.p2.enable(this.w48);
 
-    game.physics.p2.enable(w43);
+        this.w48.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w48.body.collides(this.playerCollisionGroup);
 
-    w43.body.setCollisionGroup(wallCollisionGroup);
-    w43.body.collides(playerCollisionGroup);
+        this.w48.body.static = true;
 
-    w43.body.static = true;
+        this.w49 = this.game.add.sprite(2392,1690, '49');
 
-    w44 = game.add.sprite(3940,1640, '44');
+        this.w49.scale.setTo(1, 1);
 
-    w44.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w49);
 
-    game.physics.p2.enable(w44);
+        this.w49.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w49.body.collides(this.playerCollisionGroup);
 
-    w44.body.setCollisionGroup(wallCollisionGroup);
-    w44.body.collides(playerCollisionGroup);
+        this.w49.body.static = true;
 
-    w44.body.static = true;
+        this.w50 = this.game.add.sprite(2271,1643, '50');
 
-    w45 = game.add.sprite(2940,1810, '45');
+        this.w50.scale.setTo(1, 1);
 
-    w45.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w50);
 
-    game.physics.p2.enable(w45);
+        this.w50.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w50.body.collides(this.playerCollisionGroup);
 
-    w45.body.setCollisionGroup(wallCollisionGroup);
-    w45.body.collides(playerCollisionGroup);
+        this.w50.body.static = true;
 
-    w45.body.static = true;
+        this.w51 = this.game.add.sprite(2131,1663, '51');
 
-    w46 = game.add.sprite(2330,1949, '46');
+        this.w51.scale.setTo(1, 1);
 
-    w46.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w51);
 
-    game.physics.p2.enable(w46);
+        this.w51.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w51.body.collides(this.playerCollisionGroup);
 
-    w46.body.setCollisionGroup(wallCollisionGroup);
-    w46.body.collides(playerCollisionGroup);
+        this.w51.body.static = true;
 
-    w46.body.static = true;
+        this.w52 = this.game.add.sprite(1988,1643, '52');
 
-    w47 = game.add.sprite(2434,1870, '47');
+        this.w52.scale.setTo(1, 1);
 
-    w47.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w52);
 
-    game.physics.p2.enable(w47);
+        this.w52.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w52.body.collides(this.playerCollisionGroup);
 
-    w47.body.setCollisionGroup(wallCollisionGroup);
-    w47.body.collides(playerCollisionGroup);
+        this.w52.body.static = true;
 
-    w47.body.static = true;
+        this.w53 = this.game.add.sprite(1740,1662, '53');
 
-    w48 = game.add.sprite(2425,1775, '48');
+        this.w53.scale.setTo(1, 1);
 
-    w48.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w53);
 
-    game.physics.p2.enable(w48);
+        this.w53.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w53.body.collides(this.playerCollisionGroup);
 
-    w48.body.setCollisionGroup(wallCollisionGroup);
-    w48.body.collides(playerCollisionGroup);
+        this.w53.body.static = true;
 
-    w48.body.static = true;
+        this.w54 = this.game.add.sprite(1492,1635, '54');
 
-    w49 = game.add.sprite(2392,1690, '49');
+        this.w54.scale.setTo(1, 1);
 
-    w49.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w54);
 
-    game.physics.p2.enable(w49);
+        this.w54.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w54.body.collides(this.playerCollisionGroup);
 
-    w49.body.setCollisionGroup(wallCollisionGroup);
-    w49.body.collides(playerCollisionGroup);
+        this.w54.body.static = true;
 
-    w49.body.static = true;
+        this.w55 = this.game.add.sprite(1352,1658, '55');
 
-    w50 = game.add.sprite(2271,1643, '50');
+        this.w55.scale.setTo(1, 1);
 
-    w50.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w55);
 
-    game.physics.p2.enable(w50);
+        this.w55.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w55.body.collides(this.playerCollisionGroup);
 
-    w50.body.setCollisionGroup(wallCollisionGroup);
-    w50.body.collides(playerCollisionGroup);
+        this.w55.body.static = true;
 
-    w50.body.static = true;
+        this.w56 = this.game.add.sprite(1212,1632, '56');
 
-    w51 = game.add.sprite(2131,1663, '51');
+        this.w56.scale.setTo(1, 1);
 
-    w51.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w56);
 
-    game.physics.p2.enable(w51);
+        this.w56.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w56.body.collides(this.playerCollisionGroup);
 
-    w51.body.setCollisionGroup(wallCollisionGroup);
-    w51.body.collides(playerCollisionGroup);
+        this.w56.body.static = true;
 
-    w51.body.static = true;
+        this.w57 = this.game.add.sprite(1090,1692, '57');
 
-    w52 = game.add.sprite(1988,1643, '52');
+        this.w57.scale.setTo(1, 1);
 
-    w52.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w57);
 
-    game.physics.p2.enable(w52);
+        this.w57.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w57.body.collides(this.playerCollisionGroup);
 
-    w52.body.setCollisionGroup(wallCollisionGroup);
-    w52.body.collides(playerCollisionGroup);
+        this.w57.body.static = true;
 
-    w52.body.static = true;
+        this.w58 = this.game.add.sprite(1060,1778, '58');
 
-    w53 = game.add.sprite(1740,1662, '53');
+        this.w58.scale.setTo(1, 1);
 
-    w53.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w58);
 
-    game.physics.p2.enable(w53);
+        this.w58.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w58.body.collides(this.playerCollisionGroup);
 
-    w53.body.setCollisionGroup(wallCollisionGroup);
-    w53.body.collides(playerCollisionGroup);
+        this.w58.body.static = true;
 
-    w53.body.static = true;
+        this.w59 = this.game.add.sprite(1044,1870, '59');
 
-    w54 = game.add.sprite(1492,1635, '54');
+        this.w59.scale.setTo(1, 1);
 
-    w54.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w59);
 
-    game.physics.p2.enable(w54);
+        this.w59.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w59.body.collides(this.playerCollisionGroup);
 
-    w54.body.setCollisionGroup(wallCollisionGroup);
-    w54.body.collides(playerCollisionGroup);
+        this.w59.body.static = true;
 
-    w54.body.static = true;
+        this.w60 = this.game.add.sprite(5720,2163, '60');
 
-    w55 = game.add.sprite(1352,1658, '55');
+        this.w60.scale.setTo(0.68, 1);
 
-    w55.scale.setTo(1, 1);
+        this.game.physics.p2.enable(this.w60);
 
-    game.physics.p2.enable(w55);
+        this.w60.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w60.body.collides(this.playerCollisionGroup);
 
-    w55.body.setCollisionGroup(wallCollisionGroup);
-    w55.body.collides(playerCollisionGroup);
+        this.w60.body.static = true;
 
-    w55.body.static = true;
+        this.w61 = this.game.add.sprite(7572,3839, '61');
 
-    w56 = game.add.sprite(1212,1632, '56');
+        this.w61.scale.setTo(1, 1);
 
-    w56.scale.setTo(1, 1);
+        this.game.physics.p2.enable(w61);
 
-    game.physics.p2.enable(w56);
+        this.w61.body.setCollisionGroup(this.wallCollisionGroup);
+        this.w61.body.collides(this.playerCollisionGroup);
 
-    w56.body.setCollisionGroup(wallCollisionGroup);
-    w56.body.collides(playerCollisionGroup);
+        this.w61.body.static = true;
 
-    w56.body.static = true;
 
-    w57 = game.add.sprite(1090,1692, '57');
 
-    w57.scale.setTo(1, 1);
 
-    game.physics.p2.enable(w57);
 
-    w57.body.setCollisionGroup(wallCollisionGroup);
-    w57.body.collides(playerCollisionGroup);
 
-    w57.body.static = true;
 
-    w58 = game.add.sprite(1060,1778, '58');
-
-    w58.scale.setTo(1, 1);
-
-    game.physics.p2.enable(w58);
-
-    w58.body.setCollisionGroup(wallCollisionGroup);
-    w58.body.collides(playerCollisionGroup);
-
-    w58.body.static = true;
-
-    w59 = game.add.sprite(1044,1870, '59');
-
-    w59.scale.setTo(1, 1);
-
-    game.physics.p2.enable(w59);
-
-    w59.body.setCollisionGroup(wallCollisionGroup);
-    w59.body.collides(playerCollisionGroup);
-
-    w59.body.static = true;
-
-    w60 = game.add.sprite(5720,2163, '60');
-
-    w60.scale.setTo(0.68, 1);
-
-    game.physics.p2.enable(w60);
-
-    w60.body.setCollisionGroup(wallCollisionGroup);
-    w60.body.collides(playerCollisionGroup);
-
-    w60.body.static = true;
-
-    w61 = game.add.sprite(7572,3839, '61');
-
-    w61.scale.setTo(1, 1);
-
-    game.physics.p2.enable(w61);
-
-    w61.body.setCollisionGroup(wallCollisionGroup);
-    w61.body.collides(playerCollisionGroup);
-
-    w61.body.static = true;
-
-
-
-
-
-
-
->>>>>>> nikolaf
 
         this.game.camera.follow(this.player);
 
