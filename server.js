@@ -1,4 +1,5 @@
 const express = require('express');
+const request = require('request');
 const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 8080;
@@ -8,11 +9,16 @@ const flash = require('express-flash');
 const uuidv1 = require('uuid/v1');
 var format = require('pg-format');
 const { Pool } = require('pg');
+var cors = require('cors');
+const fs = require('fs');
+const fileUpload = require('express-fileupload');
 const server =  app.listen(PORT, ()=>{console.log("Magic is happening on port " + PORT);});
 const io = require("socket.io")(server);
-var cors = require('cors')
 
-const connectionString = process.env.DATABASE_URL;
+app.use(fileUpload());
+
+
+const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
 const pool = new Pool({
     connectionString: connectionString,
 });
@@ -34,7 +40,7 @@ function hasPermissions(user) {
     } else {
         return false;
     }
-};
+}
 
 // Add this middleware function to pages you want users to be logged in to view
 function loggedIn(req, res, next) {
@@ -64,13 +70,14 @@ app.get('/register', function(req, res) {
     res.render('pages/register');
 });
 
+/* Create new user and insert them into the DB */
 app.post('/sign-up', function(req, res) {
     const values = [req.body.username, bcrypt.hashSync(req.body.password, salt)];
 
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) =>{
 
         if(response.rows.length > 0) {
-            req.flash('error', 'That e-mail is already in use!');
+            req.flash('error', 'That username is already in use!');
             res.render('pages/register', {expressFlash: req.flash('error')})
         } else {
             pool.query('INSERT INTO users VALUES ($1, $2)', values, (err, response) => {
@@ -118,6 +125,7 @@ app.post('/sign-up', function(req, res) {
     });
 });
 
+/* Validate user's credentials and log them into the site */
 app.post('/login', function(req, res, next) {
     console.log(req.session.user_name);
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) => {
@@ -131,7 +139,7 @@ app.post('/login', function(req, res, next) {
                 if(bcrypt.compareSync(req.body.password, response.rows[0].password)) {
                     req.session.user = response.rows[0];
                     if(hasPermissions(req.session.user)) {
-                        res.redirect('./admin')
+                        res.redirect('./admin');
                     } else {
                       req.session.encounterChance = 12;
                       req.session.itemUsed = 'false'
@@ -147,6 +155,7 @@ app.post('/login', function(req, res, next) {
     });
 });
 
+/* TESTING: To check if a row has been added to the users table */
 app.get('/get-num-users', function(req, res) {
    pool.query("SELECT * FROM users", (err, response) => {
       if(err) {
@@ -157,88 +166,31 @@ app.get('/get-num-users', function(req, res) {
    });
 });
 
+/* Destroy a users session when they logout*/
 app.get('/logout', function(req, res) {
     req.session.destroy(function(err) {
         res.redirect('/');
     });
 });
-app.get('/admin', function(req, res) {
 
+/* Serve the admin page */
+app.get('/admin', loggedIn, function(req, res) {
   if(hasPermissions(req.session.user) == true){
-    res.render('pages/admin');
+    res.render('pages/admin', {user: req.session.user});
   }
   else{
     res.redirect('pages/logout');
   }
 });
-app.get('/search', (req, res)=>{
-    const query = {
-        text: 'SELECT user_name,status,last_updated,record_created FROM users WHERE ' + req.query.column + '=$1',
-        values: [req.query.value]
+
+/* Serve the professor list portion of the admin page */
+app.get('/admin_professor', loggedIn, function(req, res) {
+    if(hasPermissions(req.session.user) == true){
+        res.render('pages/admin_professor');
     }
-    pool.query(query, (err, result)=>{
-        if(err){
-            console.log(err.message);
-            res.status('500');
-            return res.send('');
-        }
-        else if(result.rowCount == 0){
-            // console.log(result)
-            console.log('Empty table');
-            res.status('500');
-            return res.send('');
-        }
-
-        const results = { 'results': (result) ? result.rows : null };
-        res.status(200);
-        res.send(results);
-    });
-
-});
-app.get('/searchProfDex', (req, res)=>{
-    const query = {
-        text: 'SELECT prof_fname,prof_lname,photo_id, last_updated, record_created FROM profDex WHERE ' + req.query.column + '=$1',
-        values: [req.query.value]
+    else{
+        res.redirect('pages/logout');
     }
-    pool.query(query, (err, result)=>{
-        if(err){
-            console.log(err.message);
-            res.status('500');
-            return res.send('');
-        }
-        else if(result.rowCount == 0){
-            // console.log(result)
-            console.log('Empty table');
-            res.status('500');
-            return res.send('');
-        }
-
-        const results = { 'results': (result) ? result.rows : null };
-        res.status(200);
-        res.send(results);
-    });
-
-});
-/***************************************/
-app.get('/toTable', (req, res) => {
-    // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
-    // console.log(sql).
-    const query = 'SELECT prof_id,prof_fname,prof_lname,photo_id,catch_time FROM ' + req.query.user + 'ProfList';
-    console.log(query);
-    pool.query(query ,(error, result)=>{
-        if(error){
-            console.log(error.message);
-            res.send('');
-        }
-        if(result.rowCount == 0){
-            console.log('Empty table');
-            res.send('');
-        }
-        const results = { 'results': (result) ? result.rows : null };
-        res.status(200);
-        res.send(results);
-    });
-
 });
 
 app.get('/toInventory', (req, res) => {
@@ -266,40 +218,39 @@ app.get('/data', (req, res)=>{
     pool.query("select user_name,status,last_updated,record_created FROM users", (error, result)=>{
         if(error){
             console.log(error.message);
-            res.status('500');
-            res.send('');
+            res.end();
         }
         if(result.rowCount == 0){
             console.log('Empty table');
-            res.status('500');
-            res.send('');
+            res.end();
         }
     const results = { 'results': (result) ? result.rows : null };
-    res.status(200);
     res.send(results);
     });
 });
-app.get('/dataProfDex', (req, res)=>{
-    pool.query("SELECT prof_id,prof_fname,prof_lname,photo_id,last_updated,record_created FROM profDex", (error, result)=>{
+
+/* Get all the professor data from the DB */
+app.get('/dataProfDex', (req, res) =>{
+    pool.query("SELECT * FROM profDex", (error, result)=>{
         if(error){
             console.log(error.message);
-            res.status('500');
-            res.send('');
+            res.end();
         }
-        if(result.rowCount == 0){
+
+        if(result.rows.length == 0){
             console.log('Empty table');
-            res.status('500');
-            res.send('');
+            res.end();
+            return;
         }
+
     const results = { 'results': (result) ? result.rows : null };
-    res.status(200);
     res.send(results);
     });
-})
-/**********************************/
-app.delete('/removeUser/:id', (req, res)=>{
+});
 
-    console.log('del start');
+/* Delete a user from the DB */
+app.delete('/removeUser/:id', loggedIn, (req, res)=>{
+
     pool.query('DELETE FROM users WHERE user_name=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
@@ -333,16 +284,13 @@ app.delete('/removeUser/:id', (req, res)=>{
 })
 app.delete('/removeProf/:id', (req, res)=>{
 
-    console.log('del start');
     pool.query('DELETE FROM profDex WHERE prof_id=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
-          res.status('500');
-          res.send('');
+          res.end();
       }
       else {
-        res.status('200');
-        res.send('');
+        res.end();
       }
     })
 })
@@ -467,5 +415,84 @@ app.get('/popAPill',async(req,res)=>{
   })
 
 // Socket Code ends here
+
+/* Used to check if a profs photo exists */
+app.get('/check-file/:fileName', function(req, res) {
+    console.log(req.params.fileName);
+    if (fs.existsSync('./public/images/prof_images/' + req.params.fileName)) {
+        res.send(true);
+    } else {
+        res.send(false);
+    }
+});
+
+/* Add a professor who's photo is already on the server to the DB (ie. only add their information to the DB) */
+app.post('/addProfDex/:profName', function(req, res) {
+    console.log(req.query);
+    let photoID = `${req.query.fname.toUpperCase()}_${req.query.lname.toUpperCase()}`;
+
+    pool.query('SELECT * FROM profdex WHERE photo_id = $1', [photoID], (err, response) =>{
+       if(err) {
+           console.log(err);
+       } else {
+           if(response.rows.length > 0) {
+               res.send("exists")
+           } else {
+               let values = [req.query.fname, req.query.lname, photoID];
+               pool.query('INSERT INTO profdex (prof_fname, prof_lname, photo_id) VALUES ($1, $2, $3)', values, (err, response) => {
+                   if (err) {
+                       console.log(err);
+                   } else {
+                       res.send('success');
+                   }
+               });
+           }
+       }
+    });
+});
+
+/* Upload new professor photo and add professor information to the DB */
+app.post('/add-new-prof', loggedIn, function(req, res) {
+ let fileName = `${req.body.common.toUpperCase()}_${req.body.lname.toUpperCase()}.jpg`;
+    if(req.files.filename){
+        var file = req.files.filename,
+            type = file.mimetype;
+        var uploadpath = __dirname + '/public/images/prof_images/' + fileName;
+        file.mv(uploadpath,function(err){
+            if(err){
+                console.log("File Upload Failed",fileName,err);
+                res.end();
+            }
+            else {
+                console.log("File Uploaded",fileName);
+
+                let photoID = `${req.body.fname.toUpperCase()}_${req.body.lname.toUpperCase()}`;
+
+                pool.query('SELECT * FROM profdex WHERE photo_id = $1', [photoID], (err, response) =>{
+                    if(err) {
+                        console.log(err);
+                    } else {
+
+                        if(response.rows.length > 0) {
+                            res.send("exists")
+                        } else {
+                            let values = [uuidv1(), req.query.fname, req.query.lname, photoID];
+                            pool.query('INSERT INTO profdex VALUES ($1, $2, $3, $4)', values, (err, response) => {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    res.redirect('/admin_professor');
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+});
+
+// Change prof_id to uuid
+// Change photo_id to varchar
 
 module.exports = app;

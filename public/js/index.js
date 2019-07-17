@@ -5,7 +5,7 @@ function back(){
 }
 
 function home(){
-    window.location.href="../home.html"
+    window.location.href="../game.html"
 }
 
 function radio_input(url){
