@@ -301,9 +301,11 @@ io.on('connection', (socket)=>{
                 // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
                 // for now send a temp obj
                 var tempProf = {
-                    name: 'mr.crocker', 
-                    rarity: 'normal',
-                    level: '25'
+                    prof_fname: 'bobby', 
+                    prof_lname: 'chan', 
+                    photo_id: '1',
+                    questions: ['How old am I?', 'What food do I use most in my examples?'],
+                    answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
                 }
                 socket.emit('encounter', tempProf);
             }
