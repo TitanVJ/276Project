@@ -112,7 +112,7 @@ app.post('/login', function(req, res, next) {
                     req.session.user = response.rows[0];
 
                     if(hasPermissions(req.session.user)) {
-                        res.redirect('./admin')
+                        res.redirect('./admin');
                     } else {
                         res.redirect('/game.html');
                     }
@@ -180,7 +180,7 @@ app.get('/data', loggedIn, (req, res)=>{
 });
 
 /* Get all the professor data from the DB */
-app.get('/dataProfDex', loggedIn, (req, res)=>{
+app.get('/dataProfDex', (req, res) =>{
     pool.query("SELECT * FROM profDex", (error, result)=>{
         if(error){
             console.log(error.message);
@@ -197,6 +197,7 @@ app.get('/dataProfDex', loggedIn, (req, res)=>{
     res.send(results);
     });
 });
+
 /* Delete a user from the DB */
 app.delete('/removeUser/:id', loggedIn, (req, res)=>{
 
@@ -213,7 +214,7 @@ app.delete('/removeUser/:id', loggedIn, (req, res)=>{
 });
 
 /* Delete a professor from the DB */
-app.delete('/removeProf/:id', loggedIn, (req, res)=>{
+app.delete('/removeProf/:id', (req, res)=>{
 
     pool.query('DELETE FROM profDex WHERE prof_id=$1', [req.params.id], function (err, resp) {
       if (err){
@@ -274,7 +275,8 @@ app.get('/check-file/:fileName', function(req, res) {
 });
 
 /* Add a professor who's photo is already on the server to the DB (ie. only add their information to the DB) */
-app.post('/addProfDex/:profName', loggedIn, function(req, res) {
+app.post('/addProfDex/:profName', function(req, res) {
+    console.log(req.query);
     let photoID = `${req.query.fname.toUpperCase()}_${req.query.lname.toUpperCase()}`;
 
     pool.query('SELECT * FROM profdex WHERE photo_id = $1', [photoID], (err, response) =>{
@@ -340,13 +342,5 @@ app.post('/add-new-prof', loggedIn, function(req, res) {
 
 // Change prof_id to uuid
 // Change photo_id to varchar
-// Add logout button
-
-
-
-
-
-
-
 
 module.exports = app;
