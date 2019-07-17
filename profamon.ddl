@@ -25,7 +25,7 @@ CREATE TABLE profDex (
   prof_id SERIAL PRIMARY KEY,
   prof_fname VARCHAR(32),
   prof_lname VARCHAR(32),
-  photo_id NUMERIC,
+  photo_id VARCHAR,
   last_updated TIMESTAMP DEFAULT now(),
   record_created TIMESTAMP DEFAULT now()
 );
