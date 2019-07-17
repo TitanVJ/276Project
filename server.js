@@ -286,8 +286,8 @@ app.post('/addProfDex/:profName', function(req, res) {
            if(response.rows.length > 0) {
                res.send("exists")
            } else {
-               let values = [uuidv1(), req.query.fname, req.query.lname, photoID];
-               pool.query('INSERT INTO profdex VALUES ($1, $2, $3, $4)', values, (err, response) => {
+               let values = [req.query.fname, req.query.lname, photoID];
+               pool.query('INSERT INTO profdex (prof_fname, prof_lname, photo_id) VALUES ($1, $2, $3)', values, (err, response) => {
                    if (err) {
                        console.log(err);
                    } else {
