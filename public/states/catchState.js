@@ -12,7 +12,7 @@ class catchState extends Phaser.State {
     preload(){
         //need background image, for now use same background as main state
         //need prof image
-        this.game.load.image('prof', '../images/bobby.jpg');
+        this.game.load.image('prof', '../images/prof_images/BOBBY_CHAN.jpg');
         this.game.load.image('back', './images/backBtn.png');
         this.game.load.image('btn', './images/btn.png');
 
