@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+
+    <link rel="stylesheet" type="text/css" href="admin.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="admin.js" defer></script>
+</head>
+<body>
+<% include ../partials/headers.ejs %>
+<% include ../partials/admin_nav_bar.ejs %>
+
+
+
+
+<div class="container">
+    <br>
+    <div class=" row">
+        <div class="col">
+            <h2>Professor Search</h2>
+        </div>
+        <div class="col">
+            <button type="button" class="btn float-right btn-success" data-toggle="modal" data-target="#new_prof" onclick="getYears()"> Add Professor </button>
+        </div>
+
+    </div>
+
+    <input class="form-control" id="profInput" type="text" placeholder="Search..">
+    <br>
+    <table class="table table-bordered table-hover" id="professorTable">
+        <thead style="background-color: #97D2FB">
+        <tr>
+            <th class="text-center"> Photo </th>
+            <th class="text-center">Professor ID</th>
+            <th class="text-center">First Name</th>
+            <th class="text-center">Last Name</th>
+            <th class="text-center">Last Updated</th>
+            <th class="text-center">Record Created</th>
+            <th class="text-center"> </th>
+
+        </tr>
+        </thead>
+        <tbody id="profTableBody">
+
+        </tbody>
+    </table>
+
+    <!-- New Student Modal -->
+    <%include ../partials/add_prof_modal.ejs %>
+
+</div>
+</body>
+</html>
