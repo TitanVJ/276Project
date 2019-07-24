@@ -18,7 +18,7 @@ const io = require("socket.io")(server);
 app.use(fileUpload());
 
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
 const pool = new Pool({
     connectionString: connectionString,
 });
@@ -121,6 +121,7 @@ app.post('/sign-up', function(req, res) {
                     // req.flash('error', "Incorrect username and/or password!");
                     // res.render('pages/login', {expressFlash: req.flash('error')});
 
+                    console.log("Flash Message");
                     req.flash('info', "New User Created Successfully. Please Sign-in.");
 
                     res.render('pages/login', {expressFlashNewUser: req.flash('info')})
