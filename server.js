@@ -118,7 +118,12 @@ app.post('/sign-up', function(req, res) {
                        }
                     });
 
-                    res.render('pages/login')
+                    // req.flash('error', "Incorrect username and/or password!");
+                    // res.render('pages/login', {expressFlash: req.flash('error')});
+
+                    req.flash('info', "New User Created Successfully. Please Sign-in.");
+
+                    res.render('pages/login', {expressFlashNewUser: req.flash('info')})
                 }
             });
         }

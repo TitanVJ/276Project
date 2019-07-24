@@ -26,8 +26,11 @@
                                 <% if ( locals.expressFlash ) { %>
                                     <p style="color: red"><strong>ERROR!</strong> <%= expressFlash %></p>
                                 <% } %>
+                                <% if ( locals.expressFlashNewUser ) { %>
+                                    <p style="color: green"><strong>Success!</strong> <%= expressFlashNewUser %></p>
+                                <% } %>
                                 <div class="form-footer">
-                                    <button type="submit" class="btn btn-primary btn-block">Create new account</button>
+                                    <button type="submit" class="btn btn-primary btn-block" id="submit" >Create new account</button>
                                 </div>
                             </div>
                         </form>
