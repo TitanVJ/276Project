@@ -364,12 +364,21 @@ function addExistingProf() {
 $('#change_status').confirmation({
     rootSelector: '[data-toggle=confirmation]',
     onConfirm: function () {
+        // Just changes the user status but does not drop the tables that only applied to them when they were a user.
+        $.ajax({
+            method: 'GET',
+            url: `/changeUserStatus?user=${$('#change_status').attr('data-user-id')}`,
+            success(data) {
+                refreshUserCatalogue();
+            }
+        });
         console.log("Confirm");
     }
 });
 
 $('#user_modal').on('show.bs.modal', function (e) {
     $('#modal_title').html("Inventory for " + e.relatedTarget.id)
+    $('#change_status').attr('data-user-id', e.relatedTarget.id);
 
     $.ajax({
         method: 'GET',
