@@ -364,7 +364,8 @@ $('#new_prof').on('hidden.bs.modal', function (e) {
 function modalCloseHelper (id) {
     $('#profPicture').empty();
     $('#modalFoot').empty();
-    document.getElementById(`${id}`).options.length = 0;
+    $(`#${id}`).find('option').remove();
+    //document.getElementById(`${id}`).options.length = 0;
     $(`#${id}`).prop('disabled', true);
     $(`#${id}`).attr('readonly', true);
     $(`#${id}`).selectpicker('refresh');
