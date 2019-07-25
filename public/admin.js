@@ -118,7 +118,7 @@ function printUsers(data) {
     $.each(data.results, function() {
 
         if(this.status == 'admin') {
-            $('<tr>').attr('id', this.user_name).attr('data-toggle', 'modal').attr('data-target', '#admin_modal').appendTo('#myTable');
+            $('<tr>').attr('id', this.user_name).appendTo('#myTable');
         } else {
             $('<tr>').attr('id', this.user_name).attr('data-toggle', 'modal').attr('data-target', '#user_modal').appendTo('#myTable');
         }
@@ -361,4 +361,30 @@ function addExistingProf() {
     });
 }
 
+$('#change_status').confirmation({
+    rootSelector: '[data-toggle=confirmation]',
+    onConfirm: function () {
+        console.log("Confirm");
+    }
+});
+
+$('#user_modal').on('show.bs.modal', function (e) {
+    $('#modal_title').html("Inventory for " + e.relatedTarget.id)
+
+    $.ajax({
+        method: 'GET',
+        url: `/toInventory?user=${e.relatedTarget.id}`,
+        success: function(data) {
+            $('#item_body').empty();
+            $.each(data.results, function() {
+                $('<tr>').attr('id', `${this.iphoto_id}`).appendTo('#item_body');
+                $('<td>').html(`${this.item_name}`).appendTo('#'+this.iphoto_id);
+                $('<td>').html(`${this.quantity}`).appendTo('#'+this.iphoto_id);
+
+            });
+
+        }
+    });
+
+});
 
