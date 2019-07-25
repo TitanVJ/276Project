@@ -72,7 +72,7 @@ app.get('/register', function(req, res) {
 
 /* Create new user and insert them into the DB */
 app.post('/sign-up', function(req, res) {
-    const values = [req.body.username, bcrypt.hashSync(req.body.password, salt)];
+    const values = [req.body.username, bcrypt.hashSync(req.body.password, salt), 'user'];
 
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) =>{
 
@@ -80,7 +80,7 @@ app.post('/sign-up', function(req, res) {
             req.flash('error', 'That username is already in use!');
             res.render('pages/register', {expressFlash: req.flash('error')})
         } else {
-            pool.query('INSERT INTO users VALUES ($1, $2)', values, (err, response) => {
+            pool.query('INSERT INTO users (user_name, password, status) VALUES ($1, $2, $3)', values, (err, response) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -117,9 +117,6 @@ app.post('/sign-up', function(req, res) {
                         });
                        }
                     });
-
-                    // req.flash('error', "Incorrect username and/or password!");
-                    // res.render('pages/login', {expressFlash: req.flash('error')});
 
                     console.log("Flash Message");
                     req.flash('info', "New User Created Successfully. Please Sign-in.");
