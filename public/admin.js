@@ -396,4 +396,3 @@ $('#user_modal').on('show.bs.modal', function (e) {
     });
 
 });
-

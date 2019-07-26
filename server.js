@@ -17,11 +17,11 @@ const io = require("socket.io")(server);
 
 app.use(fileUpload());
 
-
-const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
+const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString: connectionString,
 });
+
 
 const session = require('express-session')({
     name:'session',
@@ -204,7 +204,26 @@ app.get('/user_profDex', loggedIn, function(req,res){
       res.redirect('pages/login');
   }
 });
+app.get('/toInventoryGame', (req, res) => {
+    // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
+    // console.log(sql).
+    const query = 'SELECT item_name, iphoto_id, quantity, item_added FROM ' + [req.session.user_name]+ 'Inventory';
+    console.log(query);
+    pool.query(query ,(error, result)=>{
+        if(error){
+            console.log(error.message);
+            res.send('');
+        }
+        if(result.rowCount == 0){
+            console.log('Empty table');
+            res.send('');
+        }
+        const results = { 'results': (result) ? result.rows : null };
+        res.status(200);
+        res.send(results);
+    });
 
+});
 app.get('/toInventory', (req, res) => {
     // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
     // console.log(sql).
