@@ -3,21 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Game Page</title>
-    
-	<script type="text/javascript" src = "js/phaser.min.js"></script>    
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+	  <script type="text/javascript" src = "js/phaser.min.js"></script>
     <script src="./js/jquery-3.4.1.min.js"></script>
     <script src="./js/socket.io.js"></script>
     <script src="./js/encouter.js" defer></script>
     <script type="module" src="js/game.js"></script>
 
 </head>
-<body>
-    <div id="mapArea">
-        <input type="button" onclick="window.location.href = './prof.html';" value="Prof Collection"/>
-        <input type="button" id="use" value="Use a Prof Office Hours"/>
-        <input type="button" id="add" value="Add a Prof Office Hours"/>
-        <input type="button" id="logout" onclick="parent.location='https://catchmyprof.herokuapp.com/'" value="logout"/>
-    </div>
+<body style="background-color: #97D2FB; display:flex; align-items: center; flex-direction: column">
+    <!-- <div id="mapArea" style="height:140px;display: block"> -->
+
+      <nav id="mapArea" class="navbar navbar-expand-lg navbar-light" style="background-color: #97D2FB; height: 120px">
+          <a class="navbar-brand" style="font-size:2.25rem" href="#">Game Dashboard</a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <a class="navbar-brand" href="#">
+                  <img style="height:65px;width:65px"src="/images/gameIcon.png">
+              </a>
+              <div style="width: 600px">
+
+              </div>
+
+              <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active">
+                      <a class="nav-link" style="font-size:1.65rem" href="/user_profDex"> Professors </a>
+                  </li>
+              </ul>
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link" style="font-size:1.65rem" href="/logout"> Logout </a>
+                  </li>
+              </ul>
+          </div>
+      </nav>
+
+
+
+
+      <!-- <div>
+        <div style="width:500px;display:flex; align-items: center; flex-direction: column">
+          <input type="button" onclick="window.location.href = './prof.html';" value="Prof Collection"/>
+          <p> </p>
+          <input type="button" id="use" value="Use a Prof Office Hours"/>
+        </div>
+        <div style="display:flex; align-items: center; flex-direction: column">
+
+        </div>
+      </div>
+      <div>
+        <div style="width:450px;display:flex; align-items: center; flex-direction: row; ">
+          <input type="button" id="add" value="Add a Prof Office Hours"/>
+          <p> </p>
+          <input type="button" id="logout" onclick="parent.location='https://catchmyprof.herokuapp.com/'" value="logout"/>
+        </div>
+        <div style="display:flex; align-items: center; flex-direction: column">
+          <p> Inventory </p>
+          <p> Current amount of Prof Hours </p>
+        </div>
+      </div>
+    </div> -->
 
 </body>
 </html>

@@ -179,7 +179,7 @@ app.get('/admin', loggedIn, function(req, res) {
     res.render('pages/admin', {user: req.session.user});
   }
   else{
-    res.redirect('pages/logout');
+    res.redirect('pages/login');
   }
 });
 
@@ -189,8 +189,17 @@ app.get('/admin_professor', loggedIn, function(req, res) {
         res.render('pages/admin_professor');
     }
     else{
-        res.redirect('pages/logout');
+        res.redirect('pages/login');
     }
+});
+/*For navigation to profdex*/
+app.get('/user_profDex', loggedIn, function(req,res){
+  if(req.session.user){
+      res.redirect('/prof.html');
+  }
+  else{
+      res.redirect('pages/login');
+  }
 });
 
 app.get('/toInventory', (req, res) => {
@@ -383,7 +392,7 @@ app.post('/caught',(req,res)=>{
           console.log('user disconnected');
       })
 
-        // used to determine if a character will 
+        // used to determine if a character will
         socket.on('move', (data)=>{
             // determine
 
@@ -394,12 +403,12 @@ app.post('/caught',(req,res)=>{
                     //encouter
                     // send back and obj, contain img id, prof
                     // for testing do console.log
-                    
+
                     // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
                     // for now send a temp obj
                     var tempProf = {
-                        prof_fname: 'bobby', 
-                        prof_lname: 'chan', 
+                        prof_fname: 'bobby',
+                        prof_lname: 'chan',
                         photo_id: '1',
                         questions: ['How old am I?', 'What food do I use most in my examples?'],
                         answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
