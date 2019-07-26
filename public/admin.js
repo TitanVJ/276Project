@@ -4,41 +4,6 @@ $('#searchForm').submit((e)=>{
 $('#searchFormProf').submit((a)=>{
     a.preventDefault();
 });
-function enInput(){
-    console.log('change');
-
-    var field = $('#fields').val();
-    var input = $('#fieldInput');
-    input.val('');
-    input.attr('disabled', false);
-    $('#submit').attr('disabled', false);
-
-    input.attr('type', 'text');
-}
-// function enInputprof(){
-//     console.log('change');
-//
-//     var field = $('#proffields').val();
-//     var input = $('#fieldInputProf');
-//     input.val('');
-//     input.attr('disabled', false);
-//     $('#submitProf').attr('disabled', false);
-//
-//     input.attr('type', 'text');
-// }
-
-function search(){
-    //loop through from and grab shit
-    if($('#fieldInput').disabled){
-        return
-    }
-    $.ajax({
-        method: 'get',
-        url: '/search?column='+$('#fields').val() + '&value=' + $('#fieldInput').val(),
-        success: updateTable,
-        error: ()=>{alert('No such user(s) exist.');}
-    });
-}
 
 function del(e){
     var id = e.parentNode.parentNode.id;
@@ -151,7 +116,13 @@ function refreshProfCatalogue() {
 function printUsers(data) {
     $('#myTable').empty();
     $.each(data.results, function() {
-        $('<tr>').attr('id', this.user_name).appendTo('#myTable');
+
+        if(this.status == 'admin') {
+            $('<tr>').attr('id', this.user_name).appendTo('#myTable');
+        } else {
+            $('<tr>').attr('id', this.user_name).attr('data-toggle', 'modal').attr('data-target', '#user_modal').appendTo('#myTable');
+        }
+
         $('<td>').attr('class', 'text-center').html(this.user_name).appendTo('#'+this.user_name);
         $('<td>').attr('class', 'text-center').html(this.status).appendTo('#'+this.user_name);
         $('<td>').attr('class', 'text-center').html(this.last_updated).appendTo('#'+this.user_name);
@@ -164,7 +135,7 @@ function printProfs(data) {
     $('#profTableBody').empty();
     $.each(data.results, function() {
         $('<tr>').attr('id', this.prof_id).appendTo('#profTableBody');
-         $('<td>').attr('class', 'text-center align-middle').html(`<img src="../images/prof_images/${this.photo_id}.jpg" style="vertical-align: middle;width: auto;height: auto;border-radius: 50%; max-width: 50px; max-height: 50px">`).appendTo('#'+this.prof_id);
+        $('<td>').attr('class', 'text-center align-middle').html(`<img src="../images/prof_images/${this.photo_id}.jpg" style="vertical-align: middle;width: auto;height: auto;border-radius: 50%; max-width: 50px; max-height: 50px">`).appendTo('#'+this.prof_id);
         $('<td>').attr('class', 'text-center align-middle').html(this.prof_id).appendTo('#'+this.prof_id);
         $('<td>').attr('class', 'text-center align-middle').html(this.prof_fname).appendTo('#'+this.prof_id);
         $('<td>').attr('class', 'text-center align-middle').html(this.prof_lname).appendTo('#'+this.prof_id);
@@ -364,7 +335,8 @@ $('#new_prof').on('hidden.bs.modal', function (e) {
 function modalCloseHelper (id) {
     $('#profPicture').empty();
     $('#modalFoot').empty();
-    document.getElementById(`${id}`).options.length = 0;
+    $(`#${id}`).find('option').remove();
+    //document.getElementById(`${id}`).options.length = 0;
     $(`#${id}`).prop('disabled', true);
     $(`#${id}`).attr('readonly', true);
     $(`#${id}`).selectpicker('refresh');
@@ -388,3 +360,40 @@ function addExistingProf() {
         }
     });
 }
+
+$('#change_status').confirmation({
+    rootSelector: '[data-toggle=confirmation]',
+    onConfirm: function () {
+        // Just changes the user status but does not drop the tables that only applied to them when they were a user.
+        $.ajax({
+            method: 'GET',
+            url: `/changeUserStatus?user=${$('#change_status').attr('data-user-id')}`,
+            success(data) {
+                refreshUserCatalogue();
+            }
+        });
+        console.log("Confirm");
+    }
+});
+
+$('#user_modal').on('show.bs.modal', function (e) {
+    $('#modal_title').html("Inventory for " + e.relatedTarget.id)
+    $('#change_status').attr('data-user-id', e.relatedTarget.id);
+
+    $.ajax({
+        method: 'GET',
+        url: `/toInventory?user=${e.relatedTarget.id}`,
+        success: function(data) {
+            $('#item_body').empty();
+            $.each(data.results, function() {
+                $('<tr>').attr('id', `${this.iphoto_id}`).appendTo('#item_body');
+                $('<td>').html(`${this.item_name}`).appendTo('#'+this.iphoto_id);
+                $('<td>').html(`${this.quantity}`).appendTo('#'+this.iphoto_id);
+
+            });
+
+        }
+    });
+
+});
+

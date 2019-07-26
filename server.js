@@ -18,7 +18,7 @@ const io = require("socket.io")(server);
 app.use(fileUpload());
 
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = 'postgresql://postgres:postgres@localhost:5432/cmpt276';
 const pool = new Pool({
     connectionString: connectionString,
 });
@@ -72,7 +72,7 @@ app.get('/register', function(req, res) {
 
 /* Create new user and insert them into the DB */
 app.post('/sign-up', function(req, res) {
-    const values = [req.body.username, bcrypt.hashSync(req.body.password, salt)];
+    const values = [req.body.username, bcrypt.hashSync(req.body.password, salt), 'user'];
 
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) =>{
 
@@ -80,7 +80,7 @@ app.post('/sign-up', function(req, res) {
             req.flash('error', 'That username is already in use!');
             res.render('pages/register', {expressFlash: req.flash('error')})
         } else {
-            pool.query('INSERT INTO users VALUES ($1, $2)', values, (err, response) => {
+            pool.query('INSERT INTO users (user_name, password, status) VALUES ($1, $2, $3)', values, (err, response) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -118,7 +118,10 @@ app.post('/sign-up', function(req, res) {
                        }
                     });
 
-                    res.render('pages/login')
+                    console.log("Flash Message");
+                    req.flash('info', "New User Created Successfully. Please Sign-in.");
+
+                    res.render('pages/login', {expressFlashNewUser: req.flash('info')})
                 }
             });
         }
@@ -495,6 +498,20 @@ app.post('/add-new-prof', loggedIn, function(req, res) {
             }
         });
     }
+});
+
+app.get('/changeUserStatus', function(req, res) {
+    //const query = 'SELECT item_name, iphoto_id, quantity, item_added FROM ' + req.query.user + 'Inventory';
+    //const text = 'UPDATE items SET cat_id = $1, product_name = $2, product_category = $3, product_distributor = $4, pack = $5, ' +
+    //         'uom = $6, price = $7, distributor_number = $8, qty_on_hand = $9, qty_on_hand_units = $10, notes = $11 WHERE cat_id=$1';
+    var sql = format("UPDATE %s SET status = %s WHERE user_name = %s", 'users', 'admin', `${req.query.user}`);
+    pool.query("UPDATE users SET status = 'admin' WHERE user_name = $1",[req.query.user], (err, response) =>{
+        if(err) {
+            console.log(err);
+        } else {
+            res.end();
+        }
+    });
 });
 
 // Change prof_id to uuid
