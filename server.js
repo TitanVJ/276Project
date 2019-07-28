@@ -532,6 +532,12 @@ app.get('/changeUserStatus', function(req, res) {
         }
     });
 });
+String.prototype.format = function () {
+    var args = [].slice.call(arguments);
+    return this.replace(/(\{\d+\})/g, function (a){
+        return args[+(a.substr(1,a.length-2))||0];
+    });
+};
 app.get('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
