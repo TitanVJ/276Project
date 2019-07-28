@@ -541,6 +541,7 @@ app.get('/updateLocation',async(req,res)=>{
 	   if(err) {
 	       console.log(err);
 	   }
+	   console.log("this is a test log")
 	   console.log(response.rows[0]);
 	   console.log(req.params.x,req.params.y);
 	   res.status(200);
