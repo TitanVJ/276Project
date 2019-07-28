@@ -535,18 +535,19 @@ app.get('/changeUserStatus', function(req, res) {
 app.get('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
-		console.log(sql);
 		pool.query(sql, (err, response) => {
 			if(err) {
 				console.log(err);
 			}
 			if (response){
-				console.log(response,response.rows);
 				if(response.rows.length > 0) {
 					let values = [parseInt(req.query.x),parseInt(req.query.y),String(req.session.user_name)];
 					pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name=$3", values, (err, response) => {
 						if(err) {
 							console.log(err);
+						}
+						else{
+							console.log("updated {2}'s position to x={0} and y={1}",values)
 						}
 					});
 				} else {
@@ -554,6 +555,9 @@ app.get('/updateLocation',async(req,res)=>{
 					pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ($1,$2,$3)", values, (err, response) => {
 						if(err) {
 							console.log(err);
+						}
+						else{
+							console.log("updated {0}'s position to x={1} and y={2}",values)
 						}
 					});
 				}
