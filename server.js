@@ -534,7 +534,7 @@ app.get('/changeUserStatus', function(req, res) {
 });
 app.get('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
-		pool.query("SELECT user_name FROM userPos WHERE user_name=$1",[req.query.user], (err, response) => {
+		pool.query("SELECT user_name FROM userPos WHERE user_name=$1",[String(req.query.user)], (err, response) => {
 			if(err) {
 				console.log(err);
 			}
