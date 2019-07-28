@@ -533,6 +533,7 @@ app.get('/changeUserStatus', function(req, res) {
     });
 });
 app.get('/updateLocation',async(req,res)=>{
+	console.log(req.params.x,req.params.y);
 	const sqll = {
 	    text: 'SELECT * FROM userPos'
 	}
@@ -543,7 +544,6 @@ app.get('/updateLocation',async(req,res)=>{
 	   console.log(response.rows[0]);
 	   console.log(req.params.x,req.params.y);
 	   res.status(200);
-
 	});
   res.end();
 })
