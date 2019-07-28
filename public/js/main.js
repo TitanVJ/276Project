@@ -817,10 +817,10 @@ class main extends Phaser.State {
             spawnball = false;
             this.spawn();
         }
-        time=new Date();
-        console.log(time);
-        if (time-lastTime>5000){
-            console.log(time-lastTime);
+        this.time=new Date();
+        console.log(this.time);
+        if (this.time-this.lastTime>5000){
+            console.log(this.time-this.lastTime);
             $.ajax({
                 method:'get',
                 url:'/updateLocation',
@@ -830,7 +830,7 @@ class main extends Phaser.State {
                 },
                 error: ()=>{alert('Failed to add.')}
             });
-            lastTime = new Date();
+            this.lastTime = new Date();
         }
     } // update ends here
 
