@@ -537,7 +537,7 @@ app.get('/updateLocation',async(req,res)=>{
 		if(err1) {
 			console.log(err1);
 		}
-		if(response1.rows.length > 0) {
+		/*if(response1.rows.length > 0) {
 			pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name='$3'",req.session.user_name,req.query.x,req.query.y, (err2, response2) => {
 				if(err) {
 					console.log(err2);
@@ -549,7 +549,7 @@ app.get('/updateLocation',async(req,res)=>{
 					console.log(err2);
 				}
 			});
-		}
+		}*/
 		res.status(200);
 		});
   res.end();
