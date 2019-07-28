@@ -519,10 +519,8 @@ app.post('/add-new-prof', loggedIn, function(req, res) {
     }
 });
 
+/* Changes a user's status from 'user' to 'admin' -- Doesn't delete their game tables though */
 app.get('/changeUserStatus', function(req, res) {
-    //const query = 'SELECT item_name, iphoto_id, quantity, item_added FROM ' + req.query.user + 'Inventory';
-    //const text = 'UPDATE items SET cat_id = $1, product_name = $2, product_category = $3, product_distributor = $4, pack = $5, ' +
-    //         'uom = $6, price = $7, distributor_number = $8, qty_on_hand = $9, qty_on_hand_units = $10, notes = $11 WHERE cat_id=$1';
     var sql = format("UPDATE %s SET status = %s WHERE user_name = %s", 'users', 'admin', `${req.query.user}`);
     pool.query("UPDATE users SET status = 'admin' WHERE user_name = $1",[req.query.user], (err, response) =>{
         if(err) {
@@ -533,6 +531,7 @@ app.get('/changeUserStatus', function(req, res) {
     });
 });
 
+<<<<<<< HEAD
 
 app.post('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
@@ -615,4 +614,6 @@ app.get('/getLocation',async(req,res)=>{
 // Change prof_id to uuid
 // Change photo_id to varchar
 
+=======
+>>>>>>> Added some comments and cleaned up console.log statements a bit
 module.exports = app;
