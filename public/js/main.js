@@ -9,7 +9,9 @@ class main extends Phaser.State {
         this.cursors;
         this.wall;
         this.playerCollisionGroup;
-        this.wallCollisionGroup;        
+        this.wallCollisionGroup;
+        this.time;
+        this.lastTime=new Date();        
 
         this.w;
         this.a;
@@ -815,8 +817,19 @@ class main extends Phaser.State {
             spawnball = false;
             this.spawn();
         }
-        
-
+        time=new Date();
+        if (time-lastTime>5000){
+            $.ajax({
+                method:'get',
+                url:'/updateLocation',
+                data:{ "x" : player.x, "y" : player.y },
+                success: function() {
+                    alert("Office hours has been added!");
+                },
+                error: ()=>{alert('Failed to add.')}
+            });
+            lastTime = new Date();
+        }
     } // update ends here
 
     spawn(){

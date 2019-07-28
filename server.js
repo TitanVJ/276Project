@@ -532,6 +532,21 @@ app.get('/changeUserStatus', function(req, res) {
         }
     });
 });
+app.get('/updateLocation',async(req,res)=>{
+	const sqll = {
+	    text: 'SELECT * FROM userPos'
+	}
+	pool.query(sql, (err, response) => {
+	   if(err) {
+	       console.log(err);
+	   }
+	   console.log(response.rows[0]);
+	   console.log(req.params.x,req.params.y);
+	   res.status(200);
+
+	});
+  res.end();
+})
 
 // Change prof_id to uuid
 // Change photo_id to varchar
