@@ -541,7 +541,7 @@ app.get('/updateLocation',async(req,res)=>{
 			if (response){
 				if(response.rows.length > 0) {
 					let values = [parseInt(req.query.x),parseInt(req.query.y),String(req.session.user_name)];
-					pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name='$3'", values, (err, response) => {
+					pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name=$3", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
@@ -549,7 +549,7 @@ app.get('/updateLocation',async(req,res)=>{
 				} else {
 					console.log(req.session.user_name,req.query.x,req.query.y);
 					let values = [String(req.session.user_name),parseInt(req.query.x),parseInt(req.query.y)];
-					pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ('$1',$2,$3)", values, (err, response) => {
+					pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ($1,$2,$3)", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
