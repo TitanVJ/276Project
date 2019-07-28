@@ -819,6 +819,7 @@ class main extends Phaser.State {
         }
         time=new Date();
         if (time-lastTime>5000){
+            console.log(time-lastTime);
             $.ajax({
                 method:'get',
                 url:'/updateLocation',
