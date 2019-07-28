@@ -269,7 +269,7 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
                                         <input type="text" class="custom-file-input" id="fname" name="fname" value="${data.instructor[0].firstName}" hidden>
                                         <input type="text" class="custom-file-input" id="common" name="common" value="${data.instructor[0].commonName}" hidden>
                                         <input type="text" class="custom-file-input" id="lname" name="lname" value="${data.instructor[0].lastName}" hidden>
-                                        <input type="file" class="custom-file-input" id="customFile" name="filename" accept="image/*" >
+                                        <input type="file" class="custom-file-input" id="customFile" name="filename" accept=".jpg" >
                                         <label class="custom-file-label" for="customFile">Choose file</label>
                                     </div>
                                     <div class="mt-3">
