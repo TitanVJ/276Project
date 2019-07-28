@@ -533,15 +533,15 @@ app.get('/changeUserStatus', function(req, res) {
     });
 });
 app.get('/updateLocation',async(req,res)=>{
+	console.log("this is a test log")
 	console.log(req.params.x,req.params.y);
 	const sqll = {
 	    text: 'SELECT * FROM userPos'
 	}
-	pool.query(sql, (err, response) => {
+	pool.query(sqll, (err, response) => {
 	   if(err) {
 	       console.log(err);
 	   }
-	   console.log("this is a test log")
 	   console.log(response.rows[0]);
 	   console.log(req.params.x,req.params.y);
 	   res.status(200);
