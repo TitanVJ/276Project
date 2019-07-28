@@ -539,7 +539,7 @@ app.get('/updateLocation',async(req,res)=>{
 				console.log(err);
 			}
 			if (response){
-				console.log(response.rows.length);
+				console.log(response,response.rows);
 				if(response.rows.length > 0) {
 					let values = [parseInt(req.query.x),parseInt(req.query.y),String(req.session.user_name)];
 					pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name=$3", values, (err, response) => {
