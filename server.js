@@ -544,16 +544,16 @@ app.get('/updateLocation',async(req,res)=>{
 			else {
 				console.log("no response from query");
 			}
-			if(response1.rows.length > 0) {
-				pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name='$3'",[req.session.user_name,req.query.x,req.query.y], (err2, response2) => {
+			if(response.rows.length > 0) {
+				pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name='$3'",[req.session.user_name,req.query.x,req.query.y], (err, response) => {
 					if(err) {
-						console.log(err2);
+						console.log(err);
 					}
 				});
 			} else {
-				pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ('$1',$2,$3)",[req.session.user_name,req.query.x,req.query.y], (err2, response2) => {
+				pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ('$1',$2,$3)",[req.session.user_name,req.query.x,req.query.y], (err, response) => {
 					if(err) {
-						console.log(err2);
+						console.log(err);
 					}
 				});
 			}
