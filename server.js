@@ -541,14 +541,14 @@ app.get('/updateLocation',async(req,res)=>{
 			if (response){
 				console.log(response.rows.length,req.session.user_name);
 				if(response.rows.length > 0) {
-					Let values = [parseInt(req.query.x),parseInt(req.query.y),req.session.user_name];
+					let values = [parseInt(req.query.x),parseInt(req.query.y),req.session.user_name];
 					pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name='$3'", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
 					});
 				} else {
-					Let values = [req.session.user_name,parseInt(req.query.x),parseInt(req.query.y)];
+					let values = [req.session.user_name,parseInt(req.query.x),parseInt(req.query.y)];
 					pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ('$1',$2,$3)", values, (err, response) => {
 						if(err) {
 							console.log(err);
