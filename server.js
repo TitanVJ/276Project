@@ -553,7 +553,7 @@ app.get('/updateLocation',async(req,res)=>{
 							console.log(err);
 						}
 						else{
-							console.log("updated {2}'s position to x={0} and y={1}".format(values));
+							console.log("updated "+values[2]+"'s position to x="+values[0]+" and y="+values[1]);
 						}
 					});
 				} else {
@@ -563,7 +563,7 @@ app.get('/updateLocation',async(req,res)=>{
 							console.log(err);
 						}
 						else{
-							console.log("updated {0}'s position to x={1} and y={2}".format(values));
+							console.log("updated "+values[0]+"'s position to x="+values[1]+" and y="+values[2]);
 						}
 					});
 				}
