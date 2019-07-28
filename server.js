@@ -547,7 +547,7 @@ app.get('/updateLocation',async(req,res)=>{
 							console.log(err);
 						}
 						else{
-							console.log("updated {2}'s position to x={0} and y={1}".format(values);
+							console.log("updated {2}'s position to x={0} and y={1}".format(values));
 						}
 					});
 				} else {
