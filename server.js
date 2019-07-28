@@ -533,17 +533,28 @@ app.get('/changeUserStatus', function(req, res) {
     });
 });
 app.get('/updateLocation',async(req,res)=>{
-	console.log([req.session.user_name]);
 	const sqll = {
-	    text: 'SELECT * FROM userPos'
+	    text: 
 	}
-	pool.query(sqll, (err, response) => {
-	   if(err) {
-	       console.log(err);
-	   }
-	   console.log(req.query.x,req.query.y);
-	   res.status(200);
-	});
+	pool.query("SELECT user_name FROM userPos WHERE user_name='$1'",req.session.user_name, (err, response) => {
+		if(err) {
+			console.log(err);
+		}
+		if(response.rows.length > 0) {
+			pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name='$3'",req.session.user_name,req.query.x,req.query.y, (err, response) => {
+				if(err) {
+					console.log(err);
+				}
+			});
+		} else {
+			pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ('$1',$2,$3)",req.session.user_name,req.query.x,req.query.y, (err, response) => {
+				if(err) {
+					console.log(err);
+				}
+			});
+		}
+		res.status(200);
+		});
   res.end();
 })
 
