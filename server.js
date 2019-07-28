@@ -532,9 +532,7 @@ app.get('/changeUserStatus', function(req, res) {
         }
     });
 });
-app.get('/updateLocation',async(req,res)=>{
-	console.log("this is a test log")
-	console.log(req.params.x,req.params.y);
+app.get('/updateLocation',async(req,res,body)=>{
 	const sqll = {
 	    text: 'SELECT * FROM userPos'
 	}
@@ -542,8 +540,7 @@ app.get('/updateLocation',async(req,res)=>{
 	   if(err) {
 	       console.log(err);
 	   }
-	   console.log(response.rows[0]);
-	   console.log(req.params.x,req.params.y);
+	   console.log(req.query.x,req.query.y);
 	   res.status(200);
 	});
   res.end();

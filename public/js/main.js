@@ -824,7 +824,7 @@ class main extends Phaser.State {
                 url:'/updateLocation',
                 data:{ "x" : this.player.x, "y" : this.player.y },
                 success: function() {
-                    alert("Office hours has been added!");
+                    console.log("position upadted");
                 },
                 error: ()=>{alert('Failed to add.')}
             });
