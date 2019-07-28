@@ -532,7 +532,8 @@ app.get('/changeUserStatus', function(req, res) {
         }
     });
 });
-app.get('/updateLocation',async(req,res,body)=>{
+app.get('/updateLocation',async(req,res)=>{
+	console.log([req.session.user_name]);
 	const sqll = {
 	    text: 'SELECT * FROM userPos'
 	}
