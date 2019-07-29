@@ -580,7 +580,7 @@ app.get('/getLocation',async(req,res)=>{
 				console.log(err);
 			}
 			if(response){
-				res.send(response.rows.X_pos,response.rows.Y_pos);
+				res.status(200).send(response.rows.X_pos,response.rows.Y_pos);
 			}
 		})
 	}
