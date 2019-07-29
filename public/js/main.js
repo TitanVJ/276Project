@@ -87,9 +87,10 @@ class main extends Phaser.State {
     }
   
     create() {
-
+        this.game.stage.backgroundColor = '#000000';
+        
         this.game.physics.startSystem(Phaser.Physics.P2JS);
-        this.game.add.tileSprite(0,0,1000,1000,'background');
+        this.game.add.tileSprite(0,0,10000,10000,'background');
         this.game.world.setBounds(0, 0, 10000, 5000);
 
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
