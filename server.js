@@ -612,6 +612,9 @@ app.get('/getLocation',async(req,res)=>{
 // Change prof_id to uuid
 // Change photo_id to varchar
 
+<<<<<<< HEAD
 =======
 >>>>>>> Added some comments and cleaned up console.log statements a bit
+=======
+>>>>>>> fixing code
 module.exports = app;
