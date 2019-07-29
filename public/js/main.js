@@ -1,5 +1,4 @@
 
-
 // var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser', { preload: preload, create: create, update: update, render: render });
 class main extends Phaser.State { 
     
@@ -98,6 +97,17 @@ class main extends Phaser.State {
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
         this.wallCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
+        $.ajax({
+            method: 'get',
+            url: '/getLocation',
+            success: (data) => {
+                console.log(data);
+            },
+            error: () =>{
+                console.log('Failed to add.');
+            }
+        });
+        
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
 
         this.game.physics.p2.enable(this.player);
@@ -832,6 +842,8 @@ class main extends Phaser.State {
             this.lastTime = new Date();
         }
     } // update ends here
+
+           
 
     spawn(){
         //spawn the obj
