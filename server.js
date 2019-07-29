@@ -17,6 +17,8 @@ const io = require("socket.io")(server);
 
 app.use(fileUpload());
 
+var encounterChance = 12;
+
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString: connectionString,
@@ -203,6 +205,10 @@ app.get('/user_profDex', loggedIn, function(req,res){
       res.redirect('pages/login');
   }
 });
+app.get('/getUserName', loggedIn,(req, res) => {
+    const results = req.session.user_name;
+    res.send(results);
+});
 app.get('/toInventoryGame', (req, res) => {
     // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
     // console.log(sql).
@@ -358,8 +364,7 @@ app.get('/popAPill',async(req,res)=>{
                 console.log(err);
             } else {
                  console.log("Popping pills");
-                 req.session.encounterChance = 4;
-                 req.session.itemUsed = 'true';
+                 encounterChance = 4;
                  res.status(200);
                 }
             });
@@ -403,7 +408,10 @@ app.post('/caught',(req,res)=>{
       socket.on('disconnect', ()=>{
           console.log('user disconnected');
       })
-
+        socket.on('changeEncounter', (data)=>{
+            // determine
+            encounterChance=12;
+        });
         // used to determine if a character will
         socket.on('move', (data)=>{
             // determine
@@ -411,7 +419,7 @@ app.post('/caught',(req,res)=>{
             if(!data){
                 var c = Math.floor((Math.random() * 100) + 1);
                 console.log(c);
-                if(c%4 == 0 && c%3 == 0){
+                if(c%encounterChance == 0){
                     //encouter
                     // send back and obj, contain img id, prof
                     // for testing do console.log
