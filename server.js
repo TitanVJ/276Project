@@ -25,6 +25,34 @@ const pool = new Pool({
 });
 
 
+//AMY
+// var pg = require('pg');
+// var AMYconnectionString = "postgres://password@localhost:5432/postgres";
+// var pgClient = new pg.Client(AMYconnectionString);
+// pgClient.connect();
+
+app.get('/profPrev', function (req, res){
+        pool.query("SELECT * from profDex", function(error, result){
+            // if(error){
+            //     console.log('hi');
+            // }if (results == 0){
+            //     console.log('ah');
+            // }
+            var results = { 'results': (result.rows[0]) ? result.rows : [] };
+
+            // console.log(result);
+            res.render('pages/prof', results);
+            // console.log(result + 'hi');
+        });
+})
+app.get('/yourProfPrev', function (req, res){
+    pool.query("SELECT * from camronProfList", function(error, result){
+        var results = { 'results': (result.rows[0]) ? result.rows : [] };
+        res.render('pages/yourProf', results);
+    });
+})
+//END OF AMY
+
 const session = require('express-session')({
     name:'session',
     genid: function(req) { return uuidv1();},
