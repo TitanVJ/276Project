@@ -107,7 +107,7 @@ class main extends Phaser.State {
                 console.log('Failed to add.');
             }
         });
-        
+
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
 
         this.game.physics.p2.enable(this.player);
@@ -831,10 +831,10 @@ class main extends Phaser.State {
         this.time=new Date();
         if (this.time-this.lastTime>5000){
             $.ajax({
-                method:'get',
+                method:'post',
                 url:'/updateLocation',
                 data:{ "x" : this.player.x, "y" : this.player.y },
-                success: function() {
+                success: () => {
                     console.log("position upadted");
                 },
                 error: ()=>{alert('Failed to add.')}

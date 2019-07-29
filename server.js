@@ -534,7 +534,7 @@ app.get('/changeUserStatus', function(req, res) {
 });
 
 
-app.get('/updateLocation',async(req,res)=>{
+app.post('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
 		pool.query(sql, (err, response) => {
@@ -584,7 +584,8 @@ app.get('/getLocation',async(req,res)=>{
 				console.log(err);
 			}
 			if(response){
-				res.status(200).send(response.rows.X_pos,response.rows.Y_pos);
+                res.status(200);
+                res.send({'x':response.rows.X_pos,'y':response.rows.Y_pos});
 			}
 		})
 	}
