@@ -15,34 +15,34 @@ socket.on('encounter',(profObj)=>{
     spawnball = true;
     encounter = true;
 });
-document.getElementById("add").addEventListener("click", function(a){
-  $.ajax({
-      method:'get',
-      url:'/addCandy',
-      success: function() {
-          alert("Office hours has been added!");
-      },
-      error: ()=>{alert('Failed to add.')}
-  });
-})
-document.getElementById("use").addEventListener("click", function(a){
-  $.ajax({
-      method:'get',
-      url:'/popAPill',
-      success: function() {
-          alert('Office hours has been used!');
-      },
-      error: ()=>{alert('Failed to use.')}
-  });
-})
-document.getElementById("logout").addEventListener("click", function(a){
-  $.ajax({
-      method:'get',
-      url:'/logout',
-      success: '/',
-      error: ()=>{alert('Failed to Logout.')}
-  });
-})
+// document.getElementById("add").addEventListener("click", function(a){
+//   $.ajax({
+//       method:'get',
+//       url:'/addCandy',
+//       success: function() {
+//           alert("Office hours has been added!");
+//       },
+//       error: ()=>{alert('Failed to add.')}
+//   });
+// })
+// document.getElementById("use").addEventListener("click", function(a){
+//   $.ajax({
+//       method:'get',
+//       url:'/popAPill',
+//       success: function() {
+//           alert('Office hours has been used!');
+//       },
+//       error: ()=>{alert('Failed to use.')}
+//   });
+// })
+// document.getElementById("logout").addEventListener("click", function(a){
+//   $.ajax({
+//       method:'get',
+//       url:'/logout',
+//       success: '/',
+//       error: ()=>{alert('Failed to Logout.')}
+//   });
+// })
 
 $(document).keydown((e)=>{
     // check for wasd only keys 
