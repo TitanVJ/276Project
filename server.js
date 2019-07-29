@@ -549,7 +549,7 @@ app.get('/updateLocation',async(req,res)=>{
 							console.log(err);
 						}
 						else{
-							console.log("updated "+values[2]+"'s position to x="+values[0]+" and y="+values[1]);
+							//console.log("updated "+values[2]+"'s position to x="+values[0]+" and y="+values[1]);
 						}
 					});
 				} else {
@@ -559,7 +559,7 @@ app.get('/updateLocation',async(req,res)=>{
 							console.log(err);
 						}
 						else{
-							console.log("updated "+values[0]+"'s position to x="+values[1]+" and y="+values[2]);
+							//console.log("updated "+values[0]+"'s position to x="+values[1]+" and y="+values[2]);
 						}
 					});
 				}
@@ -585,8 +585,6 @@ app.get('/getLocation',async(req,res)=>{
 			}
 			if(response){
 				if(response.rows.length > 0) {
-					console.log(response);
-					console.log(response.rows[0].x_pos,response.rows[0].y_pos)
 					res.status(200);
 					res.send({"x":response.rows[0].x_pos,"y":response.rows[0].y_pos});
 				}
@@ -603,7 +601,6 @@ app.get('/getLocation',async(req,res)=>{
 									console.log(err);
 								}
 								if(response){
-									console.log(response.rows[0].x_pos,response.rows[0].y_pos);
 									res.status(200);
 									res.send({"x":response.rows[0].x_pos,"y":response.rows[0].y_pos});
 								}

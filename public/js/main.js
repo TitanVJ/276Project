@@ -17,8 +17,8 @@ class main extends Phaser.State {
         this.s;
         this.d;
 
-        this.playerX=this.game.world.centerX;
-        this.playerY=this.game.world.centerY;
+        this.playerX=parseInt(callb.x);
+        this.playerY=parseInt(callb.y);
     }
 
     preload() {
@@ -87,21 +87,6 @@ class main extends Phaser.State {
         this.game.load.image('59', 'ig/59.png');
         this.game.load.image('60', 'ig/60.png');
         this.game.load.image('61', 'ig/61.png');
-        var callb;    
-        function defineVal() {
-            $.ajax({
-                method:'get',
-                url:'/getLocation',
-                dataType: 'json',
-                success: function(data) {
-                    callb = data;
-                }
-                error: ()=>{alert('Failed to add.')}
-            });
-        }
-        callb = defineVal();
-        this.playerX=callb.x;
-        this.playerY=callb.y;
     
     }
   
@@ -114,7 +99,6 @@ class main extends Phaser.State {
 
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
         this.wallCollisionGroup = this.game.physics.p2.createCollisionGroup();
-        console.log(this.game.world.centerX,"PlayerX="+this.playerX);
         this.player = this.game.add.sprite(this.playerX, this.playerY, 'player');
 
         this.game.physics.p2.enable(this.player);
@@ -836,14 +820,11 @@ class main extends Phaser.State {
             this.spawn();
         }
         this.time=new Date();
-        if (this.time-this.lastTime>5000){
+        if (this.time-this.lastTime>500){
             $.ajax({
                 method:'get',
                 url:'/updateLocation',
                 data:{ "x" : this.player.x, "y" : this.player.y },
-                success: function() {
-                    console.log("position upadted");
-                },
                 error: ()=>{alert('Failed to add.')}
             });
             this.lastTime = new Date();
