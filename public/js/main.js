@@ -9,7 +9,9 @@ class main extends Phaser.State {
         this.cursors;
         this.wall;
         this.playerCollisionGroup;
-        this.wallCollisionGroup;        
+        this.wallCollisionGroup;
+        this.time;
+        this.lastTime=new Date();        
 
         this.w;
         this.a;
@@ -20,7 +22,7 @@ class main extends Phaser.State {
     preload() {
         this.game.load.image('profeball', 'images/encIndicator.png');
 
-        this.game.load.image('background','../ig/map.png');
+        this.game.load.image('background','ig/map.png');
         this.game.load.image('player','ig/demop.png');
         this.game.load.image('1', 'ig/1.png');
         this.game.load.image('2', 'ig/2.png');
@@ -90,7 +92,7 @@ class main extends Phaser.State {
         this.game.stage.backgroundColor = '#000000';
         
         this.game.physics.startSystem(Phaser.Physics.P2JS);
-        this.game.add.tileSprite(0,0,10000,10000,'background');
+        this.game.add.tileSprite(0,0,10000,5000,'background');
         this.game.world.setBounds(0, 0, 10000, 5000);
 
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
@@ -816,8 +818,19 @@ class main extends Phaser.State {
             spawnball = false;
             this.spawn();
         }
-        
-
+        this.time=new Date();
+        if (this.time-this.lastTime>5000){
+            $.ajax({
+                method:'get',
+                url:'/updateLocation',
+                data:{ "x" : this.player.x, "y" : this.player.y },
+                success: function() {
+                    console.log("position upadted");
+                },
+                error: ()=>{alert('Failed to add.')}
+            });
+            this.lastTime = new Date();
+        }
     } // update ends here
 
     spawn(){

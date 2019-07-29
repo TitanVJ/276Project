@@ -532,6 +532,53 @@ app.get('/changeUserStatus', function(req, res) {
         }
     });
 });
+String.prototype.format = function () {
+    var args = [].slice.call(arguments);
+    return this.replace(/(\{\d+\})/g, function (a){
+        return args[+(a.substr(1,a.length-2))||0];
+    });
+};
+app.get('/updateLocation',async(req,res)=>{
+	if (req.session.user_name){
+		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
+		pool.query(sql, (err, response) => {
+			if(err) {
+				console.log(err);
+			}
+			if (response){
+				if(response.rows.length > 0) {
+					let values = [parseInt(req.query.x),parseInt(req.query.y),String(req.session.user_name)];
+					pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name=$3", values, (err, response) => {
+						if(err) {
+							console.log(err);
+						}
+						else{
+							console.log("updated "+values[2]+"'s position to x="+values[0]+" and y="+values[1]);
+						}
+					});
+				} else {
+					let values = [String(req.session.user_name),parseInt(req.query.x),parseInt(req.query.y)];
+					pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ($1,$2,$3)", values, (err, response) => {
+						if(err) {
+							console.log(err);
+						}
+						else{
+							console.log("updated "+values[0]+"'s position to x="+values[1]+" and y="+values[2]);
+						}
+					});
+				}
+			}
+			else {
+				console.log("no response from query");
+			}
+			res.status(200);
+		});
+		res.end();
+	}
+	else {
+		console.log("re-log required")
+	}
+})
 
 // Change prof_id to uuid
 // Change photo_id to varchar
