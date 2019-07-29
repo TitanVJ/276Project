@@ -153,7 +153,6 @@ function searchProfDex(){
 
 function getAllProfDex(){
     // GET /data
-    console.log("hello");
     $.ajax({
         method: 'get',
         url: '/dataProfDex',
