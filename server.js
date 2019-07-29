@@ -532,12 +532,8 @@ app.get('/changeUserStatus', function(req, res) {
         }
     });
 });
-String.prototype.format = function () {
-    var args = [].slice.call(arguments);
-    return this.replace(/(\{\d+\})/g, function (a){
-        return args[+(a.substr(1,a.length-2))||0];
-    });
-};
+
+
 app.get('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
@@ -553,7 +549,7 @@ app.get('/updateLocation',async(req,res)=>{
 							console.log(err);
 						}
 						else{
-							console.log("updated {2}'s position to x={0} and y={1}".format(values));
+							console.log("updated "+values[2]+"'s position to x="+values[0]+" and y="+values[1]);
 						}
 					});
 				} else {
@@ -563,7 +559,7 @@ app.get('/updateLocation',async(req,res)=>{
 							console.log(err);
 						}
 						else{
-							console.log("updated {0}'s position to x={1} and y={2}".format(values));
+							console.log("updated "+values[0]+"'s position to x="+values[1]+" and y="+values[2]);
 						}
 					});
 				}
@@ -580,6 +576,19 @@ app.get('/updateLocation',async(req,res)=>{
 	}
 })
 
+app.get('/getLocation',async(req,res)=>{
+	if (req.session.user_name){
+		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
+		pool.query(sql, (err, response) => {
+			if(err) {
+				console.log(err);
+			}
+			if(response){
+				res.send(response.rows.X_pos,response.rows.Y_pos);
+			}
+		})
+	}
+})
 // Change prof_id to uuid
 // Change photo_id to varchar
 

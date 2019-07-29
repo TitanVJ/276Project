@@ -97,6 +97,15 @@ class main extends Phaser.State {
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
         this.wallCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
+         $.ajax({
+                method:'get',
+                url:'/getLocation',
+                success: function(data) {
+                    console.log(data);
+                },
+                error: ()=>{alert('Failed to add.')}
+            });
+
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
 
         this.game.physics.p2.enable(this.player);
