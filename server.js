@@ -572,8 +572,6 @@ app.get('/updateLocation',async(req,res)=>{
 	}
 })
 
-<<<<<<< HEAD
-=======
 app.get('/getLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
@@ -590,5 +588,4 @@ app.get('/getLocation',async(req,res)=>{
 // Change prof_id to uuid
 // Change photo_id to varchar
 
->>>>>>> origin
 module.exports = app;
