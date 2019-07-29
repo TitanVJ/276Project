@@ -1,5 +1,4 @@
 
-
 // var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser', { preload: preload, create: create, update: update, render: render });
 class main extends Phaser.State { 
     
@@ -89,7 +88,8 @@ class main extends Phaser.State {
     }
   
     create() {
-
+        this.game.stage.backgroundColor = '#000000';
+        
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.add.tileSprite(0,0,10000,5000,'background');
         this.game.world.setBounds(0, 0, 10000, 5000);
@@ -97,14 +97,14 @@ class main extends Phaser.State {
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
         this.wallCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
-         $.ajax({
-                method:'get',
-                url:'/getLocation',
-                success: function(data) {
-                    console.log(data);
-                },
-                error: ()=>{alert('Failed to add.')}
-            });
+        $.ajax({
+            method:'get',
+            url:'/getLocation',
+            success: function(data) {
+                console.log(data);
+            },
+            error: ()=>{alert('Failed to add.')}
+        };
 
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
 
@@ -840,6 +840,8 @@ class main extends Phaser.State {
             this.lastTime = new Date();
         }
     } // update ends here
+
+           
 
     spawn(){
         //spawn the obj
