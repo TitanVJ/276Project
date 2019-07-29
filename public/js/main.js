@@ -16,6 +16,9 @@ class main extends Phaser.State {
         this.a;
         this.s;
         this.d;
+
+        this.playerX=this.game.world.centerX;
+        this.playerY=this.game.world.centerY;
     }
 
     preload() {
@@ -84,6 +87,21 @@ class main extends Phaser.State {
         this.game.load.image('59', 'ig/59.png');
         this.game.load.image('60', 'ig/60.png');
         this.game.load.image('61', 'ig/61.png');
+        var callb;    
+        function defineVal() {
+            $.ajax({
+                method:'get',
+                url:'/getLocation',
+                dataType: 'json',
+                success: function(data) {
+                    callb = data;
+                }
+                error: ()=>{alert('Failed to add.')}
+            });
+        }
+        callb = defineVal();
+        this.playerX=callb.x;
+        this.playerY=callb.y;
     
     }
   
@@ -96,17 +114,8 @@ class main extends Phaser.State {
 
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
         this.wallCollisionGroup = this.game.physics.p2.createCollisionGroup();
-
-        $.ajax({
-            method:'get',
-            url:'/getLocation',
-            success: function(data) {
-                console.log(data);
-            },
-            error: ()=>{alert('Failed to add.')}
-        };
-
-        this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
+        console.log(this.game.world.centerX,"PlayerX="+this.playerX);
+        this.player = this.game.add.sprite(this.playerX, this.playerY, 'player');
 
         this.game.physics.p2.enable(this.player);
         this.player.body.collideWorldBounds = true;

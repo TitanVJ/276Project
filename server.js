@@ -544,7 +544,7 @@ app.get('/updateLocation',async(req,res)=>{
 			if (response){
 				if(response.rows.length > 0) {
 					let values = [parseInt(req.query.x),parseInt(req.query.y),String(req.session.user_name)];
-					pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name=$3", values, (err, response) => {
+					pool.query("UPDATE userPos SET x_pos=$1,y_pos=$2 WHERE user_name=$3", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
@@ -554,7 +554,7 @@ app.get('/updateLocation',async(req,res)=>{
 					});
 				} else {
 					let values = [String(req.session.user_name),parseInt(req.query.x),parseInt(req.query.y)];
-					pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ($1,$2,$3)", values, (err, response) => {
+					pool.query("INSERT INTO userPos(user_name,x_pos,y_pos) VALUES ($1,$2,$3)", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
@@ -584,7 +584,33 @@ app.get('/getLocation',async(req,res)=>{
 				console.log(err);
 			}
 			if(response){
-				res.status(200).send(response.rows.X_pos,response.rows.Y_pos);
+				if(response.rows.length > 0) {
+					console.log(response);
+					console.log(response.rows[0].x_pos,response.rows[0].y_pos)
+					res.status(200);
+					res.send({"x":response.rows[0].x_pos,"y":response.rows[0].y_pos});
+				}
+				else {
+					pool.query("INSERT INTO userPos(user_name) VALUES ($1)", [req.session.user_name], (err, response) => {
+						if(err) {
+							console.log(err);
+						}
+						else{
+							console.log("created user "+req.session.user_name);
+							var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
+							pool.query(sql, (err, response) => {
+								if(err) {
+									console.log(err);
+								}
+								if(response){
+									console.log(response.rows[0].x_pos,response.rows[0].y_pos);
+									res.status(200);
+									res.send({"x":response.rows[0].x_pos,"y":response.rows[0].y_pos});
+								}
+							});
+						}
+					});
+				}
 			}
 		})
 	}
