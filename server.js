@@ -465,95 +465,77 @@ io.on('connection', (socket) => {
                 // encounter is going thid dudes way
 
                 // get a prof obj
-                let profObj = genProfObj();
-                socket.emit('encounter', profObj);
+                //******************************8 */
+                console.log('Generating a prof obj');
+                let profObj = {
+                    'prof_fname': null, 
+                    'prof_lname': null,
+                    'photo_id': null,
+                    'questions': null,
+                    'answers': null
+                };
+
+                // pop a prof id from the queue
+                var profId = profQ.shift();
+
+                let query = 'SELECT * FROM profdex WHERE prof_id=$1';
+                pool.query(query, [profId], (err, results) => {
+                    if(err){
+                        console.log("Error in genProfObj query");
+                        socket.emit('encounter', null);
+                    }
+                    else{
+                        if(results.rowCount == 0 ){
+                            console.log('Empty table in genProfObj query');
+                            socket.emit('encounter', null);                            
+                        }
+                        else{
+                            var row = results.rows[0];
+                            profObj.prof_fname = row.prof_fname;
+                            profObj.prof_lname = row.prof_lname;
+                            profObj.photo_id = row.photo_id;
+
+                            //
+                            let q = 'SELECT * FROM profQnAs WHERE prof_id=$1';
+                            pool.query(q, [profId], (err, results) => {
+                                if(err){
+                                    console.log("Error in getQnAs");
+                                    socket.emit('encounter', null);
+                                    
+                                }
+                                else{
+                                    if(results.rowCount == 0){
+                                        console.log('Empty table in getQnAs');
+                                        socket.emit('encounter', null);
+                                        
+                                    }
+                                    else{
+                                        var row = results.rows[0];
+                                        var questions = row.questions;
+                                        var answers = row.answers;
+                                        answers[0].push(row.answersindex[0]);
+                                        answers[1].push(row.answersindex[1]);
+                                        
+                                        profObj.questions = questions;
+                                        profObj.answers = answers;
+                                        console.log('things');
+                                        socket.emit('encounter', profObj);
+                                    }
+                                }
+                            }); // in pool 
+                            //
+
+                        } // else
+                    } // else
+                });
+
+                /*********************************** */
 
             }
         }
     });
 });
 // Socket Code ends here
-
-// Helper function to create prof obj to send client
-function genProfObj(){
-    console.log('Generating a prof obj');
-    let profObj = {
-        'prof_fname': null, 
-        'prof_lname': null,
-        'photo_id': null,
-        'questions': null,
-        'answers': null
-    };
-
-    // pop a prof id from the queue
-    var profId = profQ.shift();
-
-    let query = 'SELECT * FROM profdex WHERE prof_id=$1';
-    pool.query(query, [profId], (err, results) => {
-        if(err){
-            console.log("Error in genProfObj query");
-            return null;
-        }
-        else{
-            if(results.rowCount == 0 ){
-                console.log('Empty table in genProfObj query');
-                return null;
-            }
-            else{
-                var row = results.rows[0];
-                profObj.prof_fname = row.prof_fname;
-                profObj.prof_lname = row.prof_lname;
-                profObj.photo_id = row.photo_id;
-
-                // get the questions and answers
-                var qna = getQnAs(row.prof_id);
-                if(qna == null){
-                    console.log("no questions");
-                    return null;
-                }
-
-                profObj.questions = qna[0];
-                profObj.answers = qna[1];
-                
-                console.log('print profObj');
-                console.log('p obj: ' + profObj);
-                return profObj;
-            }
-        }
-    });
-
-}
-
-// Helper function for genProfObj, returns the questions and answers
-function getQnAs(profId){
-    var qna = [];
-
-    let q = 'SELECT * FROM profQnAs WHERE prof_id=$1';
-    pool.query(q, [profId], (err, results) => {
-        if(err){
-            console.log("Error in getQnAs");
-            return null;
-        }
-        else{
-            if(results.rowCount == 0){
-                console.log('Empty table in getQnAs');
-                return null;
-            }
-            else{
-                var row = results.rows[0];
-                var questions = row.questions;
-                var answers = row.answers;
-                answers[0].push(row.answersindex[0]);
-                answers[1].push(row.answersindex[1]);
-                
-                qna.push(questions);
-                qna.push(answers);
-                console.log(qna);
-                return qna;
-            }
-        }
-    });
-}
 
 /* Used to check if a profs photo exists */
 app.get('/check-file/:fileName', function(req, res) {
