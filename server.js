@@ -172,7 +172,7 @@ app.post('/login', function(req, res, next) {
                     if(hasPermissions(req.session.user)) {
                         res.redirect('./admin');
                     } else {
-                      req.session.encounter_chance = 12;
+                      req.session.encounter_chance = 30;
                       req.session.use_time= 0;
                       req.session.user_name = req.body.username;
                         res.redirect('/game.html');
@@ -365,7 +365,7 @@ app.get('/addCandy', function(req,res){
 })
 app.get('/popAPill',async(req,res)=>{
   console.log(req.session.user_name);
-  if(req.session.encounter_chance-Date.now() > 60000){
+  if(Date.now()-req.session.use_time > 60000){
     alert("Recently Used a Candy");
   }
   else{
@@ -387,7 +387,7 @@ app.get('/popAPill',async(req,res)=>{
                 console.log(err);
             } else {
                  console.log("Popping pills");
-                 req.session.encounter_chance = 4;
+                 req.session.encounter_chance = 20;
                  req.session.itemTime= Date.now();
                  res.status(200);
                 }
@@ -427,8 +427,8 @@ app.post('/caught',(req,res)=>{
 app.get('/getUserName', loggedIn,(req, res) => {
     const results = {user_name: req.session.user_name, use_time: req.session.use_time, encounter_chance: req.session.encounter_chance};
     if(Date.now()-results.use_time > 60000){
-      req.session.encounter_chance = 12;
-      results.encounter_chance = 12;
+      req.session.encounter_chance = 30;
+      results.encounter_chance = 30;
     }
     res.send(results);
 });

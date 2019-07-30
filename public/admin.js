@@ -199,7 +199,7 @@ $('#dept').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
     }
 
     $('#course_num').prop('disabled', false);
-
+})
 function getAllProfDex(){
     // GET /data
     $.ajax({
@@ -215,7 +215,7 @@ function getAllProfDex(){
 
         }
     });
-});
+};
 
 // Controls what happens after a course number is selected when creating a new professor
 $('#course_num').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
