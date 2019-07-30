@@ -1,0 +1,44 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Prof Page</title>
+    <link rel="stylesheet" href="stylesheets/page.css"/>
+</head>
+
+<body>
+    <h1>
+        Prof Details
+
+        <button class="back" onclick="specialback()">Back</button>
+        <button class="home" onclick="home()">Home</button>
+    </h1>
+    
+    </br>
+    <img id="photo"/>
+
+    <ul>
+        <li id="firstN"></li>
+        <li id="lastN"></li>
+        <li id="create"></li>
+        <li id="update"></li>
+    </ul>
+
+    
+
+</body>
+<script>
+$(document).ready(function(){
+    const [fname,lname]=$('#selected').attr("class").split(/\s+/);
+    $('#firstN').text('First name: '+fname);
+    $('#lastN').text('Last name: '+lname);
+    $.ajax({
+        method: 'GET',
+        url: '/profData',
+        data: {'profFname':fname, 'profLname':lname},
+        success: function(data){
+            $("#photo").attr("src","images/prof_images/"+data.results[0].photo_id+".jpg");
+            $('#create').text('Created: '+data.results[0].record_created.split('T')[0] + ' (' + data.results[0].record_created.split('T')[1].split('.')[0] + ')');
+            $('#update').text('Updated: '+data.results[0].last_updated.split('T')[0] + ' (' + data.results[0].last_updated.split('T')[1].split('.')[0] + ')');
+        }
+    });
+});
+</script>

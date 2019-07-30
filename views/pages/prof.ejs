@@ -5,38 +5,39 @@
     <meta charset="UTF-8">
     <title>Prof List</title>
     <link rel="stylesheet" href="stylesheets/prof.css"/>
-    <script type="text/javascript" src="./jquery.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="./js/index.js" defer></script>
 </head>
 
 <body>
+    <div ID = "selected"></div>
+    <div ID = "container">
+        <h1>
+            Prof List
 
-    <h1>
-        Prof List
+            <button class="back" onclick="back()">Back</button>
+            <button class="home" onclick="home()">Home</button>
+        </h1>
 
-        <button class="back" onclick="back()">Back</button>
-        <button class="home" onclick="home()">Home</button>
-    </h1>
+        <form class="radio">
+            <input type="radio" name="status" onClick="JavaScript:radio_input('././yourProfPrev')">Collected
+            <input type="radio" name="status" checked="checked">All
+        </form>
 
-    <form class="radio">
-        <input type="radio" name="status" onClick="JavaScript:radio_input('././yourProfPrev')">Collected
-        <input type="radio" name="status" checked="checked">All
-    </form>
+        <script type="text/javascript" src="./js/index.js"></script>
 
-    <script type="text/javascript" src="./js/index.js"></script>
+        <% results.forEach(function(r) { %>
+            <figure>
+                <a href='#' onclick="loadProf('<%= r.prof_fname%>', '<%=r.prof_lname %>')">
+                    <img src='images/prof_images/<%= r.photo_id%>.jpg'/>
+                    <figcaption>
+                        <%= r.prof_fname %> </br>
+                        <%= r.prof_lname %>
+                    </figcaption>
+                </a>
+            </figure>
+        <% }); %>
 
-    <% results.forEach(function(r) { %>
-        <figure>
-            <a href = 'prof=<%= r.prof_fname + r.prof_lname %>'>
-                <img src='images/prof_images/<%= r.photo_id%>.jpg'/>
-                <figcaption>
-                    <%= r.prof_fname %> </br>
-                    <%= r.prof_lname %>
-                </figcaption>
-            </a>
-        </figure>
-    <% }); %>
-
+    </div>
 </body>
-
 </html>

@@ -1,0 +1,51 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Your Prof Page</title>
+    <link rel="stylesheet" href="stylesheets/page.css"/>
+</head>
+
+<body>
+    <h1>
+        Your Prof Details
+
+        <button class="back" onclick="specialback()">Back</button>
+        <button class="home" onclick="home()">Home</button>
+    </h1>
+
+    </br>
+    <img id="photo"/>
+
+    <ul>
+        <li id="firstN"></li>
+        <li id="lastN"></li>
+        <li id="catch"></li>
+        <li id="number"></li>
+    </ul>
+
+    
+
+</body>
+<script>
+$(document).ready(function(){
+    const [fname,lname,id]=$('#selected').attr("class").split(/\s+/);
+    $('#firstN').text('First name: '+fname);
+    $('#lastN').text('Last name: '+lname);
+    $.ajax({
+        method: 'GET',
+        url: '/yourProfData',
+        data: {'profFname':fname, 'profLname':lname, 'id':id},
+        success: function(data){
+            $("#photo").attr("src","images/prof_images/"+data.results[0].photo_id+".jpg");
+            $('#catch').text('Caught: '+ data.results[0].catch_time.split('T')[0] + ' (' + data.results[0].catch_time.split('T')[1].split('.')[0] + ')');
+        }
+    });
+    $.ajax({
+        method: 'GET',
+        url: '/yourProfNumber',
+        data: {'profFname':fname, 'profLname':lname},
+        success: function(data){
+            $('#number').text('Numbers caught: ' + data.rowCount);
+        }
+    });
+});
+</script>
