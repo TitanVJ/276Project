@@ -1,4 +1,3 @@
-
 // var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser', { preload: preload, create: create, update: update, render: render });
 <<<<<<< HEAD
 class main extends Phaser.State { 
@@ -885,6 +884,7 @@ class main extends Phaser.State {
 } // class ends here
 
 export default main;
+<<<<<<< HEAD
 
 // var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser', { preload: preload, create: create, update: update, render: render });
 class main extends Phaser.State {
@@ -1745,3 +1745,5 @@ class main extends Phaser.State {
 } // class ends here
 
 export default main;
+=======
+>>>>>>> fixed improper additions to main.js
