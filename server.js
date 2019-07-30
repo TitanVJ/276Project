@@ -554,8 +554,7 @@ app.get('/changeUserStatus', function(req, res) {
     });
 });
 
-
-app.get('/updateLocation',async(req,res)=>{
+app.post('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
 		pool.query(sql, (err, response) => {
@@ -565,22 +564,22 @@ app.get('/updateLocation',async(req,res)=>{
 			if (response){
 				if(response.rows.length > 0) {
 					let values = [parseInt(req.query.x),parseInt(req.query.y),String(req.session.user_name)];
-					pool.query("UPDATE userPos SET X_pos=$1,Y_pos=$2 WHERE user_name=$3", values, (err, response) => {
+					pool.query("UPDATE userPos SET x_pos=$1,y_pos=$2 WHERE user_name=$3", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
 						else{
-							console.log("updated "+values[2]+"'s position to x="+values[0]+" and y="+values[1]);
+							//console.log("updated "+values[2]+"'s position to x="+values[0]+" and y="+values[1]);
 						}
 					});
 				} else {
 					let values = [String(req.session.user_name),parseInt(req.query.x),parseInt(req.query.y)];
-					pool.query("INSERT INTO userPos(user_name,X_pos,Y_pos) VALUES ($1,$2,$3)", values, (err, response) => {
+					pool.query("INSERT INTO userPos(user_name,x_pos,y_pos) VALUES ($1,$2,$3)", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
 						else{
-							console.log("updated "+values[0]+"'s position to x="+values[1]+" and y="+values[2]);
+							//console.log("updated "+values[0]+"'s position to x="+values[1]+" and y="+values[2]);
 						}
 					});
 				}
@@ -605,9 +604,30 @@ app.get('/getLocation',async(req,res)=>{
 				console.log(err);
 			}
 			if(response){
-				res.status(200)
-        data = {x: response.rows.X_pos, y: response.rows.Y_pos}
-        res.send(data);
+				if(response.rows.length > 0) {
+					res.status(200);
+					res.send({"x":response.rows[0].x_pos,"y":response.rows[0].y_pos});
+				}
+				else {
+					pool.query("INSERT INTO userPos(user_name) VALUES ($1)", [req.session.user_name], (err, response) => {
+						if(err) {
+							console.log(err);
+						}
+						else{
+							console.log("created user "+req.session.user_name);
+							var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
+							pool.query(sql, (err, response) => {
+								if(err) {
+									console.log(err);
+								}
+								if(response){
+									res.status(200);
+									res.send({"x":response.rows[0].x_pos,"y":response.rows[0].y_pos});
+								}
+							});
+						}
+					});
+				}
 			}
 		})
 	}
