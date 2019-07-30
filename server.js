@@ -24,36 +24,9 @@ const pool = new Pool({
 });
 
 
-//AMY 
-// var pg = require('pg');
-// var AMYconnectionString = "postgres://password@localhost:5432/postgres";
-// var pgClient = new pg.Client(AMYconnectionString);
-// pgClient.connect();
 
-app.get('/profPrev', function (req, res){
-        pool.query("SELECT * from profDex", function(error, result){
-            // if(error){
-            //     console.log('hi');
-            // }if (results == 0){
-            //     console.log('ah');
-            // }
-            var results = { 'results': (result.rows[0]) ? result.rows : [] };
-            
-            // console.log(result);
-            res.render('pages/prof', results);
-            // console.log(result + 'hi');
-        });
-})    
-app.get('/yourProfPrev', function (req, res){
-    pool.query("SELECT * from camronProfList", function(error, result){
-        var results = { 'results': (result.rows[0]) ? result.rows : [] };
-        res.render('pages/yourProf', results);
-    });
-}) 
-//END OF AMY
 
-app.use(session({
-    const session = require('express-session')({
+const session = require('express-session')({
     name:'session',
     genid: function(req) { return uuidv1();},
     secret: 'mysecret',
@@ -62,6 +35,7 @@ app.use(session({
     saveUninitialized: true,
 })
 app.use(session);
+
 
 // Use this function to test if user is an admin -- Pass in req.session.user
 function hasPermissions(user) {
@@ -115,7 +89,7 @@ app.post('/sign-up', function(req, res) {
                     console.log(err);
                 } else {
                     const sql = {
-                        text: 'CREATE TABLE '+ [req.body.username]+'ProfList(prof_fname VARCHAR(32), prof_lname VARCHAR(32), photo_id NUMERIC, catch_time TIMESTAMP DEFAULT now() )'
+                        text: 'CREATE TABLE '+ [req.body.username]+'ProfList(prof_fname VARCHAR(32), prof_lname VARCHAR(32), photo_id VARCHAR, catch_time TIMESTAMP DEFAULT now() )'
                     }
                     console.log(sql);
                     pool.query(sql, (err, response) => {
@@ -126,7 +100,7 @@ app.post('/sign-up', function(req, res) {
                        }
                     });
                     const sql1 = {
-                        text: 'CREATE TABLE '+ [req.body.username]+'Inventory(item_name VARCHAR(32), iphoto_id NUMERIC, quantity NUMERIC, item_added TIMESTAMP DEFAULT now())'
+                        text: 'CREATE TABLE '+ [req.body.username]+'Inventory(item_name VARCHAR(32), iphoto_id VARCHAR, quantity NUMERIC, item_added TIMESTAMP DEFAULT now())'
                     }
                     console.log(sql1);
                     pool.query(sql1, (err, response) => {
@@ -517,6 +491,71 @@ app.post('/add-new-prof', loggedIn, function(req, res) {
         });
     }
 });
+
+
+//AMY 
+// var pg = require('pg');
+// var AMYconnectionString = "postgres://password@localhost:5432/postgres";
+// var pgClient = new pg.Client(AMYconnectionString);
+// pgClient.connect();
+
+app.get('/profPrev', function (req, res){
+    pool.query("SELECT * from profDex", function(error, result){
+        // if(error){
+        //     console.log('hi');
+        // }if (results == 0){
+        //     console.log('ah');
+        // }
+        var results = { 'results': (result.rows[0]) ? result.rows : [] };
+        
+        // console.log(result);
+        res.render('pages/prof', results);
+        // console.log(result + 'hi');
+    });
+})    
+
+app.get('/yourProfPrev', function (req, res){
+    pool.query("SELECT * from "+req.session.user_name+"ProfList", function(error, result){
+        if (result){
+            var results = { 'results': (result.rows[0]) ? result.rows : [] };
+            res.render('pages/yourProf', results);
+        }
+        else{
+            res.end();
+        }
+    });
+}) 
+
+app.get('/profPagePrev', function(req, res){
+    res.render('pages/profPage');
+})
+app.get('/profData', function(req, res){
+    const sql = {text: "SELECT * FROM profDex WHERE prof_fname = '" + req.query.profFname + "'AND prof_lname = '" + req.query.profLname + "'"}
+    pool.query(sql, function(error, result){
+        var results = { 'results':(result.rows[0]) ? result.rows : [] };
+        res.send(results);
+    });
+})
+
+app.get('/yourProfPagePrev', function(req, res){
+    res.render('pages/yourProfPage');
+})
+app.get('/yourProfData', function(req, res){
+    const sql = {text: "SELECT * FROM " + req.session.user_name + "ProfList WHERE prof_fname = '" + req.query.profFname + "'AND prof_lname = '" + req.query.profLname + "'"}
+    pool.query(sql, function(error, result){
+        var results = { 'results':(result.rows[0]) ? result.rows : [] };
+        res.send(results);
+    });
+})
+// a
+
+// app.get('/yourProfPrev', function (req, res){
+//     pool.query("SELECT * from camronProfList", function(error, result){
+//         var results = { 'results': (result.rows[0]) ? result.rows : [] };
+//         res.render('pages/yourProf', results);
+//     });
+// }) 
+//END OF AMY
 
 // Change prof_id to uuid
 // Change photo_id to varchar
