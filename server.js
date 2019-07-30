@@ -1,3 +1,4 @@
+
 const express = require('express');
 const request = require('request');
 const app = express();
@@ -22,6 +23,34 @@ const pool = new Pool({
     connectionString: connectionString,
 });
 
+
+//AMY
+// var pg = require('pg');
+// var AMYconnectionString = "postgres://password@localhost:5432/postgres";
+// var pgClient = new pg.Client(AMYconnectionString);
+// pgClient.connect();
+
+app.get('/profPrev', function (req, res){
+        pool.query("SELECT * from profDex", function(error, result){
+            // if(error){
+            //     console.log('hi');
+            // }if (results == 0){
+            //     console.log('ah');
+            // }
+            var results = { 'results': (result.rows[0]) ? result.rows : [] };
+
+            // console.log(result);
+            res.render('pages/prof', results);
+            // console.log(result + 'hi');
+        });
+})
+app.get('/yourProfPrev', function (req, res){
+    pool.query("SELECT * from camronProfList", function(error, result){
+        var results = { 'results': (result.rows[0]) ? result.rows : [] };
+        res.render('pages/yourProf', results);
+    });
+})
+//END OF AMY
 
 const session = require('express-session')({
     name:'session',
@@ -118,7 +147,6 @@ app.post('/sign-up', function(req, res) {
                        }
                     });
 
-                    console.log("Flash Message");
                     req.flash('info', "New User Created Successfully. Please Sign-in.");
 
                     res.render('pages/login', {expressFlashNewUser: req.flash('info')})
@@ -130,7 +158,7 @@ app.post('/sign-up', function(req, res) {
 
 /* Validate user's credentials and log them into the site */
 app.post('/login', function(req, res, next) {
-    console.log(req.session.user_name);
+
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) => {
         if (err) {
             console.log(err);
@@ -144,8 +172,8 @@ app.post('/login', function(req, res, next) {
                     if(hasPermissions(req.session.user)) {
                         res.redirect('./admin');
                     } else {
-                      req.session.encounterChance = 12;
-                      req.session.itemUsed = 'false'
+                      req.session.encounter_chance = 12;
+                      req.session.use_time= 0;
                       req.session.user_name = req.body.username;
                         res.redirect('/game.html');
                     }
@@ -204,7 +232,8 @@ app.get('/user_profDex', loggedIn, function(req,res){
       res.redirect('pages/login');
   }
 });
-app.get('/toInventoryGame', (req, res) => {
+
+app.get('/toInventoryGame', async(req, res) => {
     // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
     // console.log(sql).
     const query = 'SELECT item_name, iphoto_id, quantity, item_added FROM ' + [req.session.user_name]+ 'Inventory';
@@ -225,17 +254,10 @@ app.get('/toInventoryGame', (req, res) => {
 
 });
 app.get('/toInventory', (req, res) => {
-    // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
-    // console.log(sql).
     const query = 'SELECT item_name, iphoto_id, quantity, item_added FROM ' + req.query.user + 'Inventory';
-    console.log(query);
     pool.query(query ,(error, result)=>{
         if(error){
             console.log(error.message);
-            res.send('');
-        }
-        if(result.rowCount == 0){
-            console.log('Empty table');
             res.send('');
         }
         const results = { 'results': (result) ? result.rows : null };
@@ -268,19 +290,13 @@ app.get('/dataProfDex', (req, res) =>{
             res.end();
         }
 
-        if(result.rows.length == 0){
-            console.log('Empty table');
-            res.end();
-            return;
-        }
-
     const results = { 'results': (result) ? result.rows : null };
     res.send(results);
     });
 });
 
 /* Delete a user from the DB */
-app.delete('/removeUser/:id', loggedIn, (req, res)=>{
+app.delete('/removeUser/:id', (req, res)=>{
 
     pool.query('DELETE FROM users WHERE user_name=$1', [req.params.id], function (err, resp) {
       if (err){
@@ -349,7 +365,10 @@ app.get('/addCandy', function(req,res){
 })
 app.get('/popAPill',async(req,res)=>{
   console.log(req.session.user_name);
-  if(1 == 1){
+  if(req.session.encounter_chance-Date.now() > 60000){
+    alert("Recently Used a Candy");
+  }
+  else{
     const sql = {
         text: 'SELECT quantity FROM '+[req.session.user_name]+'Inventory'
     }
@@ -368,8 +387,8 @@ app.get('/popAPill',async(req,res)=>{
                 console.log(err);
             } else {
                  console.log("Popping pills");
-                 req.session.encounterChance = 4;
-                 req.session.itemUsed = 'true';
+                 req.session.encounter_chance = 4;
+                 req.session.itemTime= Date.now();
                  res.status(200);
                 }
             });
@@ -405,7 +424,14 @@ app.post('/caught',(req,res)=>{
 
 
 })
-
+app.get('/getUserName', loggedIn,(req, res) => {
+    const results = {user_name: req.session.user_name, use_time: req.session.use_time, encounter_chance: req.session.encounter_chance};
+    if(Date.now()-results.use_time > 60000){
+      req.session.encounter_chance = 12;
+      results.encounter_chance = 12;
+    }
+    res.send(results);
+});
 // Socket code
   io.on('connection', (socket)=>{
       console.log("User connection established");
@@ -413,31 +439,29 @@ app.post('/caught',(req,res)=>{
       socket.on('disconnect', ()=>{
           console.log('user disconnected');
       })
-
         // used to determine if a character will
-        socket.on('move', (data)=>{
+        socket.on('move', function(data){
             // determine
+            var c = Math.floor((Math.random() * 100) + 1);
+            console.log(c);
+            console.log(data);
+            if(c%data == 0){
+                //encouter
+                // send back and obj, contain img id, prof
+                // for testing do console.log
 
-            if(!data){
-                var c = Math.floor((Math.random() * 100) + 1);
-                console.log(c);
-                if(c%4 == 0 && c%3 == 0){
-                    //encouter
-                    // send back and obj, contain img id, prof
-                    // for testing do console.log
-
-                    // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
-                    // for now send a temp obj
-                    var tempProf = {
-                        prof_fname: 'bobby',
-                        prof_lname: 'chan',
-                        photo_id: '1',
-                        questions: ['How old am I?', 'What food do I use most in my examples?'],
-                        answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
-                    }
-                    socket.emit('encounter', tempProf);
-                }//if
+                // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+                // for now send a temp obj
+                var tempProf = {
+                    prof_fname: 'bobby',
+                    prof_lname: 'chan',
+                    photo_id: '1',
+                    questions: ['How old am I?', 'What food do I use most in my examples?'],
+                    answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
+                }
+                socket.emit('encounter', tempProf);
             }
+
         });
   })
 
@@ -530,7 +554,6 @@ app.get('/changeUserStatus', function(req, res) {
         }
     });
 });
-
 
 app.post('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){

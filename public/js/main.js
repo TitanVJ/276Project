@@ -1,4 +1,3 @@
-
 // var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser', { preload: preload, create: create, update: update, render: render });
 class main extends Phaser.State {
 
@@ -16,9 +15,6 @@ class main extends Phaser.State {
         this.a;
         this.s;
         this.d;
-
-        this.playerX=parseInt(callb.x);
-        this.playerY=parseInt(callb.y);
     }
 
     preload() {
@@ -99,7 +95,19 @@ class main extends Phaser.State {
 
         this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
         this.wallCollisionGroup = this.game.physics.p2.createCollisionGroup();
-        this.player = this.game.add.sprite(this.playerX, this.playerY, 'player');
+
+        $.ajax({
+            method: 'get',
+            url: '/getLocation',
+            success: (data) => {
+                console.log(data);
+            },
+            error: () =>{
+                console.log('Failed to add.');
+            }
+        });
+
+        this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
 
         this.game.physics.p2.enable(this.player);
         this.player.body.collideWorldBounds = true;
@@ -820,11 +828,14 @@ class main extends Phaser.State {
             this.spawn();
         }
         this.time=new Date();
-        if (this.time-this.lastTime>500){
+        if (this.time-this.lastTime>5000){
             $.ajax({
-                method:'post',
+                method:'get',
                 url:'/updateLocation',
                 data:{ "x" : this.player.x, "y" : this.player.y },
+                success: function() {
+                    console.log("position upadted");
+                },
                 error: ()=>{alert('Failed to add.')}
             });
             this.lastTime = new Date();
