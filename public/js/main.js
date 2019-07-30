@@ -822,7 +822,7 @@ class main extends Phaser.State {
         this.time=new Date();
         if (this.time-this.lastTime>500){
             $.ajax({
-                method:'get',
+                method:'post',
                 url:'/updateLocation',
                 data:{ "x" : this.player.x, "y" : this.player.y },
                 error: ()=>{alert('Failed to add.')}
