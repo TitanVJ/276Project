@@ -33,10 +33,11 @@ const session = require('express-session')({
 })
 app.use(session);
 
-// Prof queue code
+// ********* Prof queue code *********
 var profQ = [];
 var maxProfId = null;
 
+// function to update max number of of profs
 function updateMaxProfNum(){
     let q = 'SELECT prof_id FROM profdex WHERE prof_id = (SELECT MAX(prof_id) FROM profdex)';
     pool.query(q, (err, results) =>{
@@ -59,7 +60,6 @@ function fillProfQueue(){
     if(maxProfId != null){
         var c = Math.floor(Math.random() * maxProfId) + 1;
         profQ.push(c);
-        console.log('filling');
     }
 
     // insert into the array
@@ -72,7 +72,7 @@ setInterval(()=>{
     }
 }, 1000);
 
-// End of prof queue code
+// ********* End of prof queue code *********
 
 // Use this function to test if user is an admin -- Pass in req.session.user
 function hasPermissions(user) {
@@ -483,6 +483,71 @@ app.post('/caught',(req,res)=>{
   })
 
 // Socket Code ends here
+
+// Helper function to create prof obj to send client
+function genProfObj(){
+    let profObj = {
+        prof_fname: null, 
+        prof_lname: null,
+        photo_id: null,
+        questions: null,
+        answers: null
+    };
+
+    // pop prof from profQ
+    var profId = profQ.shift();
+
+    // query profdex to get prof informatin 
+    let query1 = 'Select * from profdex where prof_id=$1';
+    pool.query(query1, [profId], (err, results) =>{
+        if(err){
+            console.log('Error');
+            return null;
+        }
+        else{
+            if(results.rowCount == 0){
+                console.log('Empty table');
+                return null;
+            }
+            else{
+                var row = results.rows[0];
+                profObj.prof_fname = row.prof_fname;
+                profObj.prof_lname = row.prof_lname;
+                profObj.photo_id = row.photo_id;
+
+                // query the answers and question from its profQs table
+                qna = getQnAs(row.prof_id);
+                profObj.questions = qna[0];
+                profObj.answers = qna[1];
+
+                console.log(profObj);
+            }
+        }
+    });
+}
+
+// Helper function for genProfObj, returns the questions and answers
+function getQnAs(profId){
+    var questions;
+    var answers;
+
+    let q = 'SELECT * FROM profQnAs WHERE prof_id= $1'
+    pool.query(q, [profId], (err, results) => {
+        if(err){
+            console.log('Error');
+            return null;
+        }
+        else{
+            if(results.rowCount == 0){
+                console.log('Empty table');
+                return null;
+            }
+            else{
+                var row = results.rows[0];
+            }
+        }
+    });
+}
 
 /* Used to check if a profs photo exists */
 app.get('/check-file/:fileName', function(req, res) {
