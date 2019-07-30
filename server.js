@@ -50,6 +50,7 @@ function updateMaxProfNum(){
             }
             else {
                 maxProfId = results.rows[0].prof_id;
+                console.log('max prof id ' + maxProfId);
             }
         }
     });
@@ -61,9 +62,9 @@ function fillProfQueue(){
         var c = Math.floor(Math.random() * maxProfId) + 1;
         profQ.push(c);
     }
-
-    // insert into the array
 }
+
+// only called on server start
 updateMaxProfNum();
 
 setInterval(()=>{
@@ -448,65 +449,54 @@ app.post('/caught',(req,res)=>{
 })
 
 // Socket code
-  io.on('connection', (socket)=>{
-      console.log("User connection established");
+io.on('connection', (socket) => {
+    console.log('User connectoin established');
 
-      socket.on('disconnect', ()=>{
-          console.log('user disconnected');
-      })
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
 
-        // used to determine if a character will
-        socket.on('move', (data)=>{
-            // determine
+    socket.on('move', (data) => {
+        if(!data){// already have an encounter?
+            // determine if they get an encounter
+            var c = Math.floor((Math.random() * 100) + 1);
 
-            if(!data){
-                var c = Math.floor((Math.random() * 100) + 1);
-                console.log(c);
-                if(c%4 == 0 && c%3 == 0){
-                    //encouter
-                    // send back and obj, contain img id, prof
-                    // for testing do console.log
+            if(c%4 == 0 && c%3 == 0){
+                // encounter is going thid dudes way
 
-                    // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
-                    // for now send a temp obj
-                    var tempProf = {
-                        prof_fname: 'bobby',
-                        prof_lname: 'chan',
-                        photo_id: '1',
-                        questions: ['How old am I?', 'What food do I use most in my examples?'],
-                        answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
-                    }
-                    socket.emit('encounter', tempProf);
-                }//if
+                // get a prof obj
+                let profObj = genProfObj();
+                socket.emit('encounter', profObj);
+
             }
-        });
-  })
-
+        }
+    });
+});
 // Socket Code ends here
 
 // Helper function to create prof obj to send client
 function genProfObj(){
+    console.log('Generating a prof obj');
     let profObj = {
-        prof_fname: null, 
-        prof_lname: null,
-        photo_id: null,
-        questions: null,
-        answers: null
+        'prof_fname': null, 
+        'prof_lname': null,
+        'photo_id': null,
+        'questions': null,
+        'answers': null
     };
 
-    // pop prof from profQ
+    // pop a prof id from the queue
     var profId = profQ.shift();
 
-    // query profdex to get prof informatin 
-    let query1 = 'Select * from profdex where prof_id=$1';
-    pool.query(query1, [profId], (err, results) =>{
+    let query = 'SELECT * FROM profdex WHERE prof_id=$1';
+    pool.query(query, [profId], (err, results) => {
         if(err){
-            console.log('Error');
+            console.log("Error in genProfObj query");
             return null;
         }
         else{
-            if(results.rowCount == 0){
-                console.log('Empty table genProfObj');
+            if(results.rowCount == 0 ){
+                console.log('Empty table in genProfObj query');
                 return null;
             }
             else{
@@ -515,37 +505,51 @@ function genProfObj(){
                 profObj.prof_lname = row.prof_lname;
                 profObj.photo_id = row.photo_id;
 
-                // query the answers and question from its profQs table
-                qna = getQnAs(row.prof_id);
+                // get the questions and answers
+                var qna = getQnAs(row.prof_id);
+                if(qna == null){
+                    console.log("no questions");
+                    return null;
+                }
+
                 profObj.questions = qna[0];
                 profObj.answers = qna[1];
-
-                console.log(profObj);
+                
+                console.log('print profObj');
+                console.log('p obj: ' + profObj);
+                return profObj;
             }
         }
     });
+
 }
 
 // Helper function for genProfObj, returns the questions and answers
 function getQnAs(profId){
-    var questions;
-    var answers;
+    var qna = [];
 
-    let q = 'SELECT * FROM profQnAs WHERE prof_id= $1'
+    let q = 'SELECT * FROM profQnAs WHERE prof_id=$1';
     pool.query(q, [profId], (err, results) => {
         if(err){
-            console.log('Error');
+            console.log("Error in getQnAs");
             return null;
         }
         else{
             if(results.rowCount == 0){
-                console.log('Empty table getQnAs');
+                console.log('Empty table in getQnAs');
                 return null;
             }
             else{
                 var row = results.rows[0];
-                questions = row.questions;
-                console.log(questions);
+                var questions = row.questions;
+                var answers = row.answers;
+                answers[0].push(row.answersindex[0]);
+                answers[1].push(row.answersindex[1]);
+                
+                qna.push(questions);
+                qna.push(answers);
+                console.log(qna);
+                return qna;
             }
         }
     });
