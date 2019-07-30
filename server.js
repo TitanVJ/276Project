@@ -506,7 +506,7 @@ function genProfObj(){
         }
         else{
             if(results.rowCount == 0){
-                console.log('Empty table');
+                console.log('Empty table genProfObj');
                 return null;
             }
             else{
@@ -539,11 +539,13 @@ function getQnAs(profId){
         }
         else{
             if(results.rowCount == 0){
-                console.log('Empty table');
+                console.log('Empty table getQnAs');
                 return null;
             }
             else{
                 var row = results.rows[0];
+                questions = row.questions;
+                console.log(questions);
             }
         }
     });
