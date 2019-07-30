@@ -11,9 +11,11 @@ socket.on('no', ()=>{
 });
 
 socket.on('encounter',(profObj)=>{
-    profInfo = profObj;
-    spawnball = true;
-    encounter = true;
+    if(projObj != null){
+        profInfo = profObj;
+        spawnball = true;
+        encounter = true;
+    }    
 });
 // document.getElementById("add").addEventListener("click", function(a){
 //   $.ajax({
