@@ -1,4 +1,3 @@
-
 const express = require('express');
 const request = require('request');
 const app = express();
@@ -556,7 +555,7 @@ app.get('/changeUserStatus', function(req, res) {
 });
 
 
-app.post('/updateLocation',async(req,res)=>{
+app.get('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
 		pool.query(sql, (err, response) => {
@@ -606,8 +605,9 @@ app.get('/getLocation',async(req,res)=>{
 				console.log(err);
 			}
 			if(response){
-                res.status(200);
-                res.send({'x':response.rows.X_pos,'y':response.rows.Y_pos});
+				res.status(200)
+        data = {x: response.rows.X_pos, y: response.rows.Y_pos}
+        res.send(data);
 			}
 		})
 	}
