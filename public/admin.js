@@ -200,11 +200,8 @@ $('#dept').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
 
     $('#course_num').prop('disabled', false);
 
-<<<<<<< HEAD
-=======
 function getAllProfDex(){
     // GET /data
->>>>>>> adding so i can pull
     $.ajax({
         method: 'get',
         url: `http://www.sfu.ca/bin/wcm/course-outlines?${$('#year').val()}/${$('#term').val()}/${$('#dept').val()}`,
