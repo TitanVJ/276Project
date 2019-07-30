@@ -1,7 +1,11 @@
+body{
+    background-color: #97D2Fb;
+}
+
 h1{
     font-family: Arial;
+    font-weight: 100;
     font-size: 40px;
-    color: #97D2FB;
     margin: 20px;
 }
 
@@ -12,15 +16,28 @@ img{
 }
 
 button{
-    font-size: 23px;
+    /* font-size: 23px;
     width: 90px;
     background-color: #ECCBD9;
-    color: white;
+    color: white; */
+    background-color:#467fcf;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #467fcf;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+    font-size:20px;
+	padding:5px 22px;
+	text-decoration:none;
 }
 
 button:hover {
-    background-color: white;
-    color: #ECCBD9;
+    /* background-color: white;
+    color: #ECCBD9; */
+    background-color:#296dcc;
 }
 
 .back{
@@ -36,7 +53,6 @@ ul{
     list-style-type: disc;
     font-family: Arial;
     font-size: 25px;
-    color: #97D2FB; 
     margin-left: 370px;
     margin-top: -250px;
     /*position: relative;

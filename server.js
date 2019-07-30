@@ -515,6 +515,10 @@ app.get('/profPrev', function (req, res){
 })    
 
 app.get('/yourProfPrev', function (req, res){
+    if(!req.session.user) {
+        req.flash('error', 'You must login first!');
+        res.render('pages/login', {expressFlash: req.flash('error')})
+    }
     pool.query("SELECT * from "+req.session.user_name+"ProfList", function(error, result){
         if (result){
             var results = { 'results': (result.rows[0]) ? result.rows : [] };
