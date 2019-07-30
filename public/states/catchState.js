@@ -20,7 +20,7 @@ class catchState extends Phaser.State {
 
     create(){
         this.game.stage.backgroundColor = '#fff000';
-        
+
         var backBtn = this.game.add.sprite(700, 504, 'back');
         backBtn.scale.setTo(0.5, 0.5);
         backBtn.inputEnabled = true;
@@ -54,8 +54,8 @@ class catchState extends Phaser.State {
         this.a0 = this.game.add.text(555, 121, 'A:\t' + this.answers[this.qIndex][0], style);
         this.a1 = this.game.add.text(555, 238, 'B:\t' + this.answers[this.qIndex][1], style);
 
-    }   
-    
+    }
+
     clickAction(e){
         if(e.var == this.answers[this.qIndex][2]){
             alert("CORRECT !!");
@@ -69,23 +69,22 @@ class catchState extends Phaser.State {
             //switch
             this.qIndex = 1;
 
-            // update to new question 
+            // update to new question
             this.q.setText(this.questions[this.qIndex]);
 
             this.a0.setText(this.answers[this.qIndex][0]);
             this.a1.setText(this.answers[this.qIndex][1]);
         }
         else{
-            // last question was done 
+            // last question was done
             console.log('trying to catch');
-            var num = Math.floor((Math.random() * 100) + 1); 
-            if(num < (90*(this.correct / 2))){
+            var num = Math.floor((Math.random() * 100) + 1);
+            if(num < (199*(1))){
                 // prof is caught
                 $.ajax({
-                    method: 'post', 
-                    url: '/caught', 
-                    data: this.profObj,
-                    success: this.return
+                    method: 'post',
+                    url: '/caught?prof_fname='+this.profObj.prof_fname+'&prof_lname='+this.profObj.prof_lname+'&photo_id='+this.profObj.photo_id,
+                    success: this.return;
                 });
 
             }
@@ -106,7 +105,7 @@ class catchState extends Phaser.State {
 
     return(){
         encounter = false;
-        this.state.start('main', true, false);
+        this.state.start('main', main);
     }
     update(){
         var coor = this.game.input.mousePointer.x + '\n' + this.game.input.mousePointer.y;

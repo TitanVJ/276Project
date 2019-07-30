@@ -47,7 +47,7 @@ $('#use_item').confirmation({
 
 class Game extends Phaser.Game {
     constructor(){
-        super(($(window).width()-200), ($(window).height()-145), Phaser.CANVAS, 'phaser');
+      super($(window).width(), ($(window).height()-145), Phaser.CANVAS, 'phaser');
 
         // add states
         this.state.add('main', main);

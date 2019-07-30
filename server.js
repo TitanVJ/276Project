@@ -383,14 +383,14 @@ app.post('/caught',(req,res)=>{
         // for now send a temp objS
       const sql = {
           text: 'INSERT INTO '+[req.session.user_name]+'ProfList(prof_fname, prof_lname, photo_id) VALUES ($1,$2,$3)',
-          values:  [[req.body.data.prof_fname], [req.body.data.prof_lname], req.body.data.photo_id]
+          values:  [req.query.prof_fname, req.query.prof_lname, req.query.photo_id]
       }
       pool.query(sql, (err, response) => {
          if(err) {
              console.log(err);
          } else {
               console.log("prof caught added");
-              status(200);
+              res.send("sucess");
          }
       });
 

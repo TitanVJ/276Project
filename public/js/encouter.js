@@ -55,7 +55,7 @@ $(document).keydown((e)=>{
           success: function(data){
             console.log(data);
             console.log("bruh");
-            encounterChance = data.encounter_chance
+            encounterChance = data.encounter_chance;
             socket.emit('move', encounterChance);
           }
       });

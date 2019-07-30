@@ -5,11 +5,11 @@ var should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('PopTest', function() {
-    it('Should Use ProfHours', function(done) {
+describe('addCandy', function() {
+    it('Should add ProfHours', function(done) {
 
         chai.request(server)
-            .get('/popAPill')
+            .get('/addCandy') 
             .end(function(err, res) {
 
                 res.should.have.status(200);
