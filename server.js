@@ -33,6 +33,47 @@ const session = require('express-session')({
 })
 app.use(session);
 
+// Prof queue code
+var profQ = [];
+var maxProfId = null;
+
+function updateMaxProfNum(){
+    let q = 'SELECT prof_id FROM profdex WHERE prof_id = (SELECT MAX(prof_id) FROM profdex)';
+    pool.query(q, (err, results) =>{
+        if(err){
+            console.log('Error with getting max prof_id');
+        }
+        else{
+            if(results.rowCount == 0){
+                console.log('Empty table');
+            }
+            else {
+                maxProfId = results.rows[0].prof_id;
+            }
+        }
+    });
+}
+
+// function that'll every so often populate the queue of profs
+function fillProfQueue(){
+    if(maxProfId != null){
+        var c = Math.floor(Math.random() * maxProfId) + 1;
+        profQ.push(c);
+        console.log('filling');
+    }
+
+    // insert into the array
+}
+updateMaxProfNum();
+
+setInterval(()=>{
+    if(profQ.length < 25 ) {
+        fillProfQueue();
+    }
+}, 1000);
+
+// End of prof queue code
+
 // Use this function to test if user is an admin -- Pass in req.session.user
 function hasPermissions(user) {
     if(user.status == 'admin') {
