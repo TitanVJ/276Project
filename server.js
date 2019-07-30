@@ -17,8 +17,6 @@ const io = require("socket.io")(server);
 
 app.use(fileUpload());
 
-var encounterChance = 12;
-
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString: connectionString,
@@ -173,8 +171,8 @@ app.post('/login', function(req, res, next) {
                     if(hasPermissions(req.session.user)) {
                         res.redirect('./admin');
                     } else {
-                      req.session.encounterChance = 12;
-                      req.session.itemUsed = 'false'
+                      req.session.encounter_chance = 12;
+                      req.session.use_time= 0;
                       req.session.user_name = req.body.username;
                         res.redirect('/game.html');
                     }
@@ -233,11 +231,8 @@ app.get('/user_profDex', loggedIn, function(req,res){
       res.redirect('pages/login');
   }
 });
-app.get('/getUserName', loggedIn,(req, res) => {
-    const results = req.session.user_name;
-    res.send(results);
-});
-app.get('/toInventoryGame', (req, res) => {
+
+app.get('/toInventoryGame', async(req, res) => {
     // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
     // console.log(sql).
     const query = 'SELECT item_name, iphoto_id, quantity, item_added FROM ' + [req.session.user_name]+ 'Inventory';
@@ -262,10 +257,6 @@ app.get('/toInventory', (req, res) => {
     pool.query(query ,(error, result)=>{
         if(error){
             console.log(error.message);
-            res.send('');
-        }
-        if(result.rowCount == 0){
-            console.log('Empty table');
             res.send('');
         }
         const results = { 'results': (result) ? result.rows : null };
@@ -373,7 +364,10 @@ app.get('/addCandy', function(req,res){
 })
 app.get('/popAPill',async(req,res)=>{
   console.log(req.session.user_name);
-  if(1 == 1){
+  if(req.session.encounter_chance-Date.now() > 60000){
+    alert("Recently Used a Candy");
+  }
+  else{
     const sql = {
         text: 'SELECT quantity FROM '+[req.session.user_name]+'Inventory'
     }
@@ -392,7 +386,8 @@ app.get('/popAPill',async(req,res)=>{
                 console.log(err);
             } else {
                  console.log("Popping pills");
-                 encounterChance = 4;
+                 req.session.encounter_chance = 4;
+                 req.session.itemTime= Date.now();
                  res.status(200);
                 }
             });
@@ -428,7 +423,14 @@ app.post('/caught',(req,res)=>{
 
 
 })
-
+app.get('/getUserName', loggedIn,(req, res) => {
+    const results = {user_name: req.session.user_name, use_time: req.session.use_time, encounter_chance: req.session.encounter_chance};
+    if(Date.now()-results.use_time > 60000){
+      req.session.encounter_chance = 12;
+      results.encounter_chance = 12;
+    }
+    res.send(results);
+});
 // Socket code
   io.on('connection', (socket)=>{
       console.log("User connection established");
@@ -436,34 +438,29 @@ app.post('/caught',(req,res)=>{
       socket.on('disconnect', ()=>{
           console.log('user disconnected');
       })
-        socket.on('changeEncounter', (data)=>{
-            // determine
-            encounterChance=12;
-        });
         // used to determine if a character will
-        socket.on('move', (data)=>{
+        socket.on('move', function(data){
             // determine
+            var c = Math.floor((Math.random() * 100) + 1);
+            console.log(c);
+            console.log(data);
+            if(c%data == 0){
+                //encouter
+                // send back and obj, contain img id, prof
+                // for testing do console.log
 
-            if(!data){
-                var c = Math.floor((Math.random() * 100) + 1);
-                console.log(c);
-                if(c%encounterChance == 0){
-                    //encouter
-                    // send back and obj, contain img id, prof
-                    // for testing do console.log
-
-                    // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
-                    // for now send a temp obj
-                    var tempProf = {
-                        prof_fname: 'bobby',
-                        prof_lname: 'chan',
-                        photo_id: '1',
-                        questions: ['How old am I?', 'What food do I use most in my examples?'],
-                        answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
-                    }
-                    socket.emit('encounter', tempProf);
-                }//if
+                // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
+                // for now send a temp obj
+                var tempProf = {
+                    prof_fname: 'bobby',
+                    prof_lname: 'chan',
+                    photo_id: '1',
+                    questions: ['How old am I?', 'What food do I use most in my examples?'],
+                    answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
+                }
+                socket.emit('encounter', tempProf);
             }
+
         });
   })
 
@@ -608,7 +605,9 @@ app.get('/getLocation',async(req,res)=>{
 				console.log(err);
 			}
 			if(response){
-				res.status(200).send(response.rows.X_pos,response.rows.Y_pos);
+				res.status(200)
+        data = {x: response.rows.X_pos, y: response.rows.Y_pos}
+        res.send(data);
 			}
 		})
 	}
