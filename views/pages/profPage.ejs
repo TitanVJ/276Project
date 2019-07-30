@@ -35,8 +35,8 @@ $(document).ready(function(){
         data: {'profFname':fname, 'profLname':lname},
         success: function(data){
             $("#photo").attr("src","images/prof_images/"+data.results[0].photo_id+".jpg");
-            $('#create').text('Created: '+data.results[0].record_created);
-            $('#update').text('Updated: '+data.results[0].last_updated);
+            $('#create').text('Created: '+data.results[0].record_created.split('T')[0] + ' (' + data.results[0].record_created.split('T')[1].split('.')[0] + ')');
+            $('#update').text('Updated: '+data.results[0].last_updated.split('T')[0] + ' (' + data.results[0].last_updated.split('T')[1].split('.')[0] + ')');
         }
     });
 });

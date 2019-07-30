@@ -28,11 +28,11 @@
 
         <% results.forEach(function(r) { %>
             <figure>
-                <a href='#' onclick="loadYourProf('<%= r.prof_fname%>', '<%=r.prof_lname %>')">
+                <a href='#' onclick="loadYourProf('<%= r.prof_fname%>', '<%=r.prof_lname %>', '<%=r.caught_prof_id %>')">
                     <img src='images/prof_images/<%= r.photo_id%>.jpg'/>
                     <figcaption>
                         <%= r.prof_fname %> </br>
-                        <%= r.prof_lname %> 
+                        <%= r.prof_lname %> </br>
                     </figcaption>
                 </a>
             </figure>

@@ -29,9 +29,9 @@ function loadProf(fname, lname){
     });
 }
 
-function loadYourProf(fname, lname){
+function loadYourProf(fname, lname, id){
     $('#selected').removeClass();
-    $('#selected').addClass(fname+" "+lname);
+    $('#selected').addClass(fname+" "+lname+" "+id);
     $.ajax({
         method: 'GET',
         url: '/yourProfPagePrev',

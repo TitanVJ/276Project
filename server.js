@@ -541,20 +541,18 @@ app.get('/yourProfPagePrev', function(req, res){
     res.render('pages/yourProfPage');
 })
 app.get('/yourProfData', function(req, res){
-    const sql = {text: "SELECT * FROM " + req.session.user_name + "ProfList WHERE prof_fname = '" + req.query.profFname + "'AND prof_lname = '" + req.query.profLname + "'"}
+    const sql = {text: "SELECT * FROM " + req.session.user_name + "ProfList WHERE prof_fname = '" + req.query.profFname + "'AND prof_lname = '" + req.query.profLname + "' AND caught_prof_id = '" + req.query.id + "'"}
     pool.query(sql, function(error, result){
         var results = { 'results':(result.rows[0]) ? result.rows : [] };
         res.send(results);
     });
 })
-// a
-
-// app.get('/yourProfPrev', function (req, res){
-//     pool.query("SELECT * from camronProfList", function(error, result){
-//         var results = { 'results': (result.rows[0]) ? result.rows : [] };
-//         res.render('pages/yourProf', results);
-//     });
-// }) 
+app.get('/yourProfNumber', function(req, res){
+    const sql = {text: "SELECT * FROM " + req.session.user_name + "ProfList WHERE prof_fname = '" + req.query.profFname + "'AND prof_lname = '" + req.query.profLname + "'"}
+    pool.query(sql, function(error, result){
+        res.send(result);
+    });
+})
 //END OF AMY
 
 // Change prof_id to uuid
