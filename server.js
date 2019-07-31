@@ -1,6 +1,7 @@
+
 const express = require('express');
 const request = require('request');
-const app = express(;
+const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 8080;
 const bcrypt = require('bcryptjs');
@@ -382,13 +383,16 @@ app.post('/caught',(req,res)=>{
         // for now send a temp objS
       const sql = {
           text: 'INSERT INTO '+[req.session.user_name]+'ProfList(prof_fname, prof_lname, photo_id) VALUES ($1,$2,$3)',
+
           values:  [req.query.prof_fname, req.query.prof_lname, req.query.photo_id]
+
       }
       pool.query(sql, (err, response) => {
          if(err) {
              console.log(err);
          } else {
               console.log("prof caught added");
+
               res.send("sucess");
          }
       });
@@ -514,6 +518,7 @@ app.post('/add-new-prof', loggedIn, function(req, res) {
     }
 });
 
+
 /* Changes a user's status from 'user' to 'admin' -- Doesn't delete their game tables though */
 app.get('/changeUserStatus', function(req, res) {
     var sql = format("UPDATE %s SET status = %s WHERE user_name = %s", 'users', 'admin', `${req.query.user}`);
@@ -526,8 +531,7 @@ app.get('/changeUserStatus', function(req, res) {
     });
 });
 
-
-app.get('/updateLocation',async(req,res)=>{
+app.post('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
 		pool.query(sql, (err, response) => {
@@ -536,8 +540,8 @@ app.get('/updateLocation',async(req,res)=>{
 			}
 			if (response){
 				if(response.rows.length > 0) {
-					var sql = "UPDATE userPos SET x_pos="+req.query.x+",y_pos="+req.query.y+" WHERE user_name='"+req.session.user_name+"'";
-					pool.query(sql, (err, response) => {
+					let values = [parseInt(req.query.x),parseInt(req.query.y),String(req.session.user_name)];
+					pool.query("UPDATE userPos SET x_pos=$1,y_pos=$2 WHERE user_name=$3", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
@@ -546,8 +550,8 @@ app.get('/updateLocation',async(req,res)=>{
 						}
 					});
 				} else {
-					var sql = "INSERT INTO userPos(user_name,x_pos,y_pos) VALUES ("+req.session.user_name+","+req.query.x+","+req.query.y+")";
-					pool.query(sql, (err, response) => {
+					let values = [String(req.session.user_name),parseInt(req.query.x),parseInt(req.query.y)];
+					pool.query("INSERT INTO userPos(user_name,x_pos,y_pos) VALUES ($1,$2,$3)", values, (err, response) => {
 						if(err) {
 							console.log(err);
 						}
@@ -605,11 +609,7 @@ app.get('/getLocation',async(req,res)=>{
 		})
 	}
 })
-// Change prof_id to uuid
-// Change photo_id to varchar
 
-// Change prof_id to uuid
-// Change photo_id to varcha
 // var pg = require('pg');
 // var AMYconnectionString = "postgres://password@localhost:5432/postgres";
 // var pgClient = new pg.Client(AMYconnectionString);
@@ -628,7 +628,9 @@ app.get('/profPrev', function (req, res){
         res.render('pages/prof', results);
         // console.log(result + 'hi');
     });
+
 })
+
 
 app.get('/yourProfPrev', function (req, res){
     if(!req.session.user) {
@@ -644,7 +646,9 @@ app.get('/yourProfPrev', function (req, res){
             res.end();
         }
     });
+
 })
+
 
 app.get('/profPagePrev', function(req, res){
     res.render('pages/profPage');
@@ -673,6 +677,7 @@ app.get('/yourProfNumber', function(req, res){
         res.send(result);
     });
 })
+
 // Change prof_id to uuid
 // Change photo_id to varchar
 

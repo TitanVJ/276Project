@@ -16,10 +16,9 @@ class main extends Phaser.State {
         this.s;
         this.d;
 
-        console.log(callb);
         this.playerX=parseInt(callb.x);
-        this.playerY=parseInt(callb.y);
-    }
+        this.playerY=parseInt(callb.y);    }
+
 
     preload() {
         this.game.load.image('profeball', 'images/encIndicator.png');
@@ -113,6 +112,7 @@ class main extends Phaser.State {
 
         this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
 
+        this.player = this.game.add.sprite(this.playerX, this.playerY, 'player');
         this.game.physics.p2.enable(this.player);
         this.player.body.collideWorldBounds = true;
 
@@ -836,17 +836,17 @@ class main extends Phaser.State {
             $.ajax({
                 method:'get',
                 url:'/updateLocation',
-                data:{ "x" : parseInt(this.player.x), "y" : parseInt(this.player.y) },
-                error: ()=>{console.log('Failed to add.')}
+                data:{ "x" : this.player.x, "y" : this.player.y },
+                success: function() {
+                    console.log("position upadted");
+                },
+                error: ()=>{alert('Failed to add.')}
             });
             this.lastTime = new Date();
         }
     } // update ends here
 
-<<<<<<< HEAD
-=======
-           
->>>>>>> origin/nikolaf2
+
 
     spawn(){
         //spawn the obj
