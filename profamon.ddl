@@ -30,6 +30,15 @@ CREATE TABLE profDex (
   record_created TIMESTAMP DEFAULT now()
 );
 
+CREATE TABLE profQnAs (
+  prof_id NUMERIC PRIMARY KEY NOT NULL,
+  questions VARCHAR [] NOT NULL,
+  answers VARCHAR [][] NOT NULL,
+  answersIndex NUMERIC [] NOT NULL
+);
+
+insert into profQnAs values(1,  '{"How old am I?", "What food do I use most in my examples?"}', '{{"25", "35"},{"Cakes", "Cupcakes"}}', '{0, 1}');
+
 INSERT INTO dusanInventory(item_name, iphoto_id, quantity) VALUES ('Prof Office Hours',1,0);
 
 INSERT INTO profDex(prof_fname,prof_lname,photo_id) VALUES ('Andrei', 'Bulatov', 13), ('Greg', 'Baker', 33), ('Bobby', 'Chan', 25);

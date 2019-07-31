@@ -33,6 +33,48 @@ const session = require('express-session')({
 })
 app.use(session);
 
+// ********* Prof queue code *********
+var profQ = [];
+var maxProfId = null;
+
+// function to update max number of of profs
+function updateMaxProfNum(){
+    let q = 'SELECT prof_id FROM profdex WHERE prof_id = (SELECT MAX(prof_id) FROM profdex)';
+    pool.query(q, (err, results) =>{
+        if(err){
+            console.log('Error with getting max prof_id');
+        }
+        else{
+            if(results.rowCount == 0){
+                console.log('Empty table');
+            }
+            else {
+                maxProfId = results.rows[0].prof_id;
+                console.log('max prof id ' + maxProfId);
+            }
+        }
+    });
+}
+
+// function that'll every so often populate the queue of profs
+function fillProfQueue(){
+    if(maxProfId != null){
+        var c = Math.floor(Math.random() * maxProfId) + 1;
+        profQ.push(c);
+    }
+}
+
+// only called on server start
+updateMaxProfNum();
+
+setInterval(()=>{
+    if(profQ.length < 25 ) {
+        fillProfQueue();
+    }
+}, 1000);
+
+// ********* End of prof queue code *********
+
 // Use this function to test if user is an admin -- Pass in req.session.user
 function hasPermissions(user) {
     if(user.status == 'admin') {
@@ -407,40 +449,92 @@ app.post('/caught',(req,res)=>{
 })
 
 // Socket code
-  io.on('connection', (socket)=>{
-      console.log("User connection established");
+io.on('connection', (socket) => {
+    console.log('User connectoin established');
 
-      socket.on('disconnect', ()=>{
-          console.log('user disconnected');
-      })
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
 
-        // used to determine if a character will
-        socket.on('move', (data)=>{
-            // determine
+    socket.on('move', (data) => {
+        if(!data){// already have an encounter?
+            // determine if they get an encounter
+            var c = Math.floor((Math.random() * 100) + 1);
 
-            if(!data){
-                var c = Math.floor((Math.random() * 100) + 1);
-                console.log(c);
-                if(c%4 == 0 && c%3 == 0){
-                    //encouter
-                    // send back and obj, contain img id, prof
-                    // for testing do console.log
+            if(c%4 == 0 && c%3 == 0){
+                // encounter is going thid dudes way
 
-                    // TODO: change this to be function call that'll return the prof that they will encounter with all the stats
-                    // for now send a temp obj
-                    var tempProf = {
-                        prof_fname: 'bobby',
-                        prof_lname: 'chan',
-                        photo_id: '1',
-                        questions: ['How old am I?', 'What food do I use most in my examples?'],
-                        answers: [['25', '35', 0],['Cakes', 'Cupcakes', 1]]
+                // get a prof obj
+                //******************************8 */
+                console.log('Generating a prof obj');
+                let profObj = {
+                    'prof_fname': null, 
+                    'prof_lname': null,
+                    'photo_id': null,
+                    'questions': null,
+                    'answers': null
+                };
+
+                // pop a prof id from the queue
+                var profId = profQ.shift();
+
+                let query = 'SELECT * FROM profdex WHERE prof_id=$1';
+                pool.query(query, [profId], (err, results) => {
+                    if(err){
+                        console.log("Error in genProfObj query");
+                        socket.emit('encounter', null);
                     }
-                    socket.emit('encounter', tempProf);
-                }//if
-            }
-        });
-  })
+                    else{
+                        if(results.rowCount == 0 ){
+                            console.log('Empty table in genProfObj query');
+                            socket.emit('encounter', null);                            
+                        }
+                        else{
+                            var row = results.rows[0];
+                            profObj.prof_fname = row.prof_fname;
+                            profObj.prof_lname = row.prof_lname;
+                            profObj.photo_id = row.photo_id;
 
+                            //
+                            let q = 'SELECT * FROM profQnAs WHERE prof_id=$1';
+                            pool.query(q, [profId], (err, results) => {
+                                if(err){
+                                    console.log("Error in getQnAs");
+                                    socket.emit('encounter', null);
+                                    
+                                }
+                                else{
+                                    if(results.rowCount == 0){
+                                        console.log('Empty table in getQnAs');
+                                        socket.emit('encounter', null);
+                                        
+                                    }
+                                    else{
+                                        var row = results.rows[0];
+                                        var questions = row.questions;
+                                        var answers = row.answers;
+                                        answers[0].push(row.answersindex[0]);
+                                        answers[1].push(row.answersindex[1]);
+                                        
+                                        profObj.questions = questions;
+                                        profObj.answers = answers;
+                                        console.log('things');
+                                        socket.emit('encounter', profObj);
+                                    }
+                                }
+                            }); // in pool 
+                            //
+
+                        } // else
+                    } // else
+                });
+
+                /*********************************** */
+
+            }
+        }
+    });
+});
 // Socket Code ends here
 
 /* Used to check if a profs photo exists */
