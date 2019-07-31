@@ -1,4 +1,3 @@
-
 const express = require('express');
 const request = require('request');
 const app = express(;
@@ -527,6 +526,7 @@ app.get('/changeUserStatus', function(req, res) {
     });
 });
 
+
 app.get('/updateLocation',async(req,res)=>{
 	if (req.session.user_name){
 		var sql = "SELECT * FROM userPos WHERE user_name='"+req.session.user_name+"'";
@@ -536,7 +536,6 @@ app.get('/updateLocation',async(req,res)=>{
 			}
 			if (response){
 				if(response.rows.length > 0) {
-					console.log(req.query.x,req.query.y,req.session.user_name);
 					var sql = "UPDATE userPos SET x_pos="+req.query.x+",y_pos="+req.query.y+" WHERE user_name='"+req.session.user_name+"'";
 					pool.query(sql, (err, response) => {
 						if(err) {
@@ -606,6 +605,9 @@ app.get('/getLocation',async(req,res)=>{
 		})
 	}
 })
+// Change prof_id to uuid
+// Change photo_id to varchar
+
 // Change prof_id to uuid
 // Change photo_id to varcha
 // var pg = require('pg');

@@ -843,6 +843,10 @@ class main extends Phaser.State {
         }
     } // update ends here
 
+<<<<<<< HEAD
+=======
+           
+>>>>>>> origin/nikolaf2
 
     spawn(){
         //spawn the obj
