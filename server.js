@@ -693,4 +693,73 @@ app.get('/getLocation',async(req,res)=>{
 // Change prof_id to uuid
 // Change photo_id to varchar
 
+//AMY 
+// var pg = require('pg');
+// var AMYconnectionString = "postgres://password@localhost:5432/postgres";
+// var pgClient = new pg.Client(AMYconnectionString);
+// pgClient.connect();
+
+app.get('/profPrev', function (req, res){
+    pool.query("SELECT * from profDex", function(error, result){
+        // if(error){
+        //     console.log('hi');
+        // }if (results == 0){
+        //     console.log('ah');
+        // }
+        var results = { 'results': (result.rows[0]) ? result.rows : [] };
+        
+        // console.log(result);
+        res.render('pages/prof', results);
+        // console.log(result + 'hi');
+    });
+})    
+
+app.get('/yourProfPrev', function (req, res){
+    if(!req.session.user) {
+        req.flash('error', 'You must login first!');
+        res.render('pages/login', {expressFlash: req.flash('error')})
+    }
+    pool.query("SELECT * from "+req.session.user_name+"ProfList", function(error, result){
+        if (result){
+            var results = { 'results': (result.rows[0]) ? result.rows : [] };
+            res.render('pages/yourProf', results);
+        }
+        else{
+            res.end();
+        }
+    });
+}) 
+
+app.get('/profPagePrev', function(req, res){
+    res.render('pages/profPage');
+})
+app.get('/profData', function(req, res){
+    const sql = {text: "SELECT * FROM profDex WHERE prof_fname = '" + req.query.profFname + "'AND prof_lname = '" + req.query.profLname + "'"}
+    pool.query(sql, function(error, result){
+        var results = { 'results':(result.rows[0]) ? result.rows : [] };
+        res.send(results);
+    });
+})
+
+app.get('/yourProfPagePrev', function(req, res){
+    res.render('pages/yourProfPage');
+})
+app.get('/yourProfData', function(req, res){
+    const sql = {text: "SELECT * FROM " + req.session.user_name + "ProfList WHERE prof_fname = '" + req.query.profFname + "'AND prof_lname = '" + req.query.profLname + "' AND caught_prof_id = '" + req.query.id + "'"}
+    pool.query(sql, function(error, result){
+        var results = { 'results':(result.rows[0]) ? result.rows : [] };
+        res.send(results);
+    });
+})
+app.get('/yourProfNumber', function(req, res){
+    const sql = {text: "SELECT * FROM " + req.session.user_name + "ProfList WHERE prof_fname = '" + req.query.profFname + "'AND prof_lname = '" + req.query.profLname + "'"}
+    pool.query(sql, function(error, result){
+        res.send(result);
+    });
+})
+//END OF AMY
+
+// Change prof_id to uuid
+// Change photo_id to varchar
+
 module.exports = app;

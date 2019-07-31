@@ -12,39 +12,32 @@ function radio_input(url){
     window.location.href = "../"+url;
 }
 
+function specialback(){
+    location.reload();
+}
 
-
-
-/*
-function getAllProfDex(){
-    // GET /data
-    console.log('getAllProfDex');
+function loadProf(fname, lname){
+    $('#selected').removeClass();
+    $('#selected').addClass(fname+" "+lname);
     $.ajax({
-        method: 'get',
-        url: '/dataProfDex',
-        success: something,
-        error: ()=>{alert('Database is empty.')}
+        method: 'GET',
+        url: '/profPagePrev',
+        dataType: 'html',
+        success: function(data){
+            $('#container').html(data);
+        }
     });
 }
 
-function something(){
-    { <figure>
-        <a href="page.html">
-            <img src="./images/bulatov.jpg"/>
-            <figcaption>Andrei Bulatov 
-                <!--<br>prof type-->
-            </figcaption>
-        </a>
-    </figure> }
-}
-
-
-function searchProfDex(){
-        $.ajax({
-        method: 'get',
-        url: '/searchProfDex?column='+$('#fields').val() + '&value=' + $('#fieldInput').val(),
-        success: updateTable,
-        error: ()=>{alert('No such user(s) exist.');}
+function loadYourProf(fname, lname, id){
+    $('#selected').removeClass();
+    $('#selected').addClass(fname+" "+lname+" "+id);
+    $.ajax({
+        method: 'GET',
+        url: '/yourProfPagePrev',
+        dataType: 'html',
+        success: function(data){
+            $('#container').html(data);
+        }
     });
-}*/
-
+}

@@ -7,10 +7,10 @@ CREATE TABLE users (
 );
 
   CREATE TABLE camronProfList (
-    prof_id SERIAL PRIMARY KEY,
+    caught_prof_id SERIAL PRIMARY KEY,
     prof_fname VARCHAR(32),
     prof_lname VARCHAR(32),
-    photo_id NUMERIC,
+    photo_id VARCHAR,
     catch_time TIMESTAMP DEFAULT now()
   );
 
@@ -41,6 +41,9 @@ insert into profQnAs values(1,  '{"How old am I?", "What food do I use most in m
 
 INSERT INTO dusanInventory(item_name, iphoto_id, quantity) VALUES ('Prof Office Hours',1,0);
 
-INSERT INTO profDex(prof_fname,prof_lname,photo_id) VALUES ('Andrei', 'Bulatov', 13), ('Greg', 'Baker', 33), ('Bobby', 'Chan', 25);
+INSERT INTO profDex(prof_fname,prof_lname,photo_id) VALUES ('Andrei', 'Bulatov', 'ANDREI_BULATOV'), ('Greg', 'Baker', 'GREGORY_BAKER'), ('Bobby', 'Chan', 'BOBBY_CHAN'), ('Eugene', 'Fiume', 'EUGENE_FIUME');
+INSERT INTO profDex(prof_fname,prof_lname,photo_id) VALUES ('Angel', 'Chang', 'ANGEL_CHANG'), ('Anoop', 'Sarkar', 'ANOOP_SARKAR'), ('Parmit', 'Chilana', 'PARMIT_CHILANA'), ('Yagiz', 'Aksoy', 'YAGIZ_AKSOY');
+INSERT INTO profDex(prof_fname,prof_lname,photo_id) VALUES ('Ramesh', 'Krishnamurti', 'RAMESH_KRISHNAMURTI'), ('Sheelagh', 'Carpendale', 'SHEELAGH_CARPENDALE'), ('Harinder', 'Khangura', 'HARINDER_KHANGURA'), ('Binay', 'Bhattacharya', 'BINAY_BHATTACHARYA');
 
-INSERT INTO camronProfList(prof_fname,prof_lname,photo_id) VALUES ('Andrei', 'Bulatov', 13), ('Andrei', 'Bulatov', 13),('Andrei', 'Bulatov', 13),('Greg', 'Baker', 33), ('Bobby', 'Chan', 25);
+
+INSERT INTO testProfList(prof_fname,prof_lname,photo_id) VALUES ('Greg', 'Baker', 'GREGORY_BAKER'), ('Bobby', 'Chan', 'BOBBY_CHAN'), ('Eugene', 'Fiume', 'EUGENE_FIUME'), ('Ramesh', 'Krishnamurti', 'RAMESH_KRISHNAMURTI'), ('Ramesh', 'Krishnamurti', 'RAMESH_KRISHNAMURTI'), ('Ramesh', 'Krishnamurti', 'RAMESH_KRISHNAMURTI'), ('Sheelagh', 'Carpendale', 'SHEELAGH_CARPENDALE'), ('Harinder', 'Khangura', 'HARINDER_KHANGURA'), ('Binay', 'Bhattacharya', 'BINAY_BHATTACHARYA');
