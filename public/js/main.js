@@ -15,6 +15,10 @@ class main extends Phaser.State {
         this.a;
         this.s;
         this.d;
+
+        console.log(callb);
+        this.playerX=parseInt(callb.x);
+        this.playerY=parseInt(callb.y);
     }
 
     preload() {
@@ -832,16 +836,12 @@ class main extends Phaser.State {
             $.ajax({
                 method:'get',
                 url:'/updateLocation',
-                data:{ "x" : this.player.x, "y" : this.player.y },
-                success: function() {
-                    console.log("position upadted");
-                },
-                error: ()=>{alert('Failed to add.')}
+                data:{ "x" : parseInt(this.player.x), "y" : parseInt(this.player.y) },
+                error: ()=>{console.log('Failed to add.')}
             });
             this.lastTime = new Date();
         }
     } // update ends here
-
 
 
     spawn(){
