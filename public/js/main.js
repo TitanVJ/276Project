@@ -830,7 +830,7 @@ class main extends Phaser.State {
             this.lastTime = new Date();
         }
     } // update ends here
-``````````````
+
            
 
     spawn(){
