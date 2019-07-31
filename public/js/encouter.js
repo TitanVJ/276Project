@@ -11,7 +11,7 @@ socket.on('no', ()=>{
 });
 
 socket.on('encounter',(profObj)=>{
-    if(projObj != null){
+    if(profObj != null){
         profInfo = profObj;
         spawnball = true;
         encounter = true;
