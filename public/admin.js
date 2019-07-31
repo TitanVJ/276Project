@@ -1,15 +1,6 @@
-$('#searchForm').submit((e)=>{
-    e.preventDefault();
-});
-$('#searchFormProf').submit((a)=>{
-    a.preventDefault();
-});
-
+// Controls deletion of a user
 function del(e){
     var id = e.parentNode.parentNode.id;
-    // console.log(e.parentNode.parentNode.parentNode.parentNode.attr('data-id'));
-    console.log($('#userTable').attr('data-id'));
-    console.log(id);
 
     if($('#userTable').attr('data-id') == id) {
         alert("You can't delete yourself!");
@@ -24,42 +15,7 @@ function del(e){
     }
 }
 
-function getAllProfDex(){
-    // GET /data
-    $.ajax({
-        method: 'get',
-        url: '/dataProfDex',
-        success: updateTableProfDex
-    });
-
-}
-
-function updateTableProfDex(results){
-    if(results.length == 0) {
-        alert("Database is empty.");
-    } else {
-        var table = $('#profs');
-        table.find("tr:gt(0)").remove();
-
-        var rows = results.results;
-        var i = 0;
-        rows.forEach(row => {
-            var newRow = document.createElement("tr");
-
-            for(var key in row){
-                var cell = document.createElement("td");
-                cell.innerHTML = row[key];
-                newRow.appendChild(cell);
-            }
-            var a = document.createElement('td');
-            a.innerHTML = '<button style="width:100%;height:100%" class="edit" type="button" onclick="delProf(this)">Del</button>';
-            newRow.appendChild(a);
-            table.append(newRow);
-            i++;
-        });
-    }
-}
-
+// Controls the deletion of a professor
 function delProf(a){
     var id = a.parentNode.parentNode.id;
 
@@ -79,6 +35,7 @@ $(document).ready(function(){
     refreshUserCatalogue();
     refreshProfCatalogue();
 
+    // Filters user table as things are typed into the search bar
     $("#myInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#myTable tr").filter(function() {
@@ -86,6 +43,7 @@ $(document).ready(function(){
         });
     });
 
+    // Filters professor table as things are typed into the search bar
     $("#profInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#profTableBody tr").filter(function() {
@@ -95,6 +53,7 @@ $(document).ready(function(){
 
 });
 
+// Gets the users from the database (used when the table needs to be refreshed after adding something to the table)
 function refreshUserCatalogue() {
     console.log('refreshing');
     $.ajax({
@@ -104,6 +63,7 @@ function refreshUserCatalogue() {
     });
 }
 
+// GETs the professors from the database (used when the table needs to be refreshed after adding something to the table)
 function refreshProfCatalogue() {
     console.log('refreshing');
     $.ajax({
@@ -113,6 +73,7 @@ function refreshProfCatalogue() {
     });
 }
 
+// Dynamically adds users to the user table on the admin page
 function printUsers(data) {
     $('#myTable').empty();
     $.each(data.results, function() {
@@ -131,6 +92,7 @@ function printUsers(data) {
     });
 }
 
+// Dynamically adds rows to the professor table on the admin page
 function printProfs(data) {
     $('#profTableBody').empty();
     $.each(data.results, function() {
@@ -145,6 +107,7 @@ function printProfs(data) {
     });
 }
 
+// Calls the SFU Course Outlines API to get the years for which it has data
 function getYears() {
     $.ajax({
         method: 'get',
@@ -161,6 +124,7 @@ function getYears() {
     });
 }
 
+// Controls what happens when a year is selected when creating a new professor
 $('#year').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
 
     if($('#term').val()) {
@@ -192,6 +156,7 @@ $('#year').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
     });
 });
 
+// Controls what happens when a term is selected when creating a new professor
 $('#term').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
 
     if($('#dept').val()) {
@@ -222,6 +187,7 @@ $('#term').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
     });
 });
 
+// Controls what happens after a course department is selected when creating a new professor
 $('#dept').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
 
     if($('#course_num').val()) {
@@ -249,6 +215,7 @@ $('#dept').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
     });
 });
 
+// Controls what happens after a course number is selected when creating a new professor
 $('#course_num').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
 
     if($('#course_sec').val()) {
@@ -272,6 +239,7 @@ $('#course_num').on('changed.bs.select', function (e, clickedIndex, isSelected, 
     });
 });
 
+// Controls what happens after a course section has been selected when creating a new professor
 $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     $.ajax({
         method: 'get',
@@ -280,7 +248,7 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
 
             $('#profPicture').empty();
             $('#modalFoot').empty();
-            console.log(data.instructor ==undefined);
+
             if(data.instructor == undefined) {
                 $(`<h5> The SFU Course Outlines API could not get info on this course :( </h5>`).appendTo('#profPicture');
             } else {
@@ -301,7 +269,7 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
                                         <input type="text" class="custom-file-input" id="fname" name="fname" value="${data.instructor[0].firstName}" hidden>
                                         <input type="text" class="custom-file-input" id="common" name="common" value="${data.instructor[0].commonName}" hidden>
                                         <input type="text" class="custom-file-input" id="lname" name="lname" value="${data.instructor[0].lastName}" hidden>
-                                        <input type="file" class="custom-file-input" id="customFile" name="filename" accept="image/*" >
+                                        <input type="file" class="custom-file-input" id="customFile" name="filename" accept=".jpg" >
                                         <label class="custom-file-label" for="customFile">Choose file</label>
                                     </div>
                                     <div class="mt-3">
@@ -314,7 +282,6 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
                                 $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
                             });
                         }
-
                     }
                 });
             }
@@ -322,30 +289,27 @@ $('#course_sec').on('changed.bs.select', function (e, clickedIndex, isSelected, 
     });
 });
 
-
+// Resets the selectors when the modal used to create a new professor is closed
 $('#new_prof').on('hidden.bs.modal', function (e) {
 
     modalCloseHelper("term");
     modalCloseHelper("dept");
     modalCloseHelper("course_num");
     modalCloseHelper("course_sec");
-
 });
 
+// Helps with refreshing the selectors used when creating a new professor
 function modalCloseHelper (id) {
     $('#profPicture').empty();
     $('#modalFoot').empty();
     $(`#${id}`).find('option').remove();
-    //document.getElementById(`${id}`).options.length = 0;
     $(`#${id}`).prop('disabled', true);
     $(`#${id}`).attr('readonly', true);
     $(`#${id}`).selectpicker('refresh');
 }
 
+// Adds a professor who's photo is already saved on the server
 function addExistingProf() {
-    console.log($('#profPic').attr("data-fname"));
-    console.log($('#profPic').attr("data-lname"));
-
 
     $.ajax({
         method: 'POST',
@@ -361,6 +325,7 @@ function addExistingProf() {
     });
 }
 
+// Displays a confirmation when changing a user's status to admin
 $('#change_status').confirmation({
     rootSelector: '[data-toggle=confirmation]',
     onConfirm: function () {
@@ -376,6 +341,7 @@ $('#change_status').confirmation({
     }
 });
 
+// Control modal the appears when a user is clicked in the user list on the admin page
 $('#user_modal').on('show.bs.modal', function (e) {
     $('#modal_title').html("Inventory for " + e.relatedTarget.id)
     $('#change_status').attr('data-user-id', e.relatedTarget.id);
@@ -394,5 +360,4 @@ $('#user_modal').on('show.bs.modal', function (e) {
 
         }
     });
-
 });

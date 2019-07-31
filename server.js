@@ -129,29 +129,28 @@ app.post('/sign-up', function(req, res) {
                     const sql = {
                         text: 'CREATE TABLE '+ [req.body.username]+'ProfList(prof_fname VARCHAR(32), prof_lname VARCHAR(32), photo_id NUMERIC, catch_time TIMESTAMP DEFAULT now() )'
                     }
-                    console.log(sql);
                     pool.query(sql, (err, response) => {
                        if(err) {
                            console.log(err);
                        } else {
-                            console.log("proflist made");
+                            //console.log("proflist made");
                        }
                     });
                     const sql1 = {
                         text: 'CREATE TABLE '+ [req.body.username]+'Inventory(item_name VARCHAR(32), iphoto_id NUMERIC, quantity NUMERIC, item_added TIMESTAMP DEFAULT now())'
                     }
-                    console.log(sql1);
+
                     pool.query(sql1, (err, response) => {
                        if(err) {
                            console.log(err);
                        } else {
-                       console.log("Inventory Made");
+
                        var office="Prof Office Hours";
                        const query = {
                            text: 'INSERT INTO '+ req.body.username+'Inventory (item_name, iphoto_id, quantity) VALUES ($1,1,0)',
                            values: [office]
                        }
-                       console.log(query);
+
                        pool.query(query,(err, response) => {
                              if(err) {
                                  console.log(err);
@@ -160,7 +159,6 @@ app.post('/sign-up', function(req, res) {
                        }
                     });
 
-                    console.log("Flash Message");
                     req.flash('info', "New User Created Successfully. Please Sign-in.");
 
                     res.render('pages/login', {expressFlashNewUser: req.flash('info')})
@@ -172,7 +170,7 @@ app.post('/sign-up', function(req, res) {
 
 /* Validate user's credentials and log them into the site */
 app.post('/login', function(req, res, next) {
-    console.log(req.session.user_name);
+
     pool.query('SELECT * FROM users WHERE user_name = $1', [req.body.username], (err, response) => {
         if (err) {
             console.log(err);
@@ -267,10 +265,7 @@ app.get('/toInventoryGame', (req, res) => {
 
 });
 app.get('/toInventory', (req, res) => {
-    // let sql = format('SELECT * FROM %I', req.query.user+'ProfList');
-    // console.log(sql).
     const query = 'SELECT item_name, iphoto_id, quantity, item_added FROM ' + req.query.user + 'Inventory';
-    console.log(query);
     pool.query(query ,(error, result)=>{
         if(error){
             console.log(error.message);
@@ -310,19 +305,13 @@ app.get('/dataProfDex', (req, res) =>{
             res.end();
         }
 
-        if(result.rows.length == 0){
-            console.log('Empty table');
-            res.end();
-            return;
-        }
-
     const results = { 'results': (result) ? result.rows : null };
     res.send(results);
     });
 });
 
 /* Delete a user from the DB */
-app.delete('/removeUser/:id', loggedIn, (req, res)=>{
+app.delete('/removeUser/:id', (req, res)=>{
 
     pool.query('DELETE FROM users WHERE user_name=$1', [req.params.id], function (err, resp) {
       if (err){
@@ -356,7 +345,7 @@ app.delete('/removeUser/:id', loggedIn, (req, res)=>{
 
 })
 app.delete('/removeProf/:id', (req, res)=>{
-
+    console.log()
     pool.query('DELETE FROM profDex WHERE prof_id=$1', [req.params.id], function (err, resp) {
       if (err){
         console.log('del failed');
@@ -370,7 +359,6 @@ app.delete('/removeProf/:id', (req, res)=>{
 /**********************************************************/
 app.get('/addCandy', function(req,res){
   var test = req.session.user_name;
-  console.log(test);
   var itemChance = Math.floor((Math.random() * 100) + 1);
   if(itemChance<=100)
   {
@@ -390,7 +378,6 @@ app.get('/addCandy', function(req,res){
   res.end();
 })
 app.get('/popAPill',async(req,res)=>{
-  console.log(req.session.user_name);
   if(1 == 1){
     const sql = {
         text: 'SELECT quantity FROM '+[req.session.user_name]+'Inventory'
@@ -399,7 +386,7 @@ app.get('/popAPill',async(req,res)=>{
        if(err) {
            console.log(err);
        }
-       console.log(response.rows[0].quantity);
+
        if(req.session.itemUsed != 'true'){
 
          const sql1 = {
@@ -539,7 +526,6 @@ io.on('connection', (socket) => {
 
 /* Used to check if a profs photo exists */
 app.get('/check-file/:fileName', function(req, res) {
-    console.log(req.params.fileName);
     if (fs.existsSync('./public/images/prof_images/' + req.params.fileName)) {
         res.send(true);
     } else {
@@ -549,7 +535,6 @@ app.get('/check-file/:fileName', function(req, res) {
 
 /* Add a professor who's photo is already on the server to the DB (ie. only add their information to the DB) */
 app.post('/addProfDex/:profName', function(req, res) {
-    console.log(req.query);
     let photoID = `${req.query.fname.toUpperCase()}_${req.query.lname.toUpperCase()}`;
 
     pool.query('SELECT * FROM profdex WHERE photo_id = $1', [photoID], (err, response) =>{
@@ -585,7 +570,6 @@ app.post('/add-new-prof', loggedIn, function(req, res) {
                 res.end();
             }
             else {
-                console.log("File Uploaded",fileName);
 
                 let photoID = `${req.body.fname.toUpperCase()}_${req.body.lname.toUpperCase()}`;
 
